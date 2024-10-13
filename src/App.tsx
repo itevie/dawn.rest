@@ -39,7 +39,7 @@ function App() {
               <Text>Discover the wonders of hypnosis. See my hypno files, visualisations, and more.</Text>
             </Panel>
           </Link>
-          <Link href="https://discord.dawn.rest">
+          <Link href="https://discord.gg/invite/zZw7ZCRy">
             <Panel title="Discord">
               <Text>Join my Discord server where we talk about hypnosis, have fun events, and have a generally nice community.</Text>
             </Panel>

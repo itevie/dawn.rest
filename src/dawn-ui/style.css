@@ -223,3 +223,40 @@ body {
 .dawn-banner-image:hover {
     transform: scale(1.1) rotate(10deg);
 }
+
+/* ----- Responsiveness ----- */
+@media only screen and (max-width: 700px) {
+    .dawn-banner-image {
+        display: none;
+    }
+
+    .dawn-page-content {
+        margin: 0;
+    }
+
+    .dawn-panel-row {
+        align-items: center;
+        margin: 0;
+        margin-top: 30px;
+        flex-direction: column;
+    }
+
+    .dawn-panel,
+    .dawn-panel-row>a {
+        width: 100%;
+    }
+
+    .dawn-panel>.dawn-content {
+
+        box-sizing: border-box;
+        margin: 20px;
+    }
+
+    .dawn-content {
+        margin: 5px;
+    }
+
+    .dawn-banner {
+        padding: 20px;
+    }
+}
