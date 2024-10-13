@@ -32,6 +32,10 @@ export default class Visual {
         throw new Error(`This visualiser does not implement getOptions`);
     }
 
+    public getPresets(): { [key: string]: any } {
+        return {};
+    }
+
     public draw(ctx: CanvasRenderingContext2D, options: any): void {
         throw new Error("This visualiser does not implement draw");
     }

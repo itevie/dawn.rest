@@ -22,7 +22,7 @@ export default function VisualInput(
                             step={(option as NumberVisualOption).rangeMin || 1}
                             value={current[name] ?? option.default}
                             onChange={i => set(option, name, i)} />
-                        <label>{current[name] ?? ""}</label>
+                        <label>{current[name] ?? option.default}</label>
                     </>,
                     "boolean": <input
                         type="checkbox"

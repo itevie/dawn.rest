@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import Visual, { VisualOption } from "./visuals/Visualisation";
+import Visual, { VisualOption, VisualOptions } from "./visuals/Visualisation";
 import allVisuals from "./visuals/allVisuals";
 import Page from "../../dawn-ui/components/Page";
 import RestNabar from "../../components/RestNavbar";
@@ -49,14 +49,23 @@ export default function VisualViewer() {
                 defaults[k] = v.default;
             }
 
-
             // Create instance
             const type = allVisuals[id];
             const visualInstance = new type();
-            visualInstance.draw(canvas.getContext("2d") as CanvasRenderingContext2D, { ...defaults, ...currentOptions });
 
             const oldOverflow = document.body.style.overflow;
             document.body.style.overflow = "hidden";
+
+            const context = canvas.getContext("2d") as CanvasRenderingContext2D;
+            context.textBaseline = "middle";
+            context.textAlign = "center";
+            context.font = "30px Arial";
+            context.fillStyle = "white";
+            context.fillText("Click anywhere to stop", canvas.width / 2, canvas.height / 2);
+
+            setTimeout(() => {
+                visualInstance.draw(context, { ...defaults, ...currentOptions });
+            }, 1000);
 
             canvas.onclick = () => {
                 visualInstance.stop();
@@ -81,6 +90,11 @@ export default function VisualViewer() {
         setCurrentOptions(temp);
     }
 
+    function loadPreset(options: VisualOption) {
+        const old = { ...currentOptions };
+        setCurrentOptions({ ...old, ...options })
+    }
+
     return (
         isPlaying
             ? <canvas style={{ overflow: "hidden" }} ref={player} />
@@ -90,13 +104,19 @@ export default function VisualViewer() {
                     <Text type="heading">
                         Configure: {visual?.name || "???"}
                     </Text>
-                    <Panel width="100%" title="Visual's Settings">
+                    <Panel width="full" title="Visual's Settings">
                         <Text>{visual?.description}</Text>
                         <table><tbody>
                             {Object.entries(visual?.getOptions() ?? {}).map(([k, v]) => <tr key={k}>
                                 <td><b>{v.human}</b></td>
                                 <td><VisualInput name={k} option={v} current={currentOptions} set={setOption} /></td>
                             </tr>)}
+                            <tr>{Object.keys(visual?.getPresets() ?? {}).length > 0 && <>
+                                <td><b>Presets: </b></td>
+                                <td>{Object.entries(visual?.getPresets() ?? {}).map(([k, v]) =>
+                                    <Button onClick={() => loadPreset(v)}>{k}</Button>
+                                )}</td>
+                            </>}</tr>
                         </tbody></table>
                         <Button onClick={play} big>Play</Button>
                     </Panel>

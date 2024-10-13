@@ -38,6 +38,15 @@ export default class Spiral extends Visual {
         };
     }
 
+    public override getPresets(): { [key: string]: { [key: string]: any } } {
+        return {
+            sinkhole: {
+                spinSpeed: 0.2,
+                segments: 20,
+            }
+        }
+    }
+
     public override draw(ctx: CanvasRenderingContext2D, options: SpiralOptions): void {
         ctx.canvas.style.backgroundColor = "#000";
 

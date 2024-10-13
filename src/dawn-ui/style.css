@@ -176,6 +176,7 @@ body {
 
     width: fit-content;
     max-width: 100%;
+    width: 300px;
     min-height: 200px;
     height: auto;
 
@@ -246,12 +247,12 @@ body {
     }
 
     .dawn-panel,
-    .dawn-panel-row>a {
+    .dawn-panel-row>a,
+    a>.dawn-panel {
         width: 100%;
     }
 
     .dawn-panel>.dawn-content {
-
         box-sizing: border-box;
         margin: 20px;
     }
