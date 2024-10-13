@@ -30,7 +30,7 @@ const routes = createBrowserRouter([
     element: <VisualViewer />
   },
   {
-    path: "/discord",
+    path: "/trancer",
     element: <TrancerPage />
   }
 ]);

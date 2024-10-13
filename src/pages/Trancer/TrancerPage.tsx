@@ -41,7 +41,7 @@ interface TrancerData {
 }
 type TrancerQueryType = keyof TrancerData;
 
-const baseDataURL = "http://localhost:8080/data";
+const baseDataURL = "/trancer-proxy?url=/data";
 
 const timeFilters = {
     "minute": /[0-9]+\/[0-9]+\/[0-9]+ [0-9]+:[0-9]+/,
