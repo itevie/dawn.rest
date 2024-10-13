@@ -122,6 +122,9 @@ body {
 .dawn-text {
     margin-top: 7px;
     margin-bottom: 7px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
 }
 
 .dawn-text-heading {
@@ -171,7 +174,8 @@ body {
     flex-direction: column;
     align-self: flex-start;
 
-    width: 300px;
+    width: fit-content;
+    max-width: 100%;
     min-height: 200px;
     height: auto;
 
@@ -258,5 +262,6 @@ body {
 
     .dawn-banner {
         padding: 20px;
+        height: auto;
     }
 }

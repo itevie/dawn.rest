@@ -1,30 +1,16 @@
-import Banner from "./dawn-ui/components/Banner";
-import Button from "./dawn-ui/components/Button";
-import ButtonLink from "./dawn-ui/components/ButtonLink";
-import Column from "./dawn-ui/components/Column";
-import Content from "./dawn-ui/components/Content";
-import Link from "./dawn-ui/components/Link";
-import Navbar from "./dawn-ui/components/Navbar";
-import Page from "./dawn-ui/components/Page";
-import Panel from "./dawn-ui/components/Panel";
-import PanelRow from "./dawn-ui/components/PanelRow";
-import Row from "./dawn-ui/components/Row";
-import Rule from "./dawn-ui/components/Rule";
-import Text from "./dawn-ui/components/Text";
+import RestNabar from "../components/RestNavbar";
+import Banner from "../dawn-ui/components/Banner";
+import Content from "../dawn-ui/components/Content";
+import Link from "../dawn-ui/components/Link";
+import Page from "../dawn-ui/components/Page";
+import Panel from "../dawn-ui/components/Panel";
+import PanelRow from "../dawn-ui/components/PanelRow";
+import Text from "../dawn-ui/components/Text";
 
 function App() {
   return (
     <Page>
-      <Navbar>
-        <Row>
-          <Text type="navbar">
-            <Link href="https://dawn.rest">
-              dawn.rest
-            </Link>
-          </Text>
-          <ButtonLink link="https://discord.dawn.rest/">Discord</ButtonLink>
-        </Row>
-      </Navbar>
+      <RestNabar />
       <Content>
         <Banner title="Welcome to dawn.rest">
           <Text>
@@ -34,7 +20,7 @@ function App() {
           </Text>
         </Banner>
         <PanelRow>
-          <Link href="https://dawn.rest/hypno">
+          <Link href="/hypno">
             <Panel title="Hypnosis">
               <Text>Discover the wonders of hypnosis. See my hypno files, visualisations, and more.</Text>
             </Panel>

@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { HTMLAttributes, ReactNode } from "react";
 
 export interface ButtonProps {
     type?: "success" | "danger" | "inherit";
@@ -6,12 +6,15 @@ export interface ButtonProps {
     href?: string;
 }
 
-export default function Button(props: ButtonProps & { children: ReactNode }) {
-    const className = `dawn-button ${props.big && "dawn-big-control"} ${props.type ? `dawn-${props.type}` : ""}`;
+export default function Button(
+    { type, big, href, children, ...rest }:
+        ButtonProps & { children: ReactNode } & HTMLAttributes<HTMLButtonElement> & HTMLAttributes<HTMLLinkElement>
+) {
+    const className = `dawn-button ${big && "dawn-big-control"} ${type ? `dawn-${type}` : ""}`;
 
     return (
-        props.href
-            ? <a href={props.href} className={"dawn-link " + className}>{props.children}</a>
-            : <button className={className}>{props.children}</button>
+        href
+            ? <a href={href} className={"dawn-link " + className} {...rest as any}> {children}</a >
+            : <button className={className} {...rest as any}>{children}</button>
     )
 }
