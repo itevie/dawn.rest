@@ -9,6 +9,7 @@ import Panel from "../../dawn-ui/components/Panel";
 import axios from "axios";
 import { Chart as ChartJS, registerables } from 'chart.js';
 import { Chart, Line } from 'react-chartjs-2'
+import { showErrorAlert } from "../../dawn-ui/components/AlertManager";
 ChartJS.register(...registerables);
 
 interface TrancerData {
@@ -42,7 +43,7 @@ interface TrancerData {
 type TrancerQueryType = keyof TrancerData;
 
 let baseDataURL = "/trancer-proxy?url=/data";
-//baseDataURL = "https://discord.dawn.rest/data";
+baseDataURL = "https://discord.dawn.rest/data";
 
 const timeFilters = {
     "minute": /[0-9]+\/[0-9]+\/[0-9]+ [0-9]+:[0-9]+/,
@@ -107,7 +108,7 @@ export default function TrancerPage() {
                 return { ...old, [type]: json }
             });
         } catch (e) {
-            alert(`Failed to fetch ${type}: ${e}\n\nAre you missing the auth code? Run .site in Trancy Twilight.`);
+            showErrorAlert(`Failed to load ${type}: Are you missing the auth code? Run .site in Trancy Twilight.`);
         }
     }
 

@@ -8,10 +8,12 @@ import Panel from "../../dawn-ui/components/Panel";
 import { Text } from "../../dawn-ui";
 import VisualInput from "./VisualInput";
 import Button from "../../dawn-ui/components/Button";
+import PanelRow from "../../dawn-ui/components/PanelRow";
 
 export default function VisualViewer() {
     const [visual, setVisual] = useState<Visual | undefined>(undefined);
     const [id, setId] = useState<number>(-1);
+    const [url, setUrl] = useState<string>("");
     const [currentOptions, setCurrentOptions] = useState<{ [key: string]: any }>({});
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
     const player = useRef<HTMLCanvasElement>(null);
@@ -28,6 +30,17 @@ export default function VisualViewer() {
 
         const visual = allVisuals[parseInt(visualId[0])];
         setVisual(new visual());
+
+        // Try load preset options
+        if (window.location.search) {
+            let result = window.location.search.match(/options=[a-zA-Z0-9=]+/);
+            if (result) {
+                try {
+                    const json = JSON.parse(atob(result[0].replace(/options=/, "")));
+                    setCurrentOptions(json);
+                } catch { }
+            }
+        }
     }, []);
 
     function play() {
@@ -88,11 +101,17 @@ export default function VisualViewer() {
         }
 
         setCurrentOptions(temp);
+        setShare(temp);
+    }
+
+    function setShare(what: object) {
+        setUrl(`${window.location.protocol}//${window.location.host}${window.location.pathname}?options=${btoa(JSON.stringify(what))}`)
     }
 
     function loadPreset(options: VisualOption) {
         const old = { ...currentOptions };
         setCurrentOptions({ ...old, ...options })
+        setShare({ ...old, ...options });
     }
 
     return (
@@ -104,22 +123,28 @@ export default function VisualViewer() {
                     <Text type="heading">
                         Configure: {visual?.name || "???"}
                     </Text>
-                    <Panel width="full" title="Visual's Settings">
-                        <Text>{visual?.description}</Text>
-                        <table><tbody>
-                            {Object.entries(visual?.getOptions() ?? {}).map(([k, v]) => <tr key={k}>
-                                <td><b>{v.human}</b></td>
-                                <td><VisualInput name={k} option={v} current={currentOptions} set={setOption} /></td>
-                            </tr>)}
-                            <tr>{Object.keys(visual?.getPresets() ?? {}).length > 0 && <>
-                                <td><b>Presets: </b></td>
-                                <td>{Object.entries(visual?.getPresets() ?? {}).map(([k, v]) =>
-                                    <Button onClick={() => loadPreset(v)}>{k}</Button>
-                                )}</td>
-                            </>}</tr>
-                        </tbody></table>
-                        <Button onClick={play} big>Play</Button>
-                    </Panel>
+                    <PanelRow>
+                        <Panel width="full" title="Visual's Settings">
+                            <Text>{visual?.description}</Text>
+                            <table><tbody>
+                                {Object.entries(visual?.getOptions() ?? {}).map(([k, v]) => <tr key={k}>
+                                    <td><b>{v.human}</b></td>
+                                    <td><VisualInput name={k} option={v} current={currentOptions} set={setOption} /></td>
+                                </tr>)}
+                                <tr>{Object.keys(visual?.getPresets() ?? {}).length > 0 && <>
+                                    <td><b>Presets: </b></td>
+                                    <td>{Object.entries(visual?.getPresets() ?? {}).map(([k, v]) =>
+                                        <Button onClick={() => loadPreset(v)}>{k}</Button>
+                                    )}</td>
+                                </>}</tr>
+                            </tbody></table>
+                            <Button onClick={play} big>Play</Button>
+                        </Panel>
+                        <Panel width="400px" title="Share">
+                            <Text>Share the following link to show other's this visual.</Text>
+                            <input readOnly value={url}></input>
+                        </Panel>
+                    </PanelRow>
                 </Content>
             </Page>
     );

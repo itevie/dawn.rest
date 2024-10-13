@@ -1,10 +1,12 @@
 import { HTMLAttributes, ReactNode } from "react";
 
 export interface ButtonProps {
-    type?: "success" | "danger" | "inherit";
+    type?: ButtonType;
     big?: boolean;
     href?: string;
 }
+
+export type ButtonType = "success" | "danger" | "inherit";
 
 export default function Button(
     { type, big, href, children, ...rest }:

@@ -7,6 +7,7 @@ import HypnosisPage from './pages/HypnosisPage';
 import VisualPage from './pages/VisualPage/VisualPage';
 import VisualViewer from './pages/VisualPage/VisualViewer';
 import TrancerPage from './pages/Trancer/TrancerPage';
+import AlertManager from './dawn-ui/components/AlertManager';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -36,5 +37,8 @@ const routes = createBrowserRouter([
 ]);
 
 root.render(
-  <RouterProvider router={routes} />
+  <>
+    <AlertManager />
+    <RouterProvider router={routes} />
+  </>
 );
