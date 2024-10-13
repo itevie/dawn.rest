@@ -90,7 +90,7 @@ export default function VisualViewer() {
                     <Text type="heading">
                         Configure: {visual?.name || "???"}
                     </Text>
-                    <Panel width="full" title="Visual's Settings">
+                    <Panel width="100%" title="Visual's Settings">
                         <Text>{visual?.description}</Text>
                         <table><tbody>
                             {Object.entries(visual?.getOptions() ?? {}).map(([k, v]) => <tr key={k}>
