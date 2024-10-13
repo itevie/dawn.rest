@@ -8,7 +8,6 @@ import PanelRow from "../../dawn-ui/components/PanelRow";
 import allVisuals from "./visuals/allVisuals";
 
 export default function VisualPage() {
-
     return (
         <Page>
             <RestNabar />

@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import HypnosisPage from './pages/HypnosisPage';
 import VisualPage from './pages/VisualPage/VisualPage';
 import VisualViewer from './pages/VisualPage/VisualViewer';
+import TrancerPage from './pages/Trancer/TrancerPage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -27,11 +28,13 @@ const routes = createBrowserRouter([
   {
     path: "/hypno/visuals/:id",
     element: <VisualViewer />
+  },
+  {
+    path: "/discord",
+    element: <TrancerPage />
   }
 ]);
 
 root.render(
-  <React.StrictMode>
-    <RouterProvider router={routes} />
-  </React.StrictMode>
+  <RouterProvider router={routes} />
 );

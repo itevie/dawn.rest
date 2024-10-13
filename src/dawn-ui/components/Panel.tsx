@@ -1,14 +1,19 @@
-import { ReactNode } from "react";
+import { HTMLAttributes, ReactNode } from "react";
 import Text from "./Text";
 
-export default function Panel(props: { width?: string, title: string, children: ReactNode }) {
+export default function Panel(
+    { width, title, children, ...rest }:
+        { width?: string, title: string, children: ReactNode } & HTMLAttributes<HTMLDivElement>
+) {
     return (
-        <div className="dawn-panel" {...(props.width && { style: { width: `${{ "full": "100%" }[props.width]}` } })}>
+        <div
+            {...rest}
+            className="dawn-panel" {...(width && { style: { ...rest.style, width: `${{ "full": "100%", "fit": "fit-content" }[width] || width}` } })}>
             <div className="dawn-panel-title">
-                <Text type="heading">{props.title}</Text>
+                <Text type="heading">{title}</Text>
             </div>
             <div className="dawn-content">
-                {props.children}
+                {children}
             </div>
         </div>
     )

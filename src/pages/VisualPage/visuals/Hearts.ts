@@ -20,7 +20,7 @@ export default class Hearts extends Visual {
             reverse: {
                 type: "boolean",
                 human: "Reverse",
-                default: false,
+                default: true,
             },
             spawnSpeed: {
                 type: "number",

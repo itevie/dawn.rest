@@ -90,6 +90,7 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
+    gap: 10px;
 }
 
 .dawn-column {
@@ -178,7 +179,8 @@ body {
     max-width: 100%;
     width: 300px;
     min-height: 200px;
-    height: auto;
+
+    box-sizing: border-box;
 
     background-color: var(--dawn-control-background);
 
