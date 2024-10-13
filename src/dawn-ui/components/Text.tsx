@@ -1,13 +1,13 @@
 import { ReactNode } from "react";
 
 interface TextProps {
-    type?: "heading" | "navbar";
+    type?: "heading" | "navbar" | "page-title";
 }
 
 export default function Text(props: TextProps & { children: ReactNode }) {
     return (
-        <label className={`dawn-text ${props.type ? `dawn-text-${props.type}` : ""}`}>
+        <p className={`dawn-text ${props.type ? `dawn-text-${props.type}` : ""}`}>
             {props.children}
-        </label>
+        </p>
     )
 }

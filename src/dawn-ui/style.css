@@ -11,7 +11,9 @@
     --dawn-control-success: #00CC00;
     --dawn-control-hover-success: #00FF00;
     --dawn-control-link: #18e6f5;
+
     --dawn-hover-transition: 0.2s;
+    --dawn-border-radius: 20px;
 }
 
 body {
@@ -98,12 +100,16 @@ body {
 .dawn-panel-row {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     gap: 30px;
+    margin: 20px;
 }
 
 /* ----- Navbar ----- */
 .dawn-navbar {
+    position: sticky;
     width: 100%;
+    box-sizing: border-box;
 
     padding: 10px;
 
@@ -113,6 +119,11 @@ body {
 }
 
 /* ----- Text ----- */
+.dawn-text {
+    margin-top: 7px;
+    margin-bottom: 7px;
+}
+
 .dawn-text-heading {
     font-weight: bolder;
     font-size: 1.4em;
@@ -125,36 +136,90 @@ body {
     margin: 10px;
 }
 
+.dawn-text-page-title {
+    font-size: 3em;
+    display: block;
+    margin-bottom: 30px;
+}
+
 /* ----- Divs ----- */
 .dawn-page {
     display: flex;
     flex-direction: column;
+    width: 100vw;
+    height: 100vh;
 }
 
 .dawn-content {
     margin: 10px;
+    margin-left: 50px;
+    margin-right: 50px;
     box-sizing: border-box;
 }
 
 .dawn-page-content {
-    margin: 10px;
     flex: 1;
+    overflow: auto;
 }
 
 .dawn-panel {
-    border-radius: 5px;
+    border-radius: var(--dawn-border-radius);
 
-    box-shadow: 0px 0px 10px 2px black;
+    box-shadow: 0px 0px 15px 5px #222;
 
     display: flex;
     flex-direction: column;
     align-self: flex-start;
 
-    min-width: 300px;
+    width: 300px;
+    min-height: 200px;
     height: auto;
+
+    background-color: var(--dawn-control-background);
+
+    transition: var(--dawn-hover-transition);
 }
 
 .dawn-panel-title {
-    border-radius: 5px;
+    margin: 10px;
+}
+
+.dawn-panel:hover {
+    background-color: var(--dawn-control-hover-background);
+    box-shadow: 0px 0px 15px 5px #222;
+}
+
+.dawn-banner {
     background-color: var(--dawn-control-background);
+
+    padding: 50px;
+
+    height: 200px;
+
+    border-radius: var(--dawn-border-radius);
+
+    /*background-image: url(./images/spiral.svg);
+    background-position: bottom right;
+    background-position-y: 100px;
+    background-size: 300px;
+    background-repeat: no-repeat;*/
+}
+
+.dawn-panel-content {
+    flex: 1;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.dawn-banner-image {
+    width: 200px;
+    height: 100%;
+    margin-top: -30px;
+    margin-right: -40px;
+
+    transition: var(--dawn-hover-transition);
+}
+
+.dawn-banner-image:hover {
+    transform: scale(1.1) rotate(10deg);
 }
