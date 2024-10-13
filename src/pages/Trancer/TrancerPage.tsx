@@ -41,7 +41,8 @@ interface TrancerData {
 }
 type TrancerQueryType = keyof TrancerData;
 
-const baseDataURL = "/trancer-proxy?url=/data";
+let baseDataURL = "/trancer-proxy?url=/data";
+//baseDataURL = "https://discord.dawn.rest/data";
 
 const timeFilters = {
     "minute": /[0-9]+\/[0-9]+\/[0-9]+ [0-9]+:[0-9]+/,
@@ -53,7 +54,8 @@ const timeFilters = {
 export default function TrancerPage() {
     const [page, setPage] = useState<string>("about");
     const [data, setData] = useState<TrancerData>({});
-    const [messagesFilter, setMessagesFilter] = useState<keyof typeof timeFilters>("month");
+    const [timeFilter, setTimeFilter] = useState<{ [key: string]: keyof typeof timeFilters }>({ messages: "month", memberCount: "day" });
+    const [leaderboardSearch, setLeaderboardSearch] = useState<string | null>(null);
 
     useEffect(() => {
         const hashtag = window.location.hash;
@@ -136,14 +138,16 @@ export default function TrancerPage() {
 
                         "leaderboards": <>
                             <Text type="heading">Leaderboards</Text>
+                            <Text>Search: <input onChange={e => setLeaderboardSearch(e.target.value.toLowerCase())}></input></Text>
                             <PanelRow>
                                 {/* Balance Leaderboard */}
                                 <Panel width="fit" title="Economy Leaderboard">
                                     {!data.economy ? <Text>Loading...</Text> : <table><tbody>
-                                        {data.economy.sort((a, b) => b.balance - a.balance).map(x => <tr key={x.user_id}>
-                                            <td>{getUsername(x.user_id)}</td>
-                                            <td>{x.balance} 🌀</td>
-                                        </tr>)}
+                                        {data.economy.sort((a, b) => b.balance - a.balance).map(x =>
+                                            <tr key={x.user_id} className={`${leaderboardSearch && getUsername(x.user_id).toLowerCase().includes(leaderboardSearch) && "dawn-highlight"}`}>
+                                                <td>{getUsername(x.user_id)}</td>
+                                                <td>{x.balance} 🌀</td>
+                                            </tr>)}
                                     </tbody></table>}
                                 </Panel>
                                 {/* Peak prgoramming right here: */}
@@ -155,7 +159,7 @@ export default function TrancerPage() {
                                     ] as [keyof TrancerData["user_data"], string, string][]).map(part => <Panel width="fit" title={`${part[1]} Leaderboard`}>
                                         {!data.user_data ? <Text>Loading...</Text> : <table><tbody>
                                             {data.user_data.filter(x => x[part[0]] !== 0).sort((a, b) => b[part[0]] - a[part[0]]).map(x =>
-                                                <tr key={x.user_id}>
+                                                <tr key={x.user_id} className={`${leaderboardSearch && getUsername(x.user_id).toLowerCase().includes(leaderboardSearch) && "dawn-highlight"}`}>
                                                     <td>{getUsername(x.user_id)}</td>
                                                     <td>{x[part[0]]} {part[2]}</td>
                                                 </tr>)}
@@ -186,37 +190,35 @@ export default function TrancerPage() {
                         "server": <>
                             <Text type="heading">Trancy Twilight Details</Text>
                             <PanelRow>
-                                <Panel width="40%" style={{ minHeight: "400px" }} title="Member Count">
-                                    {!data.member_count ? "Loading..." : <>
-                                        <Line data={{
-                                            labels: data.member_count.map(x => x.time),
-                                            datasets: [{
-                                                label: `Member Count Overtime`,
-                                                data: data.member_count.map(x => x.amount)
-                                            }]
-                                        }} />
-                                    </>}
-                                </Panel>
-                                <Panel width="40%" title="Messages Overtime">
-                                    <Text>
-                                        Filter:
-                                        <select onChange={e => setMessagesFilter((e.target[e.target.selectedIndex] as any).value)}>
-                                            <option value="minute">Minute</option>
-                                            <option value="hour">Hour</option>
-                                            <option value="day">Day</option>
-                                            <option value="month" selected>Month</option>
-                                        </select>
-                                    </Text>
-                                    {!data.messages ? "Loading..." : <>
-                                        <Line data={{
-                                            labels: convertTimes(data.messages, timeFilters[messagesFilter], "amount").map(x => x.time),
-                                            datasets: [{
-                                                label: `Messages Overtime`,
-                                                data: convertTimes(data.messages, timeFilters[messagesFilter], "amount").map(x => x.amount)
-                                            }]
-                                        }} />
-                                    </>}
-                                </Panel>
+                                {
+                                    // data - filter name - key - human name
+                                    ([
+                                        { source: data.member_count, filter: "memberCount", human: "Member Count Overtime", noAdd: true },
+                                        { source: data.messages, filter: "messages", human: "Member Count Overtime", noAdd: false },
+                                    ] as const)
+                                        .map(graphData => <Panel key={graphData.filter} width="40%" style={{ minHeight: "400px" }} title={`${graphData.human}`}>
+                                            <Text>
+                                                Filter:
+                                                <select defaultValue={timeFilter[graphData.filter]} onChange={e =>
+                                                    setTimeFilter({ ...timeFilter, [graphData.filter]: (e.target[e.target.selectedIndex] as any).value })
+                                                }>
+                                                    <option value="minute">Minute</option>
+                                                    <option value="hour">Hour</option>
+                                                    <option value="day">Day</option>
+                                                    <option value="month">Month</option>
+                                                </select>
+                                            </Text>
+                                            {!graphData.source ? "Loading..." : <>
+                                                <Line data={{
+                                                    labels: convertTimes(graphData.source, timeFilters[timeFilter[graphData.filter]], "amount", graphData.noAdd).map(y => y.time),
+                                                    datasets: [{
+                                                        label: graphData.human,
+                                                        data: convertTimes(graphData.source, timeFilters[timeFilter[graphData.filter]], "amount", graphData.noAdd).map(y => y.amount)
+                                                    }]
+                                                }} />
+                                            </>}
+                                        </Panel>)
+                                }
                             </PanelRow>
                         </>
                     }[page] || <Text>Unknown page.</Text>
@@ -226,7 +228,7 @@ export default function TrancerPage() {
     )
 }
 
-function convertTimes(data: TrancerData["messages"], regex: RegExp, key: "amount") {
+function convertTimes(data: TrancerData["messages"], regex: RegExp, key: "amount", noIncrease: boolean = false) {
     if (!data) return [];
 
     let times: { [key: string]: number } = {};
@@ -235,6 +237,10 @@ function convertTimes(data: TrancerData["messages"], regex: RegExp, key: "amount
         if (!time) continue;
 
         if (!times[time[0] as string]) times[time[0]] = 0;
+        if (noIncrease) {
+            times[time[0]] = d[key];
+            continue;
+        }
         times[time[0]] += d[key];
     }
 
@@ -247,4 +253,9 @@ function convertTimes(data: TrancerData["messages"], regex: RegExp, key: "amount
     }
 
     return final;
+}
+
+function log(...what: any[]) {
+    console.log(what);
+    return false;
 }

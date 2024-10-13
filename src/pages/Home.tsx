@@ -30,7 +30,7 @@ function App() {
               <Text>Join my Discord server where we talk about hypnosis, have fun events, and have a generally nice community.</Text>
             </Panel>
           </Link>
-          <Link href="https://dawn.rest/trancer">
+          <Link href="/trancer">
             <Panel title="Trancer">
               <Text>See my hypnosis-related Discord bot: Trancer.</Text>
             </Panel>

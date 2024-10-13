@@ -146,6 +146,10 @@ body {
     margin-bottom: 30px;
 }
 
+.dawn-highlight {
+    background-color: #00CC00AA;
+}
+
 /* ----- Divs ----- */
 .dawn-page {
     display: flex;
