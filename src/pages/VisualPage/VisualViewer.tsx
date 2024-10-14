@@ -29,11 +29,11 @@ export default function VisualViewer() {
         const id = parseInt(visualId[0]);
         setId(id);
 
-        const visual = allVisuals[parseInt(visualId[0])];
-        setVisual(new visual());
+        const cvisual = allVisuals[parseInt(visualId[0])];
+        setVisual(new cvisual());
 
-        // Try load preset options
         if (window.location.search) {
+            // Check if it should load preset
             let result = window.location.search.match(/options=[a-zA-Z0-9=]+/);
             if (result) {
                 try {
@@ -70,6 +70,7 @@ export default function VisualViewer() {
             const oldOverflow = document.body.style.overflow;
             document.body.style.overflow = "hidden";
 
+            // Write the "Click anywhere to stop" thing
             const context = canvas.getContext("2d") as CanvasRenderingContext2D;
             context.textBaseline = "middle";
             context.textAlign = "center";
@@ -77,11 +78,12 @@ export default function VisualViewer() {
             context.fillStyle = "white";
             context.fillText("Click anywhere to stop", canvas.width / 2, canvas.height / 2);
 
+            // Timeout to allow the text to be seen
             setTimeout(() => {
-                console.log(currentOptions);
                 visualInstance.draw(context, { ...defaults, ...currentOptions });
             }, 1000);
 
+            // When clicked hide and stop the visual
             canvas.onclick = () => {
                 visualInstance.stop();
                 setIsPlaying(false);
@@ -120,6 +122,13 @@ export default function VisualViewer() {
         const old = { ...currentOptions };
         setCurrentOptions({ ...old, ...options })
         setShare({ ...old, ...options });
+
+        // Stupid way of making it rerender the array input
+        // TODO: Make it so this isn't needed.
+        setIsPlaying(true);
+        setTimeout(() => {
+            setIsPlaying(false);
+        }, 10);
     }
 
     return (

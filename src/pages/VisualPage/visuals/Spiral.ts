@@ -58,6 +58,11 @@ export default class Spiral extends Visual {
             sinkhole: {
                 spinSpeed: 0.2,
                 segments: 20,
+            },
+            staircase: {
+                colors: ["#FFFFFF", "#cccccc", "#b3b3b3", "#8a8a8a", "#5c5c5c", "#404040", "#2b2b2b", "#141414"],
+                spinSpeed: 0.01,
+                reverse: true,
             }
         }
     }

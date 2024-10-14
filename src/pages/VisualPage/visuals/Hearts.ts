@@ -1,4 +1,4 @@
-import { getCanvasCenter } from "./util";
+import { getCanvasCenter, hexToRGB } from "./util";
 import Visual, { Coordinate, VisualOptions } from "./Visualisation";
 
 interface Heart {
@@ -157,12 +157,4 @@ function drawHeart(
     ctx.fillStyle = color;
     ctx.fill();
     ctx.restore();
-}
-
-function hexToRGB(hex: string, alpha: number) {
-    var r = parseInt(hex.slice(1, 3), 16),
-        g = parseInt(hex.slice(3, 5), 16),
-        b = parseInt(hex.slice(5, 7), 16);
-
-    return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
 }
