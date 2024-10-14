@@ -5,7 +5,6 @@ export default function Panel(
     { width, title, children, ...rest }:
         { width?: string, title: string, children: ReactNode } & HTMLAttributes<HTMLDivElement>
 ) {
-    console.log(rest.style, { ...rest.style, ...(width && { width: `${{ "full": "100%", "fit": "fit-content" }[width] || width}` }) });
     return (
         <div
             {...rest}

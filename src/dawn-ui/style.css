@@ -104,8 +104,17 @@ body {
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
+    box-sizing: border-box;
     gap: 30px;
     margin-top: 30px;
+}
+
+.dawn-panel-row-full {
+    width: 100%;
+}
+
+.dawn-panel-row-full>* {
+    flex-basis: 49%;
 }
 
 /* ----- Navbar ----- */
@@ -328,4 +337,15 @@ body {
     word-break: break-all;
     margin-bottom: 20px;
     margin-top: 20px;
+}
+
+/* ----- Visual ----- */
+.dawn-visual-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    font-size: 7em;
+    opacity: 0.5;
 }

@@ -69,3 +69,17 @@ export function showErrorAlert(message: string) {
         ]
     });
 }
+
+export function showInformation(message: string) {
+    addModel({
+        title: "Information",
+        body: <label>{message}</label>,
+        buttons: [
+            {
+                id: "ok",
+                text: "OK!",
+                click: close => close(),
+            }
+        ]
+    });
+}

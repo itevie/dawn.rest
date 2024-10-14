@@ -9,14 +9,40 @@ import { Text } from "../../dawn-ui";
 import VisualInput from "./VisualInput";
 import Button from "../../dawn-ui/components/Button";
 import PanelRow from "../../dawn-ui/components/PanelRow";
-import ArrayInput from "../../dawn-ui/components/ArrayInput";
+import { randomRange } from "./visuals/util";
+
+const textFlashes = {
+    deep: [
+        "drop", "deeper", "down", "snap", "relax", "sinking",
+        "drifting", "dropping", "dropped", "sinked", "now", "sleep",
+        "rest", "calm"
+    ]
+} as const;
+
+interface FlashTextOptions {
+    usePreset: boolean;
+    preset: keyof typeof textFlashes;
+    customWords: string,
+    enabled: boolean,
+    opacity: number,
+}
+
+const defaultFlashTextOptions: FlashTextOptions = {
+    usePreset: true,
+    preset: "deep",
+    customWords: "",
+    enabled: true,
+    opacity: 0.5,
+}
 
 export default function VisualViewer() {
     const [visual, setVisual] = useState<Visual | undefined>(undefined);
+    const [flashTextOptions, setFlashTextOptions] = useState<FlashTextOptions>({ ...defaultFlashTextOptions })
     const [id, setId] = useState<number>(-1);
     const [url, setUrl] = useState<string>("");
     const [currentOptions, setCurrentOptions] = useState<{ [key: string]: any }>({});
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
+    const [flashText, setFlashText] = useState<string>("");
     const player = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
@@ -42,6 +68,11 @@ export default function VisualViewer() {
                 } catch { }
             }
         }
+
+        // Check if load flash text options
+        const lsFlash = localStorage.getItem("text_flash_options");
+        if (lsFlash)
+            setFlashTextOptions(JSON.parse(lsFlash));
     }, []);
 
     function play() {
@@ -79,14 +110,42 @@ export default function VisualViewer() {
             context.fillText("Click anywhere to stop", canvas.width / 2, canvas.height / 2);
 
             // Timeout to allow the text to be seen
+            let textFlasherTimer: ReturnType<typeof setInterval>;
             setTimeout(() => {
                 visualInstance.draw(context, { ...defaults, ...currentOptions });
+
+                // Check if it is enabled
+                if (flashTextOptions.enabled) {
+                    const cw = flashTextOptions.customWords.split(", ");
+
+                    // TODO: This may need reworking - idk
+                    let last = 0;
+                    textFlasherTimer = setInterval(() => {
+                        // chance of showing
+                        // && only show if not already shown
+                        // && 700 grace period betweem
+                        if (Math.random() > 0.8 && flashText === "" && 700 - (Date.now() - last) < 0) {
+                            const word = flashTextOptions.usePreset
+                                ? textFlashes[flashTextOptions.preset][Math.floor(Math.random() * textFlashes[flashTextOptions.preset].length)]
+                                : cw[Math.floor(Math.random() * cw.length)];
+                            setFlashText(word.trim());
+                            last = Date.now();
+
+                            // Timer to hide it
+                            setTimeout(() => {
+                                setFlashText("");
+                            }, randomRange(100, 400));
+                        }
+                    }, 100);
+                }
             }, 1000);
 
             // When clicked hide and stop the visual
             canvas.onclick = () => {
                 visualInstance.stop();
                 setIsPlaying(false);
+                clearInterval(textFlasherTimer);
+                setFlashText("");
                 document.body.style.overflow = oldOverflow;
             }
         }, 10);
@@ -131,17 +190,29 @@ export default function VisualViewer() {
         }, 10);
     }
 
+    function setFlashTextOption(key: string, value: any) {
+        setFlashTextOptions(old => {
+            const newValues: any = { ...old };
+            newValues[key] = value;
+            localStorage.setItem("text_flash_options", JSON.stringify(newValues));
+            return { ...newValues };
+        });
+    }
+
     return (
         isPlaying
-            ? <canvas style={{ overflow: "hidden" }} ref={player} />
+            ? <>
+                <canvas style={{ overflow: "hidden" }} ref={player} />
+                <label style={{ opacity: flashTextOptions.opacity }} className="dawn-visual-text">{flashText}</label>
+            </>
             : <Page>
                 <RestNabar title={
                     <Text type="heading">
                         Configure: {visual?.name || "???"}
                     </Text>} />
                 <Content>
-                    <PanelRow>
-                        <Panel width="fit" title="Visual's Settings">
+                    <PanelRow fullWidth>
+                        <Panel title="Visual's Settings">
                             <Text>{visual?.description}</Text>
                             <table><tbody>
                                 {Object.entries(visual?.getOptions() ?? {}).map(([k, v]) => <tr key={k}>
@@ -157,6 +228,71 @@ export default function VisualViewer() {
                             </tbody></table>
                             <Button onClick={play} big>Play</Button>
                         </Panel>
+                        <Panel title="Text Flashing">
+                            <Text>Flash different words on the screen randomly.</Text>
+                            <table><tbody>
+                                <tr>
+                                    <td><b>Enabled</b></td>
+                                    <td>
+                                        <input
+                                            onChange={i => setFlashTextOption("enabled", i.currentTarget.checked)}
+                                            checked={flashTextOptions.enabled}
+                                            type="checkbox" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b>Use Preset</b></td>
+                                    <td>
+                                        <input
+                                            onChange={i => setFlashTextOption("usePreset", i.currentTarget.checked)}
+                                            checked={flashTextOptions.usePreset}
+                                            type="checkbox" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b>Preset</b></td>
+                                    <td>
+                                        <select
+                                            onChange={i => setFlashTextOption("preset", i.currentTarget[i.currentTarget.selectedIndex])}
+                                            defaultValue={flashTextOptions.preset ?? "deep"}
+                                        >
+                                            {Object.keys(textFlashes).map(x => <option key={x}>{x}</option>)}
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b>Custom Words</b></td>
+                                    <td>
+                                        <textarea
+                                            onChange={i => setFlashTextOption("customWords", i.currentTarget.value)}
+                                            value={flashTextOptions.customWords}
+                                            placeholder="Words / Phrases split by commas"
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b>Opacity</b></td>
+                                    <td>
+                                        <input type="range"
+                                            step={0.05}
+                                            min={0.05}
+                                            max={1}
+                                            value={flashTextOptions.opacity}
+                                            onChange={i => setFlashTextOption("opacity", parseFloat(i.currentTarget.value))}
+                                        />
+                                        <label>{(flashTextOptions.opacity * 100).toFixed(0)}%</label>
+                                    </td>
+                                </tr>
+                            </tbody></table>
+                            <b>Words that will be shown:</b><br />
+                            {
+                                flashTextOptions.usePreset
+                                    ? textFlashes[flashTextOptions.preset ?? "deep"].join(", ")
+                                    : flashTextOptions.customWords
+                            }
+                        </Panel>
+                    </PanelRow>
+                    <PanelRow>
                         <Panel width="400px" title="Share">
                             <Text>Share the following link to show others this visual.</Text>
                             <input readOnly value={url}></input>
