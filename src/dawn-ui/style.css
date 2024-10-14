@@ -3,7 +3,7 @@
     --dawn-root-color: #FFF;
 
     --dawn-control-background: #333;
-    --dawn-control-hover-background: #444;
+    --dawn-control-hover-background: #555;
     --dawn-control-border: #444;
 
     --dawn-control-danger: #770000;
@@ -199,6 +199,9 @@ body {
 
     background-color: var(--dawn-control-background);
 
+    background-position: calc(100% + 40px) calc(100% + 40px);
+    background-size: 150px;
+    background-repeat: no-repeat;
     transition: var(--dawn-hover-transition);
 }
 
@@ -221,11 +224,7 @@ body {
 
     border-radius: var(--dawn-border-radius);
 
-    /*background-image: url(./images/spiral.svg);
-    background-position: bottom right;
-    background-position-y: 100px;
-    background-size: 300px;
-    background-repeat: no-repeat;*/
+    /**/
 }
 
 .dawn-panel-content {

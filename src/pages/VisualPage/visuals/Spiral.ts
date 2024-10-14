@@ -37,7 +37,7 @@ export default class Spiral extends Visual {
             },
             backgroundColor: {
                 type: "color",
-                human: "Backgrond",
+                human: "Background",
                 default: "#000000"
             },
             colors: {

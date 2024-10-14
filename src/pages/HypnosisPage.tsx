@@ -13,7 +13,7 @@ export default function HypnosisPage() {
             <RestNabar />
             <Content>
                 <Banner title="Hypnosis">
-                    Hi :3c
+                    Hypnosis is a big hobby of mine, I hope you can enjoy my hypnosis files and my visualisations.
                 </Banner>
                 <PanelRow>
                     <Link href="/hypno/files">

@@ -149,8 +149,9 @@ export default function VisualViewer() {
                             <Button onClick={play} big>Play</Button>
                         </Panel>
                         <Panel width="400px" title="Share">
-                            <Text>Share the following link to show other's this visual.</Text>
+                            <Text>Share the following link to show others this visual.</Text>
                             <input readOnly value={url}></input>
+                            <Button onClick={() => window.navigator.clipboard.writeText(url)}>Copy</Button>
                         </Panel>
                     </PanelRow>
                 </Content>

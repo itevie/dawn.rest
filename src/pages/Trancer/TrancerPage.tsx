@@ -8,7 +8,7 @@ import PanelRow from "../../dawn-ui/components/PanelRow";
 import Panel from "../../dawn-ui/components/Panel";
 import axios from "axios";
 import { Chart as ChartJS, registerables } from 'chart.js';
-import { Chart, Line } from 'react-chartjs-2'
+import { Bar, Chart, Line } from 'react-chartjs-2'
 import { showErrorAlert } from "../../dawn-ui/components/AlertManager";
 ChartJS.register(...registerables);
 
@@ -123,7 +123,7 @@ export default function TrancerPage() {
                 "about": "About Trancer",
                 "leaderboards": "Leaderboards",
                 "bot": "Bot Details",
-                "server": "Trancy Twilight Details"
+                "server": "Trancy Twilight Details (GMT)"
             }[page]}</Text>}>
                 {
                     ["About", "Leaderboards", "User Data", "Server", "Bot"]
@@ -197,7 +197,7 @@ export default function TrancerPage() {
                                     // data - filter name - key - human name
                                     ([
                                         { source: data.member_count, filter: "memberCount", human: "Member Count Overtime", noAdd: true },
-                                        { source: data.messages, filter: "messages", human: "Member Count Overtime", noAdd: false },
+                                        { source: data.messages, filter: "messages", human: "Messages Overtime", noAdd: false },
                                     ] as const)
                                         .map(graphData => <Panel key={graphData.filter} width="40%" style={{ minHeight: "400px" }} title={`${graphData.human}`}>
                                             <Text>
@@ -222,6 +222,17 @@ export default function TrancerPage() {
                                             </>}
                                         </Panel>)
                                 }
+                                <Panel width="40%" style={{ minHeight: "400px" }} title="Messages At Times">
+                                    <Bar data={{
+                                        labels: "00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,16,17,18,19,20,21,22,23".split(","),
+                                        datasets: [{
+                                            label: "Messages At Times",
+                                            data: convertTimes(data.messages, /( [0-9]?[0-9])/, "amount")
+                                                .sort((a, b) => parseInt(b.time) - parseInt(a.time))
+                                                .map(x => x.amount)
+                                        }]
+                                    }} />
+                                </Panel>
                             </PanelRow>
                         </>
                     }[page] || <Text>Unknown page.</Text>
@@ -235,6 +246,7 @@ function convertTimes(data: TrancerData["messages"], regex: RegExp, key: "amount
     if (!data) return [];
 
     let times: { [key: string]: number } = {};
+    console.log(data);
     for (const d of data) {
         let time = d.time.match(regex);
         if (!time) continue;
@@ -246,6 +258,8 @@ function convertTimes(data: TrancerData["messages"], regex: RegExp, key: "amount
         }
         times[time[0]] += d[key];
     }
+
+    console.log(times);
 
     let final = [];
     for (const i in times) {
