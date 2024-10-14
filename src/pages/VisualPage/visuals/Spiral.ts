@@ -1,7 +1,7 @@
 import { getCanvasCenter } from "./util";
 import Visual, { VisualOptions } from "./Visualisation";
 
-type SpiralOptions = { spinSpeed: number, reverse: boolean, segments: number };
+type SpiralOptions = { spinSpeed: number, reverse: boolean, segments: number, colors: string[], backgroundColor: string };
 
 export default class Spiral extends Visual {
     public name = "Spiral";
@@ -34,6 +34,21 @@ export default class Spiral extends Visual {
                 type: "boolean",
                 human: "Reverse",
                 default: false,
+            },
+            backgroundColor: {
+                type: "color",
+                human: "Backgrond",
+                default: "#000000"
+            },
+            colors: {
+                type: "array",
+                human: "Colors",
+                default: ["#FFFFFF"],
+                inner: {
+                    type: "color",
+                    default: "#FFFFFF",
+                    human: "Yes"
+                }
             }
         };
     }
@@ -48,7 +63,7 @@ export default class Spiral extends Visual {
     }
 
     public override draw(ctx: CanvasRenderingContext2D, options: SpiralOptions): void {
-        ctx.canvas.style.backgroundColor = "#000";
+        ctx.canvas.style.backgroundColor = options.backgroundColor;
 
         this.interval = setInterval(() => {
             this.radius = 0;
@@ -78,11 +93,13 @@ export default class Spiral extends Visual {
             this.angle += this.angleIncrement;
             this.radius += this.radiusIncrement;
 
+            const color = options.colors[i % options.colors.length];
+
             if (options.segments < 0) {
                 ctx.strokeStyle = "transparent";
-                if (i % options.segments) ctx.strokeStyle = "#333";
+                if (i % options.segments) ctx.strokeStyle = color;
             } else {
-                ctx.strokeStyle = "#333";
+                ctx.strokeStyle = color;;
                 if (i % options.segments) ctx.strokeStyle = "transparent";
             }
             ctx.stroke();

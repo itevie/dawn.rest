@@ -9,6 +9,7 @@ import { Text } from "../../dawn-ui";
 import VisualInput from "./VisualInput";
 import Button from "../../dawn-ui/components/Button";
 import PanelRow from "../../dawn-ui/components/PanelRow";
+import ArrayInput from "../../dawn-ui/components/ArrayInput";
 
 export default function VisualViewer() {
     const [visual, setVisual] = useState<Visual | undefined>(undefined);
@@ -77,6 +78,7 @@ export default function VisualViewer() {
             context.fillText("Click anywhere to stop", canvas.width / 2, canvas.height / 2);
 
             setTimeout(() => {
+                console.log(currentOptions);
                 visualInstance.draw(context, { ...defaults, ...currentOptions });
             }, 1000);
 
@@ -98,6 +100,12 @@ export default function VisualViewer() {
             case "boolean":
                 temp[key] = event.target.checked;
                 break;
+            case "array":
+                temp[key] = event;
+                break;
+            case "color":
+                temp[key] = event.target.value;
+                break;
         }
 
         setCurrentOptions(temp);
@@ -118,13 +126,13 @@ export default function VisualViewer() {
         isPlaying
             ? <canvas style={{ overflow: "hidden" }} ref={player} />
             : <Page>
-                <RestNabar />
-                <Content>
+                <RestNabar title={
                     <Text type="heading">
                         Configure: {visual?.name || "???"}
-                    </Text>
+                    </Text>} />
+                <Content>
                     <PanelRow>
-                        <Panel width="full" title="Visual's Settings">
+                        <Panel width="fit" title="Visual's Settings">
                             <Text>{visual?.description}</Text>
                             <table><tbody>
                                 {Object.entries(visual?.getOptions() ?? {}).map(([k, v]) => <tr key={k}>
@@ -134,7 +142,7 @@ export default function VisualViewer() {
                                 <tr>{Object.keys(visual?.getPresets() ?? {}).length > 0 && <>
                                     <td><b>Presets: </b></td>
                                     <td>{Object.entries(visual?.getPresets() ?? {}).map(([k, v]) =>
-                                        <Button onClick={() => loadPreset(v)}>{k}</Button>
+                                        <Button key={k} onClick={() => loadPreset(v)}>{k}</Button>
                                     )}</td>
                                 </>}</tr>
                             </tbody></table>

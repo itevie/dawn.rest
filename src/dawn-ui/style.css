@@ -105,7 +105,7 @@ body {
     align-items: center;
     justify-content: center;
     gap: 30px;
-    margin: 20px;
+    margin-top: 30px;
 }
 
 /* ----- Navbar ----- */
@@ -119,6 +119,15 @@ body {
     background-color: var(--dawn-control-background);
 
     box-shadow: 2px 0px 5px 0px black;
+}
+
+.dawn-breadcrumb {
+    margin: 10px;
+}
+
+.dawn-navbar-below {
+    display: flex;
+    justify-content: space-between;
 }
 
 /* ----- Text ----- */
@@ -206,6 +215,7 @@ body {
     background-color: var(--dawn-control-background);
 
     padding: 50px;
+    margin-top: 20px;
 
     height: 200px;
 

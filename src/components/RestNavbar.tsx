@@ -5,9 +5,9 @@ import { Text } from "../dawn-ui";
 import Link from "../dawn-ui/components/Link";
 import { ReactNode } from "react";
 
-export default function RestNabar({ children }: { children?: ReactNode }) {
+export default function RestNabar({ children, title }: { title?: ReactNode, children?: ReactNode }) {
     return (
-        <Navbar>
+        <Navbar title={title}>
             <Row>
                 <Text type="navbar">
                     <Link href="/">

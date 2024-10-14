@@ -43,7 +43,8 @@ interface TrancerData {
 type TrancerQueryType = keyof TrancerData;
 
 let baseDataURL = "/trancer-proxy?url=/data";
-baseDataURL = "https://discord.dawn.rest/data";
+if (window.location.host.includes("localhost"))
+    baseDataURL = "https://discord.dawn.rest/data";
 
 const timeFilters = {
     "minute": /[0-9]+\/[0-9]+\/[0-9]+ [0-9]+:[0-9]+/,
@@ -118,7 +119,12 @@ export default function TrancerPage() {
 
     return (
         <Page>
-            <RestNabar>
+            <RestNabar title={<Text type="heading">{{
+                "about": "About Trancer",
+                "leaderboards": "Leaderboards",
+                "bot": "Bot Details",
+                "server": "Trancy Twilight Details"
+            }[page]}</Text>}>
                 {
                     ["About", "Leaderboards", "User Data", "Server", "Bot"]
                         .map(x => <Link
@@ -132,13 +138,11 @@ export default function TrancerPage() {
                 {
                     {
                         "about": <>
-                            <Text type="heading">About Trancer</Text>
                         </>,
 
 
 
                         "leaderboards": <>
-                            <Text type="heading">Leaderboards</Text>
                             <Text>Search: <input onChange={e => setLeaderboardSearch(e.target.value.toLowerCase())}></input></Text>
                             <PanelRow>
                                 {/* Balance Leaderboard */}
@@ -173,7 +177,6 @@ export default function TrancerPage() {
 
 
                         "bot": <>
-                            <Text type="heading">Bot Details</Text>
                             <PanelRow>
                                 <Panel width="fit" title="Command Usage">
                                     {!data.command_usage ? "Loading..." : <table><tbody>
@@ -189,7 +192,6 @@ export default function TrancerPage() {
 
 
                         "server": <>
-                            <Text type="heading">Trancy Twilight Details</Text>
                             <PanelRow>
                                 {
                                     // data - filter name - key - human name

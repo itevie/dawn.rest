@@ -5,7 +5,10 @@ interface Heart {
     location: Coordinate,
     size: number,
     opacity: number,
+    color: string,
 }
+
+type HeartOptions = { reverse: boolean, spawnSpeed: number, colors: string[], backgroundColor: string };
 
 export default class Hearts extends Visual {
     public name = "Hearts";
@@ -14,6 +17,7 @@ export default class Hearts extends Visual {
     private hearts: (Heart | null)[] = [];
     private spawnHeartInterval: ReturnType<typeof setInterval> | undefined = undefined;
     private renderFrameInterval: ReturnType<typeof setInterval> | undefined = undefined;
+    private currentColorIndex = 0;
 
     public getOptions(): VisualOptions {
         return {
@@ -28,31 +32,52 @@ export default class Hearts extends Visual {
                 rangeMin: 100,
                 rangeMax: 2000,
                 default: 250,
+            },
+            backgroundColor: {
+                type: "color",
+                human: "Backgrond",
+                default: "#000000"
+            },
+            colors: {
+                type: "array",
+                human: "Colors",
+                default: ["#FF0000"],
+                inner: {
+                    type: "color",
+                    default: "#FF0000",
+                    human: "Yes"
+                }
             }
         }
     }
 
-    private addHeart(ctx: CanvasRenderingContext2D, reverse: boolean): void {
+    private addHeart(ctx: CanvasRenderingContext2D, options: HeartOptions): void {
         const { x, y } = getCanvasCenter(ctx);
+        if (this.currentColorIndex === options.colors.length)
+            this.currentColorIndex = 0;
+
         this.hearts.push({
-            location: { x, y: reverse ? y - 10 * (1 / 0.01) : y },
-            size: reverse ? 20 * (1 / 0.01) : 50,
-            opacity: reverse ? 0 : 1,
+            location: { x, y: options.reverse ? y - 10 * (1 / 0.01) : y },
+            size: options.reverse ? 20 * (1 / 0.01) : 50,
+            opacity: options.reverse ? 0 : 1,
+            color: options.colors[this.currentColorIndex]
         });
+        this.currentColorIndex++;
     }
 
-    public draw(ctx: CanvasRenderingContext2D, options: { reverse: boolean, spawnSpeed: number }): void {
-        this.addHeart(ctx, options.reverse);
+    public draw(ctx: CanvasRenderingContext2D, options: HeartOptions): void {
+        ctx.canvas.style.backgroundColor = options.backgroundColor;
+        this.addHeart(ctx, options);
 
         this.spawnHeartInterval = setInterval(() => {
-            this.addHeart(ctx, options.reverse);
+            this.addHeart(ctx, options);
         }, options.spawnSpeed);
 
         this.renderFrameInterval = setInterval(() => {
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
             for (const heart of this.hearts as Heart[]) {
-
-                drawHeart(ctx, heart.location.x, heart.location.y, heart.size, heart.size, `rgba(255, 0, 255, ${heart.opacity})`);
+                const index = this.hearts.indexOf(heart);
+                drawHeart(ctx, heart.location.x, heart.location.y, heart.size, heart.size, hexToRGB(heart.color, heart.opacity));
 
                 if (options.reverse) {
                     heart.size -= 20;
@@ -65,9 +90,9 @@ export default class Hearts extends Visual {
                 }
 
                 if (options.reverse && heart.opacity > 1)
-                    this.hearts[this.hearts.indexOf(heart)] = null;
+                    this.hearts[index] = null;
                 if (!options.reverse && heart.opacity < 0)
-                    this.hearts[this.hearts.indexOf(heart)] = null;
+                    this.hearts[index] = null;
             }
             this.hearts = this.hearts.filter(x => x);
         }, 1000 / 60);
@@ -132,4 +157,12 @@ function drawHeart(
     ctx.fillStyle = color;
     ctx.fill();
     ctx.restore();
+}
+
+function hexToRGB(hex: string, alpha: number) {
+    var r = parseInt(hex.slice(1, 3), 16),
+        g = parseInt(hex.slice(3, 5), 16),
+        b = parseInt(hex.slice(5, 7), 16);
+
+    return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
 }
