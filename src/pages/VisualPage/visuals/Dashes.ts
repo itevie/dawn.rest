@@ -18,11 +18,12 @@ interface DashOptions {
     colors: string[],
     backgroundColor: string,
     size: number,
+    diagonals: boolean,
 }
 
 export default class Dashes extends Visual {
-    public name = "dashes";
-    public description: string = "Lines going places";
+    public name = "Dashes";
+    public description: string = "Dashes dashing with dashing dashes";
 
     private timer: ReturnType<typeof setInterval> | undefined = undefined;
     private spawnTimer: ReturnType<typeof setInterval> | undefined = undefined;
@@ -51,6 +52,11 @@ export default class Dashes extends Visual {
                 default: 10,
                 rangeMin: 5,
                 rangeMax: 100,
+            },
+            diagonals: {
+                type: "boolean",
+                human: "Diagonals",
+                default: false,
             },
             backgroundColor: {
                 type: "color",
@@ -81,9 +87,15 @@ export default class Dashes extends Visual {
     }
 
     public addDash(context: CanvasRenderingContext2D, options: DashOptions) {
-        const xAxis = randomBoolean();
-        const xDir = xAxis ? (randomBoolean() ? -1 : 1) : 0;
-        const yDir = !xAxis ? (randomBoolean() ? -1 : 1) : 0;
+        let directions = [
+            [-1, -1], [-1, 0], [-1, 1],
+            [0, -1], [0, 1],
+            [1, -1], [1, 0], [1, 1]
+        ];
+        if (!options.diagonals) directions = [
+            [-1, 0], [1, 0], [0, -1], [0, 1]
+        ];
+        const direction = directions[Math.floor(Math.random() * directions.length)];
 
         if (this.currentColorIndex === options.colors.length)
             this.currentColorIndex = 0;
@@ -91,8 +103,8 @@ export default class Dashes extends Visual {
         this.dashes.push({
             position: randomCoordinate(context),
             direction: {
-                x: xDir,
-                y: yDir
+                x: direction[0],
+                y: direction[1]
             },
             previousPoints: [],
             lifespan: randomRange(20, options.maxLifespan),

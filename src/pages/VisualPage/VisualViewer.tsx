@@ -16,7 +16,8 @@ const textFlashes = {
         "drop", "deeper", "down", "snap", "relax", "sinking",
         "drifting", "dropping", "dropped", "sinked", "now", "sleep",
         "rest", "calm"
-    ]
+    ],
+    numbers: "0,1,2,3,4,5,6,7,8,9,10".split(",")
 } as const;
 
 interface FlashTextOptions {
@@ -37,12 +38,15 @@ const defaultFlashTextOptions: FlashTextOptions = {
 
 export default function VisualViewer() {
     const [visual, setVisual] = useState<Visual | undefined>(undefined);
-    const [flashTextOptions, setFlashTextOptions] = useState<FlashTextOptions>({ ...defaultFlashTextOptions })
+    const [currentOptions, setCurrentOptions] = useState<{ [key: string]: any }>({});
+
     const [id, setId] = useState<number>(-1);
     const [url, setUrl] = useState<string>("");
-    const [currentOptions, setCurrentOptions] = useState<{ [key: string]: any }>({});
-    const [isPlaying, setIsPlaying] = useState<boolean>(false);
+
     const [flashText, setFlashText] = useState<string>("");
+    const [flashTextOptions, setFlashTextOptions] = useState<FlashTextOptions>({ ...defaultFlashTextOptions });
+
+    const [isPlaying, setIsPlaying] = useState<boolean>(false);
     const player = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
@@ -116,7 +120,7 @@ export default function VisualViewer() {
 
                 // Check if it is enabled
                 if (flashTextOptions.enabled) {
-                    const cw = flashTextOptions.customWords.split(", ");
+                    const cw = flashTextOptions.customWords.split(",");
 
                     // TODO: This may need reworking - idk
                     let last = 0;
@@ -191,6 +195,7 @@ export default function VisualViewer() {
     }
 
     function setFlashTextOption(key: string, value: any) {
+        console.log(key, value);
         setFlashTextOptions(old => {
             const newValues: any = { ...old };
             newValues[key] = value;
@@ -253,10 +258,10 @@ export default function VisualViewer() {
                                     <td><b>Preset</b></td>
                                     <td>
                                         <select
-                                            onChange={i => setFlashTextOption("preset", i.currentTarget[i.currentTarget.selectedIndex])}
+                                            onChange={i => setFlashTextOption("preset", (i.currentTarget[i.currentTarget.selectedIndex] as any).value)}
                                             defaultValue={flashTextOptions.preset ?? "deep"}
                                         >
-                                            {Object.keys(textFlashes).map(x => <option key={x}>{x}</option>)}
+                                            {Object.keys(textFlashes).map(x => <option value={x} key={x}>{x}</option>)}
                                         </select>
                                     </td>
                                 </tr>
