@@ -1,7 +1,10 @@
 const express = require("express");
-
 const cors = require("cors");
 const { default: axios } = require("axios");
+const { readFileSync } = require("fs");
+const crawlers = JSON.parse(readFileSync("./crawlers.json"));
+
+// Setup app
 const app = express();
 app.use(cors());
 app.use("/", express.static(__dirname + "/build"));

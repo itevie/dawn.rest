@@ -72,7 +72,7 @@ export default class Fireworks extends Visual {
         human: "Max Fragments",
         default: 15,
         rangeMin: 5,
-        rangeMax: 50
+        rangeMax: 50,
       },
       maxFragmentLife: {
         type: "number",
@@ -111,8 +111,8 @@ export default class Fireworks extends Visual {
       trailColor: {
         type: "color",
         default: "#FFFFFF",
-        human: "Trail Color"
-      }
+        human: "Trail Color",
+      },
     };
   }
 
@@ -214,7 +214,9 @@ export default class Fireworks extends Visual {
           continue;
         }
 
-        context.fillStyle = options.useTrailColor ? options.trailColor : firework.color;
+        context.fillStyle = options.useTrailColor
+          ? options.trailColor
+          : firework.color;
         context.fillRect(firework.position.x, firework.position.y, 10, 10);
 
         firework.position.y -= 10;
