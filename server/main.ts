@@ -15,7 +15,7 @@ for await (const thing of staticFileWalker) {
 
 Deno.serve({ port: 3000 }, async (req) => {
   const url = new URL(req.url);
-  console.log(`[${req.method}]: ${url.href}`);
+  console.log(`[${new Date().toTimeString()} - ${req.method}]: ${url.href}`);
 
   // Check for /trancer-proxy
   if (url.pathname.startsWith("/trancer-proxy")) {
@@ -25,7 +25,7 @@ Deno.serve({ port: 3000 }, async (req) => {
         { headers: { "Content-Type": "application/json" } },
       );
     }
-    
+
     const result = await fetch(
       `http://localhost:8080${url.searchParams.get("url")}`,
       {
