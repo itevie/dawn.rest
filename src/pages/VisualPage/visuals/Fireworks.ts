@@ -31,6 +31,8 @@ interface Options {
   maxFragmentSpeed: number;
   useTrailColor: boolean;
   trailColor: string;
+  spread: number;
+  xDeviation: number;
 }
 
 export default class Fireworks extends Visual {
@@ -59,6 +61,20 @@ export default class Fireworks extends Visual {
         rangeMin: 10,
         rangeMax: 100,
         default: 80,
+      },
+      xDeviation: {
+        type: "number",
+        human: "Spawn Deviation",
+        rangeMin: 0,
+        rangeMax: 500,
+        default: 100,
+      },
+      spread: {
+        type: "number",
+        human: "Spread",
+        rangeMin: 5,
+        default: 30,
+        rangeMax: 100,
       },
       maxBurst: {
         type: "number",
@@ -128,13 +144,22 @@ export default class Fireworks extends Visual {
           "#86007D",
         ],
       },
+      circles: {
+        maxFragmentSpeed: 1,
+        maxFragmentLife: 200,
+        maxFragments: 50,
+      },
     };
   }
 
   private addFirework(ctx: CanvasRenderingContext2D, options: Options) {
     this.fireworks.push({
-      position: { x: ctx.canvas.width / 2, y: ctx.canvas.height + 50 },
-      direction: randomRange(-30, 30) / 100,
+      position: {
+        x: (ctx.canvas.width / 2) +
+          randomRange(-options.xDeviation, options.xDeviation),
+        y: ctx.canvas.height + 50,
+      },
+      direction: randomRange(-options.spread, options.spread) / 100,
       exponent: 0,
       fragments: [],
       yDeath: randomRange(100, 400),
