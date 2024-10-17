@@ -5,17 +5,19 @@ import { Text } from "../dawn-ui";
 import Link from "../dawn-ui/components/Link";
 import { ReactNode } from "react";
 
-export default function RestNabar({ children, title }: { title?: ReactNode, children?: ReactNode }) {
-    return (
-        <Navbar title={title}>
-            <Row>
-                <Text type="navbar">
-                    <Link href="/">
-                        dawn.rest
-                    </Link>
-                </Text>
-                {children ?? <Row>{children}</Row>}
-            </Row>
-        </Navbar>
-    );
+export default function RestNabar(
+  { children, title }: { title?: ReactNode; children?: ReactNode },
+) {
+  return (
+    <Navbar title={title}>
+      <Row>
+        <Text type="navbar">
+          <Link href="/">
+            dawn.rest
+          </Link>
+        </Text>
+        {children ?? <Row>{children}</Row>}
+      </Row>
+    </Navbar>
+  );
 }

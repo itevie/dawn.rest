@@ -1,351 +1,351 @@
 :root {
-    --dawn-root-background: #222;
-    --dawn-root-color: #FFF;
+  --dawn-root-background: #222;
+  --dawn-root-color: #fff;
 
-    --dawn-control-background: #333;
-    --dawn-control-hover-background: #555;
-    --dawn-control-border: #444;
+  --dawn-control-background: #333;
+  --dawn-control-hover-background: #555;
+  --dawn-control-border: #444;
 
-    --dawn-control-danger: #770000;
-    --dawn-control-hover-danger: #CC0000;
-    --dawn-control-success: #00CC00;
-    --dawn-control-hover-success: #00FF00;
-    --dawn-control-link: #18e6f5;
+  --dawn-control-danger: #770000;
+  --dawn-control-hover-danger: #cc0000;
+  --dawn-control-success: #00cc00;
+  --dawn-control-hover-success: #00ff00;
+  --dawn-control-link: #18e6f5;
 
-    --dawn-hover-transition: 0.2s;
-    --dawn-border-radius: 20px;
+  --dawn-hover-transition: 0.2s;
+  --dawn-border-radius: 20px;
 }
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 
-    margin: 0;
+  margin: 0;
 
-    background-color: var(--dawn-root-background);
-    color: var(--dawn-root-color);
+  background-color: var(--dawn-root-background);
+  color: var(--dawn-root-color);
 }
 
 /* ----- Controls ----- */
 
 .dawn-button {
-    border-radius: 5px;
-    border-width: 1px;
-    border-style: solid;
-    border-color: var(--dawn-control-border);
+  border-radius: 5px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--dawn-control-border);
 
-    padding: 5px 7px;
+  padding: 5px 7px;
 
-    cursor: pointer;
+  cursor: pointer;
 
-    color: var(--dawn-root-color);
-    background-color: var(--dawn-control-background);
+  color: var(--dawn-root-color);
+  background-color: var(--dawn-control-background);
 
-    transition: var(--dawn-hover-transition);
+  transition: var(--dawn-hover-transition);
 }
 
 .dawn-link {
-    text-decoration: none;
-    color: var(--dawn-root-color);
-    cursor: pointer
+  text-decoration: none;
+  color: var(--dawn-root-color);
+  cursor: pointer;
 }
 
 .dawn-button:hover {
-    background-color: var(--dawn-control-hover-background);
+  background-color: var(--dawn-control-hover-background);
 }
 
 .dawn-button.dawn-danger:hover {
-    background-color: var(--dawn-control-hover-danger);
+  background-color: var(--dawn-control-hover-danger);
 }
 
 .dawn-button.dawn-success:hover {
-    background-color: var(--dawn-control-hover-success);
+  background-color: var(--dawn-control-hover-success);
 }
 
 .dawn-danger {
-    background-color: var(--dawn-control-danger);
+  background-color: var(--dawn-control-danger);
 }
 
 .dawn-success {
-    background-color: var(--dawn-control-success);
-    color: black;
+  background-color: var(--dawn-control-success);
+  color: black;
 }
 
 .dawn-inherit {
-    background-color: transparent;
-    border: none;
+  background-color: transparent;
+  border: none;
 }
 
 .dawn-big-control {
-    box-sizing: border-box;
-    width: 100%;
-    font-size: 1.2em;
-    padding: 10px;
-    margin: 10px 0px;
-    display: block;
-    text-align: center;
+  box-sizing: border-box;
+  width: 100%;
+  font-size: 1.2em;
+  padding: 10px;
+  margin: 10px 0px;
+  display: block;
+  text-align: center;
 }
 
 /* ----- Flex ----- */
 .dawn-row {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
 }
 
 .dawn-column {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .dawn-panel-row {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-    gap: 30px;
-    margin-top: 30px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  gap: 30px;
+  margin-top: 30px;
 }
 
 .dawn-panel-row-full {
-    width: 100%;
+  width: 100%;
 }
 
-.dawn-panel-row-full>* {
-    flex-basis: 49%;
+.dawn-panel-row-full > * {
+  flex-basis: 49%;
 }
 
 /* ----- Navbar ----- */
 .dawn-navbar {
-    position: sticky;
-    width: 100%;
-    box-sizing: border-box;
+  position: sticky;
+  width: 100%;
+  box-sizing: border-box;
 
-    padding: 10px;
+  padding: 10px;
 
-    background-color: var(--dawn-control-background);
+  background-color: var(--dawn-control-background);
 
-    box-shadow: 2px 0px 5px 0px black;
+  box-shadow: 2px 0px 5px 0px black;
 }
 
 .dawn-breadcrumb {
-    margin: 10px;
+  margin: 10px;
 }
 
 .dawn-navbar-below {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 /* ----- Text ----- */
 .dawn-text {
-    margin-top: 7px;
-    margin-bottom: 7px;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    max-width: 100%;
+  margin-top: 7px;
+  margin-bottom: 7px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 
 .dawn-text-heading {
-    font-weight: bolder;
-    font-size: 1.4em;
-    display: block;
-    margin: 10px;
+  font-weight: bolder;
+  font-size: 1.4em;
+  display: block;
+  margin: 10px;
 }
 
 .dawn-text-navbar {
-    font-weight: bold;
-    margin: 10px;
+  font-weight: bold;
+  margin: 10px;
 }
 
 .dawn-text-page-title {
-    font-size: 3em;
-    display: block;
-    margin-bottom: 30px;
+  font-size: 3em;
+  display: block;
+  margin-bottom: 30px;
 }
 
 .dawn-highlight {
-    background-color: #00CC00AA;
+  background-color: #00cc00aa;
 }
 
 /* ----- Divs ----- */
 .dawn-page {
-    display: flex;
-    flex-direction: column;
-    width: 100vw;
-    height: 100vh;
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
 }
 
 .dawn-content {
-    margin: 10px;
-    margin-left: 50px;
-    margin-right: 50px;
-    box-sizing: border-box;
+  margin: 10px;
+  margin-left: 50px;
+  margin-right: 50px;
+  box-sizing: border-box;
 }
 
 .dawn-page-content {
-    flex: 1;
-    overflow: auto;
+  flex: 1;
+  overflow: auto;
 }
 
 .dawn-panel {
-    border-radius: var(--dawn-border-radius);
+  border-radius: var(--dawn-border-radius);
 
-    box-shadow: 0px 0px 15px 5px #222;
+  box-shadow: 0px 0px 15px 5px #222;
 
-    display: flex;
-    flex-direction: column;
-    align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
 
-    width: fit-content;
-    max-width: 100%;
-    width: 300px;
-    min-height: 200px;
+  width: fit-content;
+  max-width: 100%;
+  width: 300px;
+  min-height: 200px;
 
-    box-sizing: border-box;
+  box-sizing: border-box;
 
-    background-color: var(--dawn-control-background);
+  background-color: var(--dawn-control-background);
 
-    background-position: calc(100% + 40px) calc(100% + 40px);
-    background-size: 150px;
-    background-repeat: no-repeat;
-    transition: var(--dawn-hover-transition);
+  background-position: calc(100% + 40px) calc(100% + 40px);
+  background-size: 150px;
+  background-repeat: no-repeat;
+  transition: var(--dawn-hover-transition);
 }
 
 .dawn-panel-title {
-    margin: 10px;
+  margin: 10px;
 }
 
 .dawn-panel:hover {
-    background-color: var(--dawn-control-hover-background);
-    box-shadow: 0px 0px 15px 5px #222;
+  background-color: var(--dawn-control-hover-background);
+  box-shadow: 0px 0px 15px 5px #222;
 }
 
 .dawn-banner {
-    background-color: var(--dawn-control-background);
+  background-color: var(--dawn-control-background);
 
-    padding: 50px;
-    margin-top: 20px;
+  padding: 50px;
+  margin-top: 20px;
 
-    height: 200px;
+  height: 200px;
 
-    border-radius: var(--dawn-border-radius);
+  border-radius: var(--dawn-border-radius);
 
-    /**/
+  /**/
 }
 
 .dawn-panel-content {
-    flex: 1;
-    margin-left: 20px;
-    margin-right: 20px;
+  flex: 1;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .dawn-banner-image {
-    width: 200px;
-    height: 100%;
-    margin-top: -30px;
-    margin-right: -40px;
+  width: 200px;
+  height: 100%;
+  margin-top: -30px;
+  margin-right: -40px;
 
-    transition: var(--dawn-hover-transition);
+  transition: var(--dawn-hover-transition);
 }
 
 .dawn-banner-image:hover {
-    transform: scale(1.1) rotate(10deg);
+  transform: scale(1.1) rotate(10deg);
 }
 
 /* ----- Responsiveness ----- */
 @media only screen and (max-width: 700px) {
-    .dawn-banner-image {
-        display: none;
-    }
+  .dawn-banner-image {
+    display: none;
+  }
 
-    .dawn-page-content {
-        margin: 0;
-    }
+  .dawn-page-content {
+    margin: 0;
+  }
 
-    .dawn-panel-row {
-        align-items: center;
-        margin: 0;
-        margin-top: 30px;
-        flex-direction: column;
-    }
+  .dawn-panel-row {
+    align-items: center;
+    margin: 0;
+    margin-top: 30px;
+    flex-direction: column;
+  }
 
-    .dawn-panel,
-    .dawn-panel-row>a,
-    a>.dawn-panel {
-        width: 100% !important;
-    }
+  .dawn-panel,
+  .dawn-panel-row > a,
+  a > .dawn-panel {
+    width: 100% !important;
+  }
 
-    .dawn-panel>.dawn-content {
-        box-sizing: border-box;
-        margin: 20px;
-    }
+  .dawn-panel > .dawn-content {
+    box-sizing: border-box;
+    margin: 20px;
+  }
 
-    .dawn-content {
-        margin: 5px;
-    }
+  .dawn-content {
+    margin: 5px;
+  }
 
-    .dawn-banner {
-        padding: 20px;
-        height: auto;
-    }
+  .dawn-banner {
+    padding: 20px;
+    height: auto;
+  }
 }
 
 /* ----- Fullscreen ----- */
 .dawn-fullscreen {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow: none;
-    background-color: #00000044;
-    z-index: 10;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: none;
+  background-color: #00000044;
+  z-index: 10;
 }
 
 .dawn-page-center {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .dawn-alert {
-    background-color: var(--dawn-control-background);
-    padding: 10px 30px;
-    border-radius: var(--dawn-border-radius);
-    min-width: 300px;
-    max-width: 500px;
-    display: flex;
-    flex-direction: column;
+  background-color: var(--dawn-control-background);
+  padding: 10px 30px;
+  border-radius: var(--dawn-border-radius);
+  min-width: 300px;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
 }
 
 .dawn-alert-title {
-    font-weight: bold;
-    font-size: 2em;
-    display: block;
-    text-align: center;
-    margin-bottom: 20px;
-    margin-top: 20px;
+  font-weight: bold;
+  font-size: 2em;
+  display: block;
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 .dawn-alert-content {
-    flex: 1;
-    text-wrap: wrap;
-    word-break: break-all;
-    margin-bottom: 20px;
-    margin-top: 20px;
+  flex: 1;
+  text-wrap: wrap;
+  word-break: break-all;
+  margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 /* ----- Visual ----- */
 .dawn-visual-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1000;
-    font-size: 7em;
-    opacity: 0.5;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  font-size: 7em;
+  opacity: 0.5;
 }

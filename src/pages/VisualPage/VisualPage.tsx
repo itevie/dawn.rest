@@ -8,20 +8,22 @@ import PanelRow from "../../dawn-ui/components/PanelRow";
 import allVisuals from "./visuals/allVisuals";
 
 export default function VisualPage() {
-    return (
-        <Page>
-            <RestNabar />
-            <Content>
-                <PanelRow>
-                    {allVisuals.map((v, i) => <>
-                        <Link href={`/hypno/visuals/${i}`}>
-                            <Panel title={`${new v().name}`}>
-                                <Text>{new v().description}</Text>
-                            </Panel>
-                        </Link>
-                    </>)}
-                </PanelRow>
-            </Content>
-        </Page>
-    )
+  return (
+    <Page>
+      <RestNabar />
+      <Content>
+        <PanelRow>
+          {allVisuals.map((v, i) => (
+            <>
+              <Link href={`/hypno/visuals/${i}`}>
+                <Panel title={`${new v().name}`}>
+                  <Text>{new v().description}</Text>
+                </Panel>
+              </Link>
+            </>
+          ))}
+        </PanelRow>
+      </Content>
+    </Page>
+  );
 }
