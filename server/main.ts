@@ -52,6 +52,7 @@ Deno.serve({ port: 3000 }, async (req) => {
 
   // Check for /trancer-proxy
   if (url.pathname.startsWith("/trancer-proxy")) {
+    console.log(url.searchParams.get("url"));
     const result = await fetch(
       `http://localhost:8000${url.searchParams.get("url")}`,
       {
@@ -60,6 +61,8 @@ Deno.serve({ port: 3000 }, async (req) => {
         },
       },
     );
+
+    console.log(result);
 
     try {
       const json = await result.json();
