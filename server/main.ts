@@ -17,6 +17,36 @@ Deno.serve({ port: 3000 }, async (req) => {
   const url = new URL(req.url);
   console.log(`[${req.method}]: ${url.pathname}`);
 
+  // Check for /trancer-proxy
+  if (url.pathname.startsWith("/trancer-proxy")) {
+    console.log(url.searchParams.get("url"));
+    const result = await fetch(
+      `http://localhost:8000${url.searchParams.get("url")}`,
+      {
+        headers: {
+          Authorization: req.headers.get("authorization") || "",
+        },
+      },
+    );
+
+    console.log(result);
+
+    try {
+      const json = await result.json();
+
+      return new Response(JSON.stringify(json), {
+        status: result.ok ? 200 : 500,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (_) {
+      return new Response(JSON.stringify({ message: "Failed to parse JSON" }), {
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+  }
+
   // Check if it is a file in the static folder
   if (staticFiles.map((x) => x[1]).includes(url.pathname)) {
     return serveFile(
@@ -47,36 +77,6 @@ Deno.serve({ port: 3000 }, async (req) => {
           },
         );
       }
-    }
-  }
-
-  // Check for /trancer-proxy
-  if (url.pathname.startsWith("/trancer-proxy")) {
-    console.log(url.searchParams.get("url"));
-    const result = await fetch(
-      `http://localhost:8000${url.searchParams.get("url")}`,
-      {
-        headers: {
-          Authorization: req.headers.get("authorization") || "",
-        },
-      },
-    );
-
-    console.log(result);
-
-    try {
-      const json = await result.json();
-
-      return new Response(JSON.stringify(json), {
-        status: result.ok ? 200 : 500,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-    } catch (_) {
-      return new Response(JSON.stringify({ message: "Failed to parse JSON" }), {
-        headers: { "Content-Type": "application/json" },
-      });
     }
   }
 
