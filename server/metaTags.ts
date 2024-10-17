@@ -15,13 +15,15 @@ const routes: RouteMeta[] = [
   {
     path: /\/hypno\/visuals/,
     title: "Hypnosis Visuals",
-    description: "See some beautiful and customisable visuals to get mesmerised by"
+    description:
+      "See some beautiful and customisable visuals to get mesmerised by",
   },
-  // ----- Trancer -----
+  // ----- /trancer -----
   {
     path: /\/trancer/,
     title: "Trancer Discord Bot",
-    description: "Trancer is a Discord hypnosis-oriented Discord bot! This page holds the statistics for our server Trancy Twilight."
+    description:
+      "Trancer is a Discord hypnosis-oriented Discord bot! This page holds the statistics for our server Trancy Twilight.",
   },
   // ----- Catch All -----
   {

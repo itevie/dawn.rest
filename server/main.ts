@@ -13,7 +13,7 @@ for await (const thing of staticFileWalker) {
   ]);
 }
 
-Deno.serve({ port: 3000 }, (req) => {
+Deno.serve({ port: 3000 }, async (req) => {
   const url = new URL(req.url);
   console.log(`[${req.method}]: ${url.pathname}`);
 
@@ -47,6 +47,33 @@ Deno.serve({ port: 3000 }, (req) => {
           },
         );
       }
+    }
+  }
+
+  // Check for /trancer-proxy
+  if (url.pathname.startsWith("/trancer-proxy")) {
+    const result = await fetch(
+      `http://localhost:8000${url.searchParams.get("url")}`,
+      {
+        headers: {
+          Authorization: req.headers.get("authorization") || "",
+        },
+      },
+    );
+
+    try {
+      const json = await result.json();
+
+      return new Response(JSON.stringify(json), {
+        status: result.ok ? 200 : 500,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (_) {
+      return new Response(JSON.stringify({ message: "Failed to parse JSON" }), {
+        headers: { "Content-Type": "application/json" },
+      });
     }
   }
 
