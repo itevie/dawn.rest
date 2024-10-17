@@ -29,6 +29,8 @@ interface Options {
   backgroundColor: string;
   maxFragmentLife: number;
   maxFragmentSpeed: number;
+  useTrailColor: boolean;
+  trailColor: string;
 }
 
 export default class Fireworks extends Visual {
@@ -101,6 +103,16 @@ export default class Fireworks extends Visual {
           default: "#FF0000",
         },
       },
+      useTrailColor: {
+        type: "boolean",
+        human: "Use Trail Color",
+        default: true,
+      },
+      trailColor: {
+        type: "color",
+        default: "#FFFFFF",
+        human: "Trail Color"
+      }
     };
   }
 
@@ -137,7 +149,7 @@ export default class Fireworks extends Visual {
     this.spawnTimer = setInterval(() => {
       if (Math.random() < options.spawnChance / 100) {
         const amount = randomRange(1, options.maxBurst);
-        for (let i = 0; i != amount; i++) {
+        for (let i = 0; i !== amount; i++) {
           this.addFirework(context, options);
         }
       }
@@ -153,7 +165,7 @@ export default class Fireworks extends Visual {
           if (firework.fragments.length === 0) {
             // Add many fragments
             const fragmentAmount = randomRange(5, options.maxFragments);
-            for (let i = 0; i != fragmentAmount; i++) {
+            for (let i = 0; i !== fragmentAmount; i++) {
               firework.fragments.push({
                 position: { ...firework.position },
                 angle: randomRange(0, 360),
@@ -202,7 +214,7 @@ export default class Fireworks extends Visual {
           continue;
         }
 
-        context.fillStyle = firework.color;
+        context.fillStyle = options.useTrailColor ? options.trailColor : firework.color;
         context.fillRect(firework.position.x, firework.position.y, 10, 10);
 
         firework.position.y -= 10;
