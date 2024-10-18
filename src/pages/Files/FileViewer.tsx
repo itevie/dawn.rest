@@ -21,7 +21,7 @@ export default function FileViewer() {
       const id = parseInt(idMatch[1]);
 
       try {
-        const result = await axios.get(`http://localhost:3001/files/${id}`);
+        const result = await axios.get(`/files/${id}`);
         if (result.status !== 200) {
           throw result.data?.message || "Did not get status code 200";
         }
@@ -44,7 +44,7 @@ export default function FileViewer() {
 
                 <audio controls>
                   <source
-                    src={`http://localhost:3001/files/${file?.id}.mp3`}
+                    src={`/files/${file?.id}.mp3`}
                     type="audio/mpeg"
                   >
                   </source>

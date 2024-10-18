@@ -39,11 +39,9 @@ export default function FileUpload() {
       file,
     };
 
-    console.log(details);
-
     try {
       const result = await axios.post(
-        "http://localhost:3001/api/admin/file-upload",
+        "/api/admin/file-upload",
         details
       );
 

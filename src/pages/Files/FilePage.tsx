@@ -22,7 +22,7 @@ export default function FilePage() {
   useEffect(() => {
     (async () => {
       try {
-        const result = await axios.get("http://localhost:3001/api/file-list");
+        const result = await axios.get("/api/file-list");
         if (result.status !== 200) {
           throw result.data?.message || "Status code was not 200.";
         }
