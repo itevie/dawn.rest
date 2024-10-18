@@ -1,4 +1,4 @@
-import RestNabar from "../components/RestNavbar";
+import RestNavbar from "../components/RestNavbar";
 import { Text } from "../dawn-ui";
 import Banner from "../dawn-ui/components/Banner";
 import Content from "../dawn-ui/components/Content";
@@ -10,7 +10,7 @@ import PanelRow from "../dawn-ui/components/PanelRow";
 export default function HypnosisPage() {
   return (
     <Page>
-      <RestNabar />
+      <RestNavbar />
       <Content>
         <Banner title="Hypnosis">
           Hypnosis is a big hobby of mine, I hope you can enjoy my hypnosis

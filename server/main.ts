@@ -3,6 +3,9 @@ import { walk } from "jsr:@std/fs";
 import { serveFile } from "jsr:@std/http/file-server";
 import routes from "./metaTags.ts";
 import crawlers from "./crawlers.json" with { type: "json" };
+import adminPost from "./admin.ts";
+import { corsHeaders, errorMessage, jsonResponse } from "./util.ts";
+import { getFileById, getFileList, init } from "./database/database.ts";
 
 const staticFileWalker = walk(import.meta.dirname + "/../build");
 const staticFiles: [string, string][] = [];
@@ -13,11 +16,28 @@ for await (const thing of staticFileWalker) {
   ]);
 }
 
-Deno.serve({ port: 3000 }, async (req) => {
+await init();
+
+Deno.serve({ port: 3001 }, async (req) => {
   const url = new URL(req.url);
   console.log(
     `[${new Date().toLocaleTimeString()} - ${req.method}]: ${url.href}`,
   );
+
+  // Check non-get
+  if (req.method === "POST") {
+    if (url.pathname.startsWith("/admin")) {
+      return await adminPost(req);
+    }
+  } else if (req.method === "OPTIONS") {
+    return new Response("", {
+      headers: corsHeaders,
+    });
+  } else if (req.method !== "GET") {
+    return jsonResponse({
+      message: "Expected GET method",
+    }, { status: 400 });
+  }
 
   // Check for /trancer-proxy
   if (url.pathname.startsWith("/trancer-proxy")) {
@@ -51,6 +71,22 @@ Deno.serve({ port: 3000 }, async (req) => {
         headers: { "Content-Type": "application/json" },
       });
     }
+  } else if (url.pathname === "/file-list") {
+    return jsonResponse({ files: await getFileList() });
+  } else if (url.pathname.match(/^(\/files\/[0-9]+)/)) {
+    const id = parseInt(url.pathname.match(/[0-9]+/)?.[0] as string);
+    const file = await getFileById(id);
+    if (!file) return errorMessage("Unknown file ID");
+
+    // Check if they want the .mp3
+    if (url.pathname.endsWith(".mp3")) {
+      return serveFile(
+        req,
+        join(import.meta.dirname as string, "/database/files/", file.file_path),
+      );
+    }
+
+    return jsonResponse(file);
   }
 
   // Check if it is a file in the static folder

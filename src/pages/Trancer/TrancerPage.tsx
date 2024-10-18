@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import RestNabar from "../../components/RestNavbar";
+import RestNavbar from "../../components/RestNavbar";
 import { Text } from "../../dawn-ui";
 import Content from "../../dawn-ui/components/Content";
 import Link from "../../dawn-ui/components/Link";
@@ -129,7 +129,7 @@ export default function TrancerPage() {
 
   return (
     <Page>
-      <RestNabar
+      <RestNavbar
         title={
           <Text type="heading">
             {{
@@ -151,7 +151,7 @@ export default function TrancerPage() {
               {x}
             </Link>
           ))}
-      </RestNabar>
+      </RestNavbar>
       <Content>
         {{
           "about": (

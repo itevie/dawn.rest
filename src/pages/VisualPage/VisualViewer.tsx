@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Visual, { VisualOption, VisualOptions } from "./visuals/Visualisation";
 import allVisuals from "./visuals/allVisuals";
 import Page from "../../dawn-ui/components/Page";
-import RestNabar from "../../components/RestNavbar";
+import RestNavbar from "../../components/RestNavbar";
 import Content from "../../dawn-ui/components/Content";
 import Panel from "../../dawn-ui/components/Panel";
 import { Text } from "../../dawn-ui";
@@ -261,7 +261,7 @@ export default function VisualViewer() {
       )
       : (
         <Page>
-          <RestNabar
+          <RestNavbar
             title={
               <Text type="heading">
                 Configure: {visual?.name || "???"}

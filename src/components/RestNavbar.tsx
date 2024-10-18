@@ -5,7 +5,7 @@ import { Text } from "../dawn-ui";
 import Link from "../dawn-ui/components/Link";
 import { ReactNode } from "react";
 
-export default function RestNabar(
+export default function RestNavbar(
   { children, title }: { title?: ReactNode; children?: ReactNode },
 ) {
   return (

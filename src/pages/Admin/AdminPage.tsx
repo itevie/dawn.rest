@@ -1,27 +1,23 @@
 import RestNavbar from "../../components/RestNavbar";
 import { Text } from "../../dawn-ui";
+import Banner from "../../dawn-ui/components/Banner";
 import Content from "../../dawn-ui/components/Content";
 import Link from "../../dawn-ui/components/Link";
 import Page from "../../dawn-ui/components/Page";
 import Panel from "../../dawn-ui/components/Panel";
 import PanelRow from "../../dawn-ui/components/PanelRow";
-import allVisuals from "./visuals/allVisuals";
 
-export default function VisualPage() {
+export default function AdminPage() {
   return (
     <Page>
       <RestNavbar />
       <Content>
         <PanelRow>
-          {allVisuals.map((v, i) => (
-            <>
-              <Link href={`/hypno/visuals/${i}`}>
-                <Panel title={`${new v().name}`}>
-                  <Text>{new v().description}</Text>
-                </Panel>
-              </Link>
-            </>
-          ))}
+          <Link href="/admin/file-upload">
+            <Panel title="Upload File">
+              <Text>Upload a new file</Text>
+            </Panel>
+          </Link>
         </PanelRow>
       </Content>
     </Page>

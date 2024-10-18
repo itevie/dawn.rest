@@ -6,7 +6,7 @@ export interface ButtonProps {
   href?: string;
 }
 
-export type ButtonType = "success" | "danger" | "inherit";
+export type ButtonType = "success" | "danger" | "inherit" | "normal";
 
 export default function Button(
   { type, big, href, children, ...rest }:

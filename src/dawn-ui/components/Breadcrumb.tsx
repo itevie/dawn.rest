@@ -27,7 +27,7 @@ export default function Breadcrumb() {
       {parts.map((segment) => (
         <label key={segment[1]}>
           <Link href={segment[1]}>{segment[0]}</Link>{" "}
-          <small style={{ color: "gray" }}>/</small>
+          <small style={{ color: "gray" }}>/{" "}</small>
         </label>
       ))}
     </div>

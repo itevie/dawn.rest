@@ -1,4 +1,4 @@
-import RestNabar from "../components/RestNavbar";
+import RestNavbar from "../components/RestNavbar";
 import Banner from "../dawn-ui/components/Banner";
 import Content from "../dawn-ui/components/Content";
 import Link from "../dawn-ui/components/Link";
@@ -10,7 +10,7 @@ import Text from "../dawn-ui/components/Text";
 function App() {
   return (
     <Page>
-      <RestNabar />
+      <RestNavbar />
       <Content>
         <Banner title="Welcome to dawn.rest">
           <Text>
