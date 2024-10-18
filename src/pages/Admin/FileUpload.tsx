@@ -34,16 +34,17 @@ export default function FileUpload() {
       title: nameRef.current?.value || "",
       description: descriptionRef.current?.value || "",
       script: scriptRef.current?.value || "",
+      auth: adminKeyRef.current?.value || "",
       tags,
       file,
     };
 
+    console.log(details);
+
     try {
       const result = await axios.post(
-        "/admin/file-upload?authorization=" + adminKeyRef.current?.value,
-        {
-          body: details,
-        },
+        "http://localhost:3001/api/admin/file-upload",
+        details
       );
 
       if (result.status !== 200) {
@@ -52,8 +53,9 @@ export default function FileUpload() {
         );
       }
 
-      return showInformation("Uploaded!");
+      return showInformation("Successfully uploaded the file!");
     } catch (e) {
+      console.log(e);
       return showErrorAlert(`Failed to upload: ${e}`);
     }
   }
