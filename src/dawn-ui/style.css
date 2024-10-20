@@ -283,3 +283,7 @@ body {
   font-size: 7em;
   opacity: 0.5;
 }
+
+a {
+  color: var(--dawn-control-link)
+}

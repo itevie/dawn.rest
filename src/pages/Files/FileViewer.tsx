@@ -13,6 +13,7 @@ import VisualViewer from "../VisualPage/VisualViewer";
 import Column from "../../dawn-ui/components/Column";
 import PanelColumn from "../../dawn-ui/components/PanelColumn";
 import allVisuals from "../VisualPage/visuals/allVisuals";
+import Link from "../../dawn-ui/components/Link";
 
 export default function FileViewer() {
   const [file, setFile] = useState<DawnFile | null>(null);
@@ -86,6 +87,14 @@ export default function FileViewer() {
                   </td>
                   <td>
                     {file?.tags.split(",").join(", ")}
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <b>Script</b>
+                  </td>
+                  <td>
+                    <a href={file?.script || ""}>Script Link</a>
                   </td>
                 </tr>
               </tbody></table>

@@ -67,6 +67,41 @@ pub async fn upload_file(
     )
 }
 
+#[derive(Debug, PartialEq, Eq, Deserialize)]
+pub struct EditFileOptions {
+    title: String,
+    description: String,
+    tags: Vec<String>,
+    script: String,
+    auth: String,
+}
+
+#[patch("/api/admin/edit-file/<id>", format = "json", data = "<file_options>")]
+pub async fn edit_file(
+    db: &State<Pool<Sqlite>>,
+    id: u8,
+    admin_key: &State<Uuid>,
+    file_options: Json<EditFileOptions>,
+) -> status::Custom<Option<Json<DawnFile>>> {
+    if file_options.0.auth != admin_key.to_string() {
+        return status::Custom(Status::Forbidden, None);
+    }
+
+    let result = sqlx::query_as::<_, DawnFile>("UPDATE files SET title = ?2, description = ?3, tags = ?4, script = ?5 WHERE id = ?1 RETURNING *")
+      .bind(id)
+      .bind(file_options.0.title)
+      .bind(file_options.0.description)
+      .bind(file_options.0.tags.join(","))
+      .bind(file_options.0.script)
+      .fetch_one(db.inner())
+      .await;
+
+    match result {
+        Err(_) => status::Custom(Status::InternalServerError, None),
+        Ok(ok) => status::Custom(Status::Ok, Some(Json(ok))),
+    }
+}
+
 pub fn routes() -> Vec<rocket::Route> {
-    routes![upload_file]
+    routes![upload_file, edit_file]
 }

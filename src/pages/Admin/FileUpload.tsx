@@ -12,16 +12,19 @@ import axios from "axios";
 import {
   showErrorAlert,
   showInformation,
+  showInputModel,
   showLoadingAlert,
 } from "../../dawn-ui/components/AlertManager";
 import { baseUrl } from "../..";
-import { axiosPostWrapper } from "../../dawn-ui/util";
+import { axiosWrapper } from "../../dawn-ui/util";
+import { DawnFile } from "../Files/FilePage";
 
 const fileTags: string[] = [
   "fractionation",
   "open ended",
   "sleep",
   "induction",
+  "trigger"
 ];
 
 export default function FileUpload() {
@@ -31,27 +34,39 @@ export default function FileUpload() {
   const adminKeyRef = useRef<HTMLInputElement>(null);
   const [tags, setTags] = useState<string[]>([]);
   const [file, setFile] = useState<string | null>(null);
+  const [ums, sums] = useState<number>(Math.random());
+  const [editId, setEditId] = useState<number | null>(null);
 
   async function upload() {
+    const details = {
+      title: nameRef.current?.value || "",
+      description: descriptionRef.current?.value || "",
+      script: scriptRef.current?.value || "",
+      auth: adminKeyRef.current?.value || "",
+      duration: 0,
+      tags,
+    };
+
+    try {
+      if (editId) {
+        await axiosWrapper("patch", `${baseUrl}/api/admin/edit-file/${editId}`, details);
+        return showInformation("Edited!");
+      }
+    } catch { }
+
     const audioFile = new Audio(file || "");
 
     audioFile.onloadedmetadata = async e => {
-      const details = {
-        title: nameRef.current?.value || "",
-        description: descriptionRef.current?.value || "",
-        script: scriptRef.current?.value || "",
-        auth: adminKeyRef.current?.value || "",
-        duration: parseInt(audioFile.duration.toString() || "0"),
-        tags,
-      };
+      details.duration = parseInt(audioFile.duration.toString() || "0");
 
       try {
-        await axiosPostWrapper(
+
+        await axiosWrapper("post",
           `${baseUrl}/api/admin/file-upload`,
           details,
         );
 
-        const actualResult = await axiosPostWrapper(
+        const actualResult = await axiosWrapper("post",
           `${baseUrl}/api/admin/file-upload`,
           { ...details, file: file },
         );
@@ -61,12 +76,31 @@ export default function FileUpload() {
     }
   }
 
+  async function editFile() {
+    const id = await showInputModel("Enter file ID");
+
+    try {
+      const data = (await axiosWrapper("get", `${baseUrl}/api/files/${id}`)).data as DawnFile;
+      setEditId(parseInt(id as string));
+      if (nameRef.current && descriptionRef.current && scriptRef.current) {
+        nameRef.current.value = data.title;
+        descriptionRef.current.value = data.description;
+        scriptRef.current.value = data.script;
+        setTags(data.tags.split(","));
+        setTimeout(() => {
+          sums(Math.random());
+        }, 100);
+      }
+    } catch { };
+  }
+
   return (
     <Page>
       <RestNavbar />
       <Content>
         <PanelRow>
           <Panel width="full" title="Upload a new file">
+            <Button onClick={editFile}>Edit Instead</Button>
             <table>
               <tbody>
                 <tr>
@@ -107,7 +141,9 @@ export default function FileUpload() {
                   </td>
                   <td>
                     <MultiSelect
+                      updateSelectedKey={ums}
                       onChange={(elements) => setTags(elements)}
+                      selected={tags}
                       elements={fileTags}
                     />
                   </td>

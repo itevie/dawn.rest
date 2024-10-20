@@ -19,9 +19,9 @@ interface ModelButton {
 }
 
 export let modelStack: Model[] = [];
-export let addModel: (data: Model) => void = () => {};
-export let closeModel: (id?: string) => void = () => {};
-export let updateModal: (id: string, newElement: ReactNode) => void = () => {};
+export let addModel: (data: Model) => void = () => { };
+export let closeModel: (id?: string) => void = () => { };
+export let updateModal: (id: string, newElement: ReactNode) => void = () => { };
 
 export default function AlertManager() {
   const [current, setCurrent] = useState<Model | null>(null);
@@ -147,4 +147,28 @@ export function showLoadingAlert(): {
       );
     },
   };
+}
+
+
+export function showInputModel(title: string): Promise<string | null> {
+  return new Promise<string | null>((resolve) => {
+    let current: string | null = null;
+
+    addModel({
+      title,
+      body: <input onChange={e => current = e.currentTarget.value} />,
+      buttons: [
+        {
+          id: "close",
+          click: close => { close(); resolve(null); },
+          text: "Cancel"
+        },
+        {
+          id: "ok",
+          click: close => { close(); resolve(current); },
+          text: "OK!"
+        }
+      ]
+    })
+  });
 }

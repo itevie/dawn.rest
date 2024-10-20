@@ -1,8 +1,9 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { showErrorAlert, showLoadingAlert } from "./components/AlertManager";
 
-export function axiosPostWrapper(
-  ...args: Parameters<typeof axios.post>
+export function axiosWrapper<T extends "get" | "post" | "patch">(
+  method: T,
+  ...args: Parameters<typeof axios[T]>
 ): Promise<AxiosResponse> {
   return new Promise<AxiosResponse>((resolve, reject) => {
     const loader = showLoadingAlert();
@@ -13,7 +14,8 @@ export function axiosPostWrapper(
     };
     args[2] = data;
 
-    axios.post(...args).then((r) => {
+    // @ts-ignore
+    axios[method](...args).then((r) => {
       if (r.status !== 200) {
         showErrorAlert(
           `Request failed: ${r.status}: ${r.data?.message ?? "No Message"}`,
