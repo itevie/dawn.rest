@@ -7,6 +7,7 @@ import PanelRow from "../../dawn-ui/components/PanelRow";
 import axios from "axios";
 import { showErrorAlert } from "../../dawn-ui/components/AlertManager";
 import Link from "../../dawn-ui/components/Link";
+import { baseUrl } from "../..";
 
 export interface DawnFile {
   id: number;
@@ -22,7 +23,7 @@ export default function FilePage() {
   useEffect(() => {
     (async () => {
       try {
-        const result = await axios.get("/api/file-list");
+        const result = await axios.get(`${baseUrl}/api/file-list`);
         if (result.status !== 200) {
           throw result.data?.message || "Status code was not 200.";
         }

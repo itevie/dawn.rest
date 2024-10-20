@@ -1,20 +1,17 @@
 use std::path::PathBuf;
 
-use database::DawnFile;
 use rocket::fairing::{Fairing, Info, Kind};
-use rocket::http::{Header, Status};
-use rocket::response::status;
-use rocket::serde::json::Json;
+use rocket::fs::NamedFile;
+use rocket::http::Header;
 use rocket::tokio::fs;
-use rocket::{fs::NamedFile, State};
 use rocket::{Request, Response};
-use serde::Deserialize;
-use sqlx::{Executor, Pool, Sqlite, SqlitePool};
-use util::write_file_from_data_url;
+use sqlx::{Executor, SqlitePool};
 use uuid::Uuid;
 
 mod database;
 mod util;
+
+mod routes;
 
 #[macro_use]
 extern crate rocket;
@@ -37,79 +34,9 @@ async fn index(path: PathBuf) -> Option<NamedFile> {
         .ok()
 }
 
-#[get("/api/file-list")]
-async fn file_list(db: &State<Pool<Sqlite>>) -> Json<Vec<DawnFile>> {
-    let rows = sqlx::query_as::<_, DawnFile>("SELECT * FROM files;")
-        .fetch_all(db.inner())
-        .await
-        .unwrap();
-
-    Json(rows)
-}
-
 #[options["/<_..>"]]
 fn fuck_options() -> String {
     String::new()
-}
-
-#[derive(Debug, PartialEq, Eq, Deserialize)]
-pub struct UploadFileData {
-    title: String,
-    description: String,
-    tags: Vec<String>,
-    script: String,
-    file: Option<String>,
-    auth: String,
-}
-
-#[derive(Responder)]
-pub enum FileUploadResponses {
-    Json(Json<DawnFile>),
-    String(String),
-}
-
-#[post("/api/admin/file-upload", format = "json", data = "<file_options>")]
-pub async fn upload_file(
-    file_options: Json<UploadFileData>,
-    admin_key: &State<Uuid>,
-    db: &State<Pool<Sqlite>>,
-) -> status::Custom<FileUploadResponses> {
-    if file_options.0.auth != admin_key.to_string() {
-        return status::Custom(
-            Status::Forbidden,
-            FileUploadResponses::String("Missing auth".to_string()),
-        );
-    }
-
-    if let Some(ref file_data) = file_options.0.file {
-        let file_name = format!(
-            "{}.mp3",
-            file_options.title.replace(" ", "-").to_lowercase()
-        );
-
-        let result = sqlx::query_as::<_, DawnFile>("INSERT INTO files (title, description, script, tags, file_path) VALUES (?1, ?2, ?3, ?4, ?5) RETURNING *;")
-        .bind(file_options.0.title)
-        .bind(file_options.0.description)
-        .bind(file_options.0.script)
-        .bind(file_options.0.tags.join(","))
-        .bind(file_name.clone())
-        .fetch_one(db.inner()).await.unwrap();
-
-        write_file_from_data_url(
-            &file_data,
-            std::env::current_dir()
-                .unwrap()
-                .join(format!("./files/{}", file_name)),
-        )
-        .unwrap();
-
-        return status::Custom(Status::Ok, FileUploadResponses::Json(Json(result)));
-    }
-
-    status::Custom(
-        Status::Ok,
-        FileUploadResponses::String(String::from("OK to upload file")),
-    )
 }
 
 pub struct CORS;
@@ -159,5 +86,7 @@ async fn rocket() -> _ {
         .manage(pool)
         .manage(uuid)
         .attach(CORS)
-        .mount("/", routes![fuck_options, upload_file, file_list, index])
+        .mount("/", routes::files::routes())
+        .mount("/", routes::admin::routes())
+        .mount("/", routes![fuck_options, index])
 }

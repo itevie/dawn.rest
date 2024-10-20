@@ -8,6 +8,7 @@ import { DawnFile } from "./FilePage";
 import { Text } from "../../dawn-ui";
 import { showErrorAlert } from "../../dawn-ui/components/AlertManager";
 import axios from "axios";
+import { baseUrl } from "../..";
 
 export default function FileViewer() {
   const [file, setFile] = useState<DawnFile | null>(null);
@@ -21,7 +22,8 @@ export default function FileViewer() {
       const id = parseInt(idMatch[1]);
 
       try {
-        const result = await axios.get(`/files/${id}`);
+        const result = await axios.get(`${baseUrl}/api/files/${id}`);
+        console.log(result);
         if (result.status !== 200) {
           throw result.data?.message || "Did not get status code 200";
         }
