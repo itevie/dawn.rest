@@ -24,3 +24,4 @@ server/database/db.sql
 server-rs/target/
 server-rs/files/*.mp3
 server-rs/data.db
+server/

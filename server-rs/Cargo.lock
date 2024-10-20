@@ -1500,6 +1500,8 @@ name = "server-rs"
 version = "0.1.0"
 dependencies = [
  "base64 0.21.7",
+ "lazy_static",
+ "regex",
  "rocket",
  "serde",
  "sqlx",

@@ -113,7 +113,7 @@ export default function FileViewer() {
                 </tr>
                 <tr>
                   <td>
-                    <b>Views</b>
+                    <b>Plays</b>
                   </td>
                   <td>
                     <label>{file?.views}</label>

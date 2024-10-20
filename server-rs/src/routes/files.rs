@@ -1,7 +1,7 @@
 use rocket::{fs::NamedFile, http::Status, response::status, serde::json::Json, State};
 use sqlx::{Pool, Sqlite};
 
-use crate::database::DawnFile;
+use crate::{database::DawnFile, ReturnOptions};
 
 #[get("/api/file-list")]
 async fn file_list(db: &State<Pool<Sqlite>>) -> Json<Vec<DawnFile>> {
@@ -14,7 +14,7 @@ async fn file_list(db: &State<Pool<Sqlite>>) -> Json<Vec<DawnFile>> {
 }
 
 #[get("/api/files/<id>")]
-async fn get_file(db: &State<Pool<Sqlite>>, id: u8) -> status::Custom<Option<Json<DawnFile>>> {
+async fn get_file(db: &State<Pool<Sqlite>>, id: u8) -> status::Custom<Option<ReturnOptions>> {
     // Fetch file
     let file = match sqlx::query_as::<_, DawnFile>("SELECT * FROM files WHERE id = ?1;")
         .bind(id)
@@ -22,10 +22,15 @@ async fn get_file(db: &State<Pool<Sqlite>>, id: u8) -> status::Custom<Option<Jso
         .await
     {
         Ok(result) => result,
-        Err(_) => return status::Custom(Status::NotFound, None),
+        Err(_) => {
+            return status::Custom(
+                Status::NotFound,
+                Some(ReturnOptions::String("File not fond".to_string())),
+            )
+        }
     };
 
-    status::Custom(Status::Ok, Some(Json(file)))
+    status::Custom(Status::Ok, Some(ReturnOptions::DawnFile(Json(file))))
 }
 
 #[get("/api/audios/<id>")]
