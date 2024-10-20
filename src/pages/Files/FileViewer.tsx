@@ -80,6 +80,14 @@ export default function FileViewer() {
                     {new Date(file?.uploaded_at || 0).toDateString()}
                   </td>
                 </tr>
+                <tr>
+                  <td>
+                    <b>Tags</b>
+                  </td>
+                  <td>
+                    {file?.tags.split(",").join(", ")}
+                  </td>
+                </tr>
               </tbody></table>
             </Panel>
           </PanelRow>

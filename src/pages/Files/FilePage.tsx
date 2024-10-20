@@ -15,7 +15,7 @@ export interface DawnFile {
   id: number;
   title: string;
   description: string;
-  tags: string[];
+  tags: string;
   script: string;
   audio_length: number;
   uploaded_at: string;
@@ -53,7 +53,7 @@ export default function FilePage() {
                 <Container >
                   <Text type="heading">{`${f.id} - ${f.title}`}</Text>
                   <Text>{f.description}</Text>
-                  <small>{((f.audio_length / 60) - 1).toFixed(0)}m {f.audio_length % 60}s</small>
+                  <small>{((f.audio_length / 60) - 1).toFixed(0)}m {f.audio_length % 60}s - {f.tags.split(",").join(", ")}</small>
                 </Container>
               </Link>
             ))}
