@@ -13,6 +13,7 @@ pub struct UploadFileData {
     script: String,
     file: Option<String>,
     auth: String,
+    duration: u32,
 }
 
 #[derive(Responder)]
@@ -40,12 +41,13 @@ pub async fn upload_file(
             file_options.title.replace(" ", "-").to_lowercase()
         );
 
-        let result = sqlx::query_as::<_, DawnFile>("INSERT INTO files (title, description, script, tags, file_path) VALUES (?1, ?2, ?3, ?4, ?5) RETURNING *;")
+        let result = sqlx::query_as::<_, DawnFile>("INSERT INTO files (title, description, script, tags, file_path, audio_length) VALUES (?1, ?2, ?3, ?4, ?5, ?6) RETURNING *;")
         .bind(file_options.0.title)
         .bind(file_options.0.description)
         .bind(file_options.0.script)
         .bind(file_options.0.tags.join(","))
         .bind(file_name.clone())
+        .bind(file_options.0.duration)
         .fetch_one(db.inner()).await.unwrap();
 
         write_file_from_data_url(

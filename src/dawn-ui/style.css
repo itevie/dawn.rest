@@ -113,7 +113,7 @@ body {
   width: 100%;
 }
 
-.dawn-panel-row-full > * {
+.dawn-panel-row-full>* {
   flex-basis: 49%;
 }
 
@@ -149,6 +149,14 @@ body {
 }
 
 .dawn-text-heading {
+  font-weight: bolder;
+  font-size: 1.4em;
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.dawn-panel-title-text {
   font-weight: bolder;
   font-size: 1.4em;
   display: block;
@@ -190,7 +198,8 @@ body {
   overflow: auto;
 }
 
-.dawn-panel {
+.dawn-panel,
+.dawn-container {
   border-radius: var(--dawn-border-radius);
 
   box-shadow: 0px 0px 15px 5px #222;
@@ -214,11 +223,23 @@ body {
   transition: var(--dawn-hover-transition);
 }
 
+.dawn-container {
+  box-shadow: none;
+  width: 100%;
+  padding: 30px;
+  margin: 10px;
+  min-height: 100px;
+}
+
+.dawn-container:hover {
+  background-color: var(--dawn-control-hover-background);
+}
+
 .dawn-panel-title {
   margin: 10px;
 }
 
-.dawn-panel:hover {
+.dawn-panel:hoverm {
   background-color: var(--dawn-control-hover-background);
   box-shadow: 0px 0px 15px 5px #222;
 }
@@ -273,12 +294,12 @@ body {
   }
 
   .dawn-panel,
-  .dawn-panel-row > a,
-  a > .dawn-panel {
+  .dawn-panel-row>a,
+  a>.dawn-panel {
     width: 100% !important;
   }
 
-  .dawn-panel > .dawn-content {
+  .dawn-panel>.dawn-content {
     box-sizing: border-box;
     margin: 20px;
   }

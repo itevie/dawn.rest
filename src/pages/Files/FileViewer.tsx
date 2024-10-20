@@ -46,7 +46,7 @@ export default function FileViewer() {
 
                 <audio controls>
                   <source
-                    src={`/api/audios/${file?.id}`}
+                    src={`${baseUrl}/api/audios/${file?.id}`}
                     type="audio/mpeg"
                   >
                   </source>

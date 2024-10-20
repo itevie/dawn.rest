@@ -8,6 +8,7 @@ pub struct DawnFile {
     pub description: String,
     pub tags: String,
     pub script: String,
+    pub audio_length: u32,
     #[serde(skip_serializing)]
     pub file_path: String,
 }

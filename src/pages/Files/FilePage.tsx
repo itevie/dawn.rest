@@ -8,6 +8,8 @@ import axios from "axios";
 import { showErrorAlert } from "../../dawn-ui/components/AlertManager";
 import Link from "../../dawn-ui/components/Link";
 import { baseUrl } from "../..";
+import { Text } from "../../dawn-ui";
+import Container from "../../dawn-ui/components/Container";
 
 export interface DawnFile {
   id: number;
@@ -15,6 +17,7 @@ export interface DawnFile {
   description: string;
   tags: string[];
   script: string;
+  audio_length: number;
 }
 
 export default function FilePage() {
@@ -28,7 +31,7 @@ export default function FilePage() {
           throw result.data?.message || "Status code was not 200.";
         }
 
-        setFiles(result.data);
+        setFiles(result.data.reverse());
       } catch (e) {
         return showErrorAlert(`Failed to fetch file list! ${e}`);
       }
@@ -40,17 +43,20 @@ export default function FilePage() {
       <RestNavbar />
       <Content>
         <PanelRow>
-          {files.map((f) => (
-            <Link
-              href={`/hypno/files/${f.id}-${
-                f.title.replace(/ /g, "-").toLowerCase()
-              }`}
-            >
-              <Panel title={`${f.id} - ${f.title}`}>
-                {f.description}
-              </Panel>
-            </Link>
-          ))}
+          <Panel width="full" title="File List">
+            {files.map((f) => (
+              <Link key={f.id}
+                href={`/hypno/files/${f.id}-${f.title.replace(/ /g, "-").toLowerCase()
+                  }`}
+              >
+                <Container >
+                  <Text type="heading">{`${f.id} - ${f.title}`}</Text>
+                  <Text>{f.description}</Text>
+                  <small>{(f.audio_length / 60).toFixed(0)}m {f.audio_length % 60}s</small>
+                </Container>
+              </Link>
+            ))}
+          </Panel>
         </PanelRow>
       </Content>
     </Page>

@@ -15,19 +15,18 @@ export default function Panel(
       style={{
         ...rest.style,
         ...(width &&
-          {
-            width: `${
-              { "full": "100%", "fit": "fit-content" }[width] || width
+        {
+          width: `${{ "full": "100%", "fit": "fit-content" }[width] || width
             }`,
-          }),
+        }),
       }}
     >
       <div className="dawn-panel-title">
-        <Text type="heading">{title}</Text>
+        <label className="dawn-panel-title-text">{title}</label>
       </div>
       <div className="dawn-content">
         {children}
       </div>
-    </div>
+    </div >
   );
 }

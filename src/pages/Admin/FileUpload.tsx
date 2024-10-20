@@ -33,27 +33,32 @@ export default function FileUpload() {
   const [file, setFile] = useState<string | null>(null);
 
   async function upload() {
-    const details = {
-      title: nameRef.current?.value || "",
-      description: descriptionRef.current?.value || "",
-      script: scriptRef.current?.value || "",
-      auth: adminKeyRef.current?.value || "",
-      tags,
-    };
+    const audioFile = new Audio(file || "");
 
-    try {
-      await axiosPostWrapper(
-        `${baseUrl}/api/admin/file-upload`,
-        details,
-      );
+    audioFile.onloadedmetadata = async e => {
+      const details = {
+        title: nameRef.current?.value || "",
+        description: descriptionRef.current?.value || "",
+        script: scriptRef.current?.value || "",
+        auth: adminKeyRef.current?.value || "",
+        duration: parseInt(audioFile.duration.toString() || "0"),
+        tags,
+      };
 
-      const actualResult = await axiosPostWrapper(
-        `${baseUrl}/api/admin/file-upload`,
-        { ...details, file: file },
-      );
+      try {
+        await axiosPostWrapper(
+          `${baseUrl}/api/admin/file-upload`,
+          details,
+        );
 
-      showInformation("Uploaded file!");
-    } catch {}
+        const actualResult = await axiosPostWrapper(
+          `${baseUrl}/api/admin/file-upload`,
+          { ...details, file: file },
+        );
+
+        showInformation("Uploaded file!");
+      } catch { }
+    }
   }
 
   return (
