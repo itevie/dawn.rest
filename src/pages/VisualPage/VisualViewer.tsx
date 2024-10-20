@@ -49,7 +49,7 @@ const defaultFlashTextOptions: FlashTextOptions = {
   customWords: "",
   enabled: true,
   opacity: 0.5,
-  color: "#000000"
+  color: "#FFFFFF"
 };
 
 export default function VisualViewer(props: { setId?: number, inFrame?: boolean }) {
