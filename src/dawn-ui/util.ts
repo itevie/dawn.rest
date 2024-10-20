@@ -4,7 +4,7 @@ import { showErrorAlert, showLoadingAlert } from "./components/AlertManager";
 export function axiosPostWrapper(
   ...args: Parameters<typeof axios.post>
 ): Promise<AxiosResponse> {
-  return new Promise<AxiosResponse>((resolve, _) => {
+  return new Promise<AxiosResponse>((resolve, reject) => {
     const loader = showLoadingAlert();
 
     const data: AxiosRequestConfig = {
@@ -15,16 +15,16 @@ export function axiosPostWrapper(
 
     axios.post(...args).then((r) => {
       if (r.status !== 200) {
-        return showErrorAlert(
+        showErrorAlert(
           `Request failed: ${r.status}: ${r.data?.message ?? "No Message"}`,
         );
-      }
-
-      resolve(r);
+        reject();
+      } else resolve(r);
     }).catch((r) => {
-      return showErrorAlert(
+      showErrorAlert(
         `Request failed: ${r.status}: ${r.data?.message ?? "No Message"}`,
       );
+      reject();
     }).finally(() => {
       loader.stop();
     });

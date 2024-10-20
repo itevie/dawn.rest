@@ -1,5 +1,8 @@
+[release]
+port = 3000
+
 [debug]
 port = 3001
 
-[debug.limits]
+[release.limits]
 json = "100 MiB"

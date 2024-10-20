@@ -41,11 +41,19 @@ export default function FileUpload() {
       tags,
     };
 
-    const result = await axiosPostWrapper(
-      `${baseUrl}/api/admin/file-upload`,
-      details,
-    );
-    console.log(result);
+    try {
+      await axiosPostWrapper(
+        `${baseUrl}/api/admin/file-upload`,
+        details,
+      );
+
+      const actualResult = await axiosPostWrapper(
+        `${baseUrl}/api/admin/file-upload`,
+        { ...details, file: file },
+      );
+
+      showInformation("Uploaded file!");
+    } catch {}
   }
 
   return (
