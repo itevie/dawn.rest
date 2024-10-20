@@ -8,4 +8,6 @@ pub struct DawnFile {
     pub description: String,
     pub tags: String,
     pub script: String,
+    #[serde(skip_serializing)]
+    pub file_path: String,
 }

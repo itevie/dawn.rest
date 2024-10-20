@@ -23,7 +23,7 @@ export default function FileViewer() {
 
       try {
         const result = await axios.get(`${baseUrl}/api/files/${id}`);
-        console.log(result);
+        
         if (result.status !== 200) {
           throw result.data?.message || "Did not get status code 200";
         }
