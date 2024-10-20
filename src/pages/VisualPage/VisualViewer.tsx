@@ -121,6 +121,11 @@ export default function VisualViewer(props: { setId?: number, inFrame?: boolean 
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
 
+      window.onresize = () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+
       // Get default options
       const defaults: { [key: string]: any } = {};
       for (const [k, v] of Object.entries((visual as Visual).getOptions())) {
@@ -214,6 +219,9 @@ export default function VisualViewer(props: { setId?: number, inFrame?: boolean 
         temp[key] = event;
         break;
       case "color":
+        temp[key] = event.target.value;
+        break;
+      case "string":
         temp[key] = event.target.value;
         break;
     }

@@ -70,6 +70,9 @@ export default function VisualInput(
             onChange={(i) => set(option, name, i)}
           />
         ),
+        "string": (
+          <input {...props} value={current[name] ?? option.default} onChange={(i) => set(option, name, i)} />
+        ),
         "array": (
           <ArrayInput
             currentValues={current[name] ?? option.default}

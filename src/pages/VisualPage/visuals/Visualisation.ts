@@ -1,5 +1,5 @@
 interface BaseVisualOption {
-  type: "number" | "boolean" | "array" | "color";
+  type: "number" | "boolean" | "array" | "color" | "string";
   human: string;
 }
 
@@ -20,6 +20,11 @@ export interface ColorVisualOption extends BaseVisualOption {
   default: string;
 }
 
+export interface StringVisualOption extends BaseVisualOption {
+  type: "string";
+  default: string;
+}
+
 export interface ArrayVisualOption extends BaseVisualOption {
   type: "array";
   inner: VisualOption;
@@ -30,7 +35,8 @@ export type VisualOption =
   | NumberVisualOption
   | BooleanVisualOption
   | ArrayVisualOption
-  | ColorVisualOption;
+  | ColorVisualOption
+  | StringVisualOption;
 
 export type VisualOptions = { [key: string]: VisualOption };
 export type Coordinate = { x: number; y: number };
