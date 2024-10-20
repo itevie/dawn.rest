@@ -9,9 +9,14 @@ import { Text } from "../../dawn-ui";
 import { showErrorAlert } from "../../dawn-ui/components/AlertManager";
 import axios from "axios";
 import { baseUrl } from "../..";
+import VisualViewer from "../VisualPage/VisualViewer";
+import Column from "../../dawn-ui/components/Column";
+import PanelColumn from "../../dawn-ui/components/PanelColumn";
+import allVisuals from "../VisualPage/visuals/allVisuals";
 
 export default function FileViewer() {
   const [file, setFile] = useState<DawnFile | null>(null);
+  const [selectedVisual, setSelectedVisual] = useState<number | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -31,30 +36,65 @@ export default function FileViewer() {
       } catch (e) {
         return showErrorAlert(`Failed to load file data! ${e}`);
       }
+
+      if (localStorage.getItem("file_selected_visual")) {
+        setSelectedVisual(parseInt(localStorage.getItem("file_selected_visual") || "0"));
+      }
     })();
   }, []);
+
+  function visualSetSelected(index: number) {
+    setSelectedVisual(index);
+    localStorage.setItem("file_selected_visual", index.toString());
+  }
 
   return (
     <Page>
       <RestNavbar />
       <Content>
-        <PanelRow>
-          <Panel width="full" title={file?.title ?? "Loading..."}>
-            {!file ? <>Loading...</> : (
-              <>
-                <Text>{file?.description ?? "Loading..."}</Text>
+        <PanelColumn>
+          <PanelRow fullWidth>
+            <Panel title={file?.title ?? "Loading..."}>
+              {!file ? <>Loading...</> : (
+                <>
+                  <Text>{file?.description ?? "Loading..."}</Text>
 
-                <audio controls>
-                  <source
-                    src={`${baseUrl}/api/audios/${file?.id}`}
-                    type="audio/mpeg"
-                  >
-                  </source>
-                </audio>
-              </>
-            )}
+                  <audio controls>
+                    <source
+                      src={`${baseUrl}/api/audios/${file?.id}`}
+                      type="audio/mpeg"
+                    >
+                    </source>
+                  </audio>
+                </>
+              )}
+            </Panel>
+            <Panel title="Details">
+              <Text>Details about {file?.title}</Text>
+              <table><tbody>
+                <tr>
+                  <td>
+                    <b>Uploaded</b>
+                  </td>
+                  <td>
+                    {new Date(file?.uploaded_at || 0).toDateString()}
+                  </td>
+                </tr>
+              </tbody></table>
+            </Panel>
+          </PanelRow>
+          <Panel width="full" title="Visual">
+            <Text>Play a visual while you listen.</Text>
+            <select defaultValue={selectedVisual || -1} onChange={e => visualSetSelected((e.currentTarget[e.currentTarget.selectedIndex] as any).value)}>
+              <option value={-1}>None</option>
+              {allVisuals.map((x, i) => <option key={i} value={i}>{new x().name}</option>)}
+            </select>
+            {
+              (selectedVisual && selectedVisual > -1) &&
+              <VisualViewer setId={selectedVisual} inFrame={true} />
+            }
           </Panel>
-        </PanelRow>
+        </PanelColumn>
       </Content>
     </Page>
   );

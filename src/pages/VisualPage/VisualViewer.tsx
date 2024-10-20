@@ -48,7 +48,7 @@ const defaultFlashTextOptions: FlashTextOptions = {
   opacity: 0.5,
 };
 
-export default function VisualViewer() {
+export default function VisualViewer(props: { setId?: number, inFrame?: boolean }) {
   const [visual, setVisual] = useState<Visual | undefined>(undefined);
   const [currentOptions, setCurrentOptions] = useState<{ [key: string]: any }>(
     {},
@@ -67,15 +67,16 @@ export default function VisualViewer() {
 
   useEffect(() => {
     const visualId = window.location.pathname.match(/[0-9]+/);
-    if (!visualId || parseInt(visualId[0]) >= allVisuals.length) {
+    if (!visualId || parseInt(visualId[0]) >= allVisuals.length && !props.inFrame) {
       window.location.href = "/hypno/visuals";
       return;
     }
 
-    const id = parseInt(visualId[0]);
+    const id = props.setId ?? parseInt(visualId[0]);
     setId(id);
 
-    const cvisual = allVisuals[parseInt(visualId[0])];
+    const cvisual = allVisuals[id];
+
     setVisual(new cvisual());
 
     if (window.location.search) {
@@ -85,7 +86,7 @@ export default function VisualViewer() {
         try {
           const json = JSON.parse(atob(result[0].replace(/options=/, "")));
           setCurrentOptions(json);
-        } catch {}
+        } catch { }
       }
     }
 
@@ -94,7 +95,12 @@ export default function VisualViewer() {
     if (lsFlash) {
       setFlashTextOptions(JSON.parse(lsFlash));
     }
-  }, []);
+
+    const lsSettings = localStorage.getItem(`current_visual_settings_${id}`);
+    if (lsSettings) {
+      setCurrentOptions(JSON.parse(lsSettings));
+    }
+  }, [props]);
 
   function play() {
     setIsPlaying(true);
@@ -139,6 +145,7 @@ export default function VisualViewer() {
         canvas.width / 2,
         canvas.height / 2,
       );
+      canvas.style.backgroundColor = "#000000";
 
       // Timeout to allow the text to be seen
       let textFlasherTimer: ReturnType<typeof setInterval>;
@@ -161,9 +168,9 @@ export default function VisualViewer() {
             ) {
               const word = flashTextOptions.usePreset
                 ? textFlashes[flashTextOptions.preset][
-                  Math.floor(
-                    Math.random() * textFlashes[flashTextOptions.preset].length,
-                  )
+                Math.floor(
+                  Math.random() * textFlashes[flashTextOptions.preset].length,
+                )
                 ]
                 : cw[Math.floor(Math.random() * cw.length)];
               setFlashText(word.trim());
@@ -211,14 +218,15 @@ export default function VisualViewer() {
         break;
     }
 
+    localStorage.setItem(`current_visual_settings_${id}`, JSON.stringify(temp));
+
     setCurrentOptions(temp);
     setShare(temp);
   }
 
   function setShare(what: object) {
     setUrl(
-      `${window.location.protocol}//${window.location.host}${window.location.pathname}?options=${
-        btoa(JSON.stringify(what))
+      `${window.location.protocol}//${window.location.host}${window.location.pathname}?options=${btoa(JSON.stringify(what))
       }`,
     );
   }
@@ -250,7 +258,7 @@ export default function VisualViewer() {
     isPlaying
       ? (
         <>
-          <canvas style={{ overflow: "hidden" }} ref={player} />
+          <canvas style={{ overflow: "hidden", position: "absolute", top: "0", left: "0" }} ref={player} />
           <label
             style={{ opacity: flashTextOptions.opacity }}
             className="dawn-visual-text"
@@ -261,13 +269,13 @@ export default function VisualViewer() {
       )
       : (
         <Page>
-          <RestNavbar
+          {!props.inFrame && <RestNavbar
             title={
-              <Text type="heading">
+              <Text type="title">
                 Configure: {visual?.name || "???"}
               </Text>
             }
-          />
+          />}
           <Content>
             <PanelRow fullWidth>
               <Panel title="Visual's Settings">
@@ -420,7 +428,7 @@ export default function VisualViewer() {
                   : flashTextOptions.customWords}
               </Panel>
             </PanelRow>
-            <PanelRow>
+            {!props.inFrame && <PanelRow>
               <Panel width="400px" title="Share">
                 <Text>
                   Share the following link to show others this visual.
@@ -432,7 +440,7 @@ export default function VisualViewer() {
                   Copy
                 </Button>
               </Panel>
-            </PanelRow>
+            </PanelRow>}
           </Content>
         </Page>
       )

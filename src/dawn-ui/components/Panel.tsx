@@ -1,9 +1,9 @@
 import { HTMLAttributes, ReactNode } from "react";
-import Text from "./Text";
 
 export default function Panel(
-  { width, title, children, ...rest }: {
+  { width, title, children, hover, ...rest }: {
     width?: string;
+    hover?: boolean;
     title: string;
     children: ReactNode;
   } & HTMLAttributes<HTMLDivElement>,
@@ -11,7 +11,7 @@ export default function Panel(
   return (
     <div
       {...rest}
-      className="dawn-panel"
+      className={`dawn-panel ${hover && "dawn-panel-hover"}`}
       style={{
         ...rest.style,
         ...(width &&

@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
 interface TextProps {
-  type?: "heading" | "navbar" | "page-title";
+  type?: "heading" | "navbar" | "page-title" | "title";
 }
 
 export default function Text(props: TextProps & { children: ReactNode }) {
