@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import RestNavbar from "../../components/RestNavbar";
 import Content from "../../dawn-ui/components/Content";
 import Page from "../../dawn-ui/components/Page";
@@ -10,14 +10,14 @@ import { showErrorAlert } from "../../dawn-ui/components/AlertManager";
 import axios from "axios";
 import { baseUrl } from "../..";
 import VisualViewer from "../VisualPage/VisualViewer";
-import Column from "../../dawn-ui/components/Column";
 import PanelColumn from "../../dawn-ui/components/PanelColumn";
 import allVisuals from "../VisualPage/visuals/allVisuals";
-import Link from "../../dawn-ui/components/Link";
 
 export default function FileViewer() {
   const [file, setFile] = useState<DawnFile | null>(null);
   const [selectedVisual, setSelectedVisual] = useState<number | null>(null);
+  const [viewAdded, setViewAdded] = useState<boolean>(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     (async () => {
@@ -34,6 +34,16 @@ export default function FileViewer() {
           throw result.data?.message || "Did not get status code 200";
         }
         setFile(result.data);
+
+        const timeChecker = setInterval(async () => {
+          if ((audioRef.current?.currentTime || 0) > 60 && !viewAdded) {
+            setViewAdded(true);
+            clearInterval(timeChecker);
+            try {
+              await axios.post(`${baseUrl}/api/files/${result.data.id}/views`);
+            } catch { }
+          }
+        }, 1000);
       } catch (e) {
         return showErrorAlert(`Failed to load file data! ${e}`);
       }
@@ -49,6 +59,10 @@ export default function FileViewer() {
     localStorage.setItem("file_selected_visual", index.toString());
   }
 
+  async function addView(e: React.SyntheticEvent<HTMLAudioElement, Event>) {
+    console.log(e.currentTarget);
+  }
+
   return (
     <Page>
       <RestNavbar />
@@ -60,7 +74,7 @@ export default function FileViewer() {
                 <>
                   <Text>{file?.description ?? "Loading..."}</Text>
 
-                  <audio controls>
+                  <audio controls ref={audioRef}>
                     <source
                       src={`${baseUrl}/api/audios/${file?.id}`}
                       type="audio/mpeg"
@@ -95,6 +109,14 @@ export default function FileViewer() {
                   </td>
                   <td>
                     <a href={file?.script || ""}>Script Link</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <b>Views</b>
+                  </td>
+                  <td>
+                    <label>{file?.views}</label>
                   </td>
                 </tr>
               </tbody></table>

@@ -88,5 +88,6 @@ async fn rocket() -> _ {
         .attach(CORS)
         .mount("/", routes::files::routes())
         .mount("/", routes::admin::routes())
+        .mount("/", routes::analytics::routes())
         .mount("/", routes![fuck_options, index])
 }

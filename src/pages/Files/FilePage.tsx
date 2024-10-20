@@ -19,6 +19,7 @@ export interface DawnFile {
   script: string;
   audio_length: number;
   uploaded_at: string;
+  views: number;
 }
 
 export default function FilePage() {
