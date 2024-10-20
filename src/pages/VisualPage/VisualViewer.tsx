@@ -35,17 +35,21 @@ const textFlashes = {
 interface FlashTextOptions {
   usePreset: boolean;
   preset: keyof typeof textFlashes;
+  useCustomWords: boolean;
   customWords: string;
   enabled: boolean;
   opacity: number;
+  color: string;
 }
 
 const defaultFlashTextOptions: FlashTextOptions = {
   usePreset: true,
   preset: "deep",
+  useCustomWords: false,
   customWords: "",
   enabled: true,
   opacity: 0.5,
+  color: "#000000"
 };
 
 export default function VisualViewer(props: { setId?: number, inFrame?: boolean }) {
@@ -61,6 +65,7 @@ export default function VisualViewer(props: { setId?: number, inFrame?: boolean 
   const [flashTextOptions, setFlashTextOptions] = useState<FlashTextOptions>({
     ...defaultFlashTextOptions,
   });
+  const colorRef = useRef<HTMLInputElement>(null);
 
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const player = useRef<HTMLCanvasElement>(null);
@@ -93,7 +98,10 @@ export default function VisualViewer(props: { setId?: number, inFrame?: boolean 
     // Check if load flash text options
     const lsFlash = localStorage.getItem("text_flash_options");
     if (lsFlash) {
-      setFlashTextOptions(JSON.parse(lsFlash));
+      let json = JSON.parse(lsFlash);
+      setFlashTextOptions(json);
+      if (json.color && colorRef.current)
+        colorRef.current.value = json.color;
     }
 
     const lsSettings = localStorage.getItem(`current_visual_settings_${id}`);
@@ -160,6 +168,15 @@ export default function VisualViewer(props: { setId?: number, inFrame?: boolean 
         // Check if it is enabled
         if (flashTextOptions.enabled) {
           const cw = flashTextOptions.customWords.split(",");
+          const validWords = ([] as string[]).concat(
+            flashTextOptions.usePreset
+              ? textFlashes[flashTextOptions.preset ?? "deep"]
+              : []
+          ).concat(
+            flashTextOptions.useCustomWords
+              ? flashTextOptions.customWords.split(",").map(x => x.trim())
+              : []
+          );
 
           // TODO: This may need reworking - idk
           let last = 0;
@@ -171,13 +188,7 @@ export default function VisualViewer(props: { setId?: number, inFrame?: boolean 
               Math.random() > 0.8 && flashText === "" &&
               700 - (Date.now() - last) < 0
             ) {
-              const word = flashTextOptions.usePreset
-                ? textFlashes[flashTextOptions.preset][
-                Math.floor(
-                  Math.random() * textFlashes[flashTextOptions.preset].length,
-                )
-                ]
-                : cw[Math.floor(Math.random() * cw.length)];
+              const word = validWords[Math.floor(Math.random() * validWords.length)];
               setFlashText(word.trim());
               last = Date.now();
 
@@ -253,7 +264,6 @@ export default function VisualViewer(props: { setId?: number, inFrame?: boolean 
   }
 
   function setFlashTextOption(key: string, value: any) {
-    console.log(key, value);
     setFlashTextOptions((old) => {
       const newValues: any = { ...old };
       newValues[key] = value;
@@ -268,7 +278,7 @@ export default function VisualViewer(props: { setId?: number, inFrame?: boolean 
         <>
           <canvas style={{ overflow: "hidden", position: "absolute", top: "0", left: "0" }} ref={player} />
           <label
-            style={{ opacity: flashTextOptions.opacity }}
+            style={{ opacity: flashTextOptions.opacity, color: flashTextOptions.color }}
             className="dawn-visual-text"
           >
             {flashText}
@@ -391,6 +401,22 @@ export default function VisualViewer(props: { setId?: number, inFrame?: boolean 
                     </tr>
                     <tr>
                       <td>
+                        <b>Use Custom Words</b>
+                      </td>
+                      <td>
+                        <input
+                          onChange={(i) =>
+                            setFlashTextOption(
+                              "useCustomWords",
+                              i.currentTarget.checked,
+                            )}
+                          checked={flashTextOptions.useCustomWords}
+                          type="checkbox"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
                         <b>Custom Words</b>
                       </td>
                       <td>
@@ -427,13 +453,37 @@ export default function VisualViewer(props: { setId?: number, inFrame?: boolean 
                         </label>
                       </td>
                     </tr>
+                    <tr>
+                      <td>
+                        <b>Color</b>
+                      </td>
+                      <td>
+                        <input
+                          type="color"
+                          value={flashTextOptions.color}
+                          onChange={(i) =>
+                            setFlashTextOption(
+                              "color",
+                              i.currentTarget.value,
+                            )}
+                        />
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
                 <b>Words that will be shown:</b>
                 <br />
-                {flashTextOptions.usePreset
-                  ? textFlashes[flashTextOptions.preset ?? "deep"].join(", ")
-                  : flashTextOptions.customWords}
+                {
+                  ([] as string[]).concat(
+                    flashTextOptions.usePreset
+                      ? textFlashes[flashTextOptions.preset ?? "deep"]
+                      : []
+                  ).concat(
+                    flashTextOptions.useCustomWords
+                      ? flashTextOptions.customWords.split(",").map(x => x.trim())
+                      : []
+                  ).join(", ")
+                }
               </Panel>
             </PanelRow>
             {!props.inFrame && <PanelRow>
