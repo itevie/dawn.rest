@@ -2,7 +2,8 @@ use std::path::PathBuf;
 
 use database::DawnFile;
 use rocket::fairing::{Fairing, Info, Kind};
-use rocket::http::Header;
+use rocket::http::{Header, Status};
+use rocket::response::status;
 use rocket::serde::json::Json;
 use rocket::tokio::fs;
 use rocket::{fs::NamedFile, State};
@@ -72,9 +73,12 @@ pub async fn upload_file(
     file_options: Json<UploadFileData>,
     admin_key: &State<Uuid>,
     db: &State<Pool<Sqlite>>,
-) -> Option<FileUploadResponses> {
+) -> status::Custom<FileUploadResponses> {
     if file_options.0.auth != admin_key.to_string() {
-        return None;
+        return status::Custom(
+            Status::Forbidden,
+            FileUploadResponses::String("Missing auth".to_string()),
+        );
     }
 
     if let Some(ref file_data) = file_options.0.file {
@@ -99,12 +103,13 @@ pub async fn upload_file(
         )
         .unwrap();
 
-        return Some(FileUploadResponses::Json(Json(result)));
+        return status::Custom(Status::Ok, FileUploadResponses::Json(Json(result)));
     }
 
-    Some(FileUploadResponses::String(String::from(
-        "OK to upload file",
-    )))
+    status::Custom(
+        Status::Ok,
+        FileUploadResponses::String(String::from("OK to upload file")),
+    )
 }
 
 pub struct CORS;
