@@ -88,7 +88,7 @@ export default class Fireworks extends Visual {
         human: "Max Fragments",
         default: 15,
         rangeMin: 5,
-        rangeMax: 50,
+        rangeMax: 200,
       },
       maxFragmentLife: {
         type: "number",

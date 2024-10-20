@@ -1,13 +1,14 @@
 import { ReactNode, useEffect, useState } from "react";
 import Button, { ButtonType } from "./Button";
-import Panel from "./Panel";
 import Row from "./Row";
+import Loader from "react-spinners/PulseLoader";
 
 interface Model {
+  id?: string;
   icon?: string;
-  title: string;
+  title?: string;
   body: ReactNode;
-  buttons: ModelButton[];
+  buttons?: ModelButton[];
 }
 
 interface ModelButton {
@@ -19,6 +20,8 @@ interface ModelButton {
 
 export let modelStack: Model[] = [];
 export let addModel: (data: Model) => void = () => {};
+export let closeModel: (id?: string) => void = () => {};
+export let updateModal: (id: string, newElement: ReactNode) => void = () => {};
 
 export default function AlertManager() {
   const [current, setCurrent] = useState<Model | null>(null);
@@ -26,6 +29,28 @@ export default function AlertManager() {
   useEffect(() => {
     addModel = (model) => {
       modelStack.push(model);
+      reload();
+    };
+
+    closeModel = (id) => {
+      if (id) {
+        const index = modelStack.findIndex((x) => x.id === id);
+        if (index < 0) return;
+        modelStack.splice(index, 1);
+        reload();
+      } else {
+        modelStack.pop();
+        reload();
+      }
+    };
+
+    updateModal = (id, el) => {
+      const index = modelStack.findIndex((x) => x.id === id);
+      if (index < 0) return;
+      modelStack[index] = {
+        ...modelStack[index],
+        body: el,
+      };
       reload();
     };
   }, []);
@@ -44,10 +69,12 @@ export default function AlertManager() {
       <div className="dawn-fullscreen">
         <div className="dawn-page-center">
           <div className="dawn-alert">
-            <label className="dawn-alert-title">{current.title}</label>
+            {current.title && (
+              <label className="dawn-alert-title">{current.title}</label>
+            )}
             <div className="dawn-alert-content">{current.body}</div>
             <Row>
-              {current.buttons.map((button) => (
+              {current.buttons?.map((button) => (
                 <Button
                   big
                   onClick={() => button.click(() => close())}
@@ -94,4 +121,30 @@ export function showInformation(message: string) {
       ],
     });
   });
+}
+
+export function showLoadingAlert(): {
+  stop: () => void;
+  progress: (amount: number) => void;
+} {
+  const id = Math.random().toString();
+
+  addModel({
+    id,
+    body: <Loader color="white" />,
+  });
+
+  return {
+    stop: () => closeModel(id),
+    progress: (amount) => {
+      console.log(amount);
+      updateModal(
+        id,
+        <div>
+          <Loader color="white" />
+          <label>{(amount * 100).toFixed(2)}%</label>
+        </div>,
+      );
+    },
+  };
 }

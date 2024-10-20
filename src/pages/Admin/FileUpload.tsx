@@ -12,7 +12,10 @@ import axios from "axios";
 import {
   showErrorAlert,
   showInformation,
+  showLoadingAlert,
 } from "../../dawn-ui/components/AlertManager";
+import { baseUrl } from "../..";
+import { axiosPostWrapper } from "../../dawn-ui/util";
 
 const fileTags: string[] = [
   "fractionation",
@@ -36,26 +39,13 @@ export default function FileUpload() {
       script: scriptRef.current?.value || "",
       auth: adminKeyRef.current?.value || "",
       tags,
-      file,
     };
 
-    try {
-      const result = await axios.post(
-        "/api/admin/file-upload",
-        details
-      );
-
-      if (result.status !== 200) {
-        return showErrorAlert(
-          `${result.data?.message || JSON.stringify(result.data)}`,
-        );
-      }
-
-      return showInformation("Successfully uploaded the file!");
-    } catch (e) {
-      console.log(e);
-      return showErrorAlert(`Failed to upload: ${e}`);
-    }
+    const result = await axiosPostWrapper(
+      `${baseUrl}/api/admin/file-upload`,
+      details,
+    );
+    console.log(result);
   }
 
   return (

@@ -57,8 +57,14 @@ pub struct UploadFileData {
     description: String,
     tags: Vec<String>,
     script: String,
-    file: String,
+    file: Option<String>,
     auth: String,
+}
+
+#[derive(Responder)]
+pub enum FileUploadResponses {
+    Json(Json<DawnFile>),
+    String(String),
 }
 
 #[post("/api/admin/file-upload", format = "json", data = "<file_options>")]
@@ -66,33 +72,39 @@ pub async fn upload_file(
     file_options: Json<UploadFileData>,
     admin_key: &State<Uuid>,
     db: &State<Pool<Sqlite>>,
-) -> Option<Json<DawnFile>> {
-    let file_name = format!(
-        "{}.mp3",
-        file_options.title.replace(" ", "-").to_lowercase()
-    );
-
+) -> Option<FileUploadResponses> {
     if file_options.0.auth != admin_key.to_string() {
         return None;
     }
 
-    let result = sqlx::query_as::<_, DawnFile>("INSERT INTO files (title, description, script, tags, file_path) VALUES (?1, ?2, ?3, ?4, ?5) RETURNING *;")
-    .bind(file_options.0.title)
-    .bind(file_options.0.description)
-    .bind(file_options.0.script)
-    .bind(file_options.0.tags.join(","))
-    .bind(file_name.clone())
-    .fetch_one(db.inner()).await.unwrap();
+    if let Some(ref file_data) = file_options.0.file {
+        let file_name = format!(
+            "{}.mp3",
+            file_options.title.replace(" ", "-").to_lowercase()
+        );
 
-    write_file_from_data_url(
-        &file_options.0.file,
-        std::env::current_dir()
-            .unwrap()
-            .join(format!("./files/{}", file_name)),
-    )
-    .unwrap();
+        let result = sqlx::query_as::<_, DawnFile>("INSERT INTO files (title, description, script, tags, file_path) VALUES (?1, ?2, ?3, ?4, ?5) RETURNING *;")
+        .bind(file_options.0.title)
+        .bind(file_options.0.description)
+        .bind(file_options.0.script)
+        .bind(file_options.0.tags.join(","))
+        .bind(file_name.clone())
+        .fetch_one(db.inner()).await.unwrap();
 
-    Some(Json(result))
+        write_file_from_data_url(
+            &file_data,
+            std::env::current_dir()
+                .unwrap()
+                .join(format!("./files/{}", file_name)),
+        )
+        .unwrap();
+
+        return Some(FileUploadResponses::Json(Json(result)));
+    }
+
+    Some(FileUploadResponses::String(String::from(
+        "OK to upload file",
+    )))
 }
 
 pub struct CORS;
