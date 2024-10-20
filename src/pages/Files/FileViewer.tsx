@@ -23,7 +23,7 @@ export default function FileViewer() {
 
       try {
         const result = await axios.get(`${baseUrl}/api/files/${id}`);
-        
+
         if (result.status !== 200) {
           throw result.data?.message || "Did not get status code 200";
         }
@@ -46,7 +46,7 @@ export default function FileViewer() {
 
                 <audio controls>
                   <source
-                    src={`/files/${file?.id}.mp3`}
+                    src={`/api/audios/${file?.id}`}
                     type="audio/mpeg"
                   >
                   </source>

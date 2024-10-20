@@ -17,9 +17,10 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
 );
 
-export const baseUrl = window.location.hostname === "localhost"
-  ? "https://dawn.rest"
-  : "";
+const baseUrlLS = localStorage.getItem("base_url");
+export const baseUrl = baseUrlLS
+  ? baseUrlLS
+  : (window.location.hostname === "localhost" ? "https://dawn.rest" : "");
 
 const routes = createBrowserRouter([
   {
