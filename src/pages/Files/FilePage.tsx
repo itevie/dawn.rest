@@ -10,6 +10,7 @@ import Link from "../../dawn-ui/components/Link";
 import { baseUrl } from "../..";
 import { Text } from "../../dawn-ui";
 import Container from "../../dawn-ui/components/Container";
+import { axiosWrapper } from "../../dawn-ui/util";
 
 export interface DawnFile {
   id: number;
@@ -28,15 +29,10 @@ export default function FilePage() {
   useEffect(() => {
     (async () => {
       try {
-        const result = await axios.get(`${baseUrl}/api/file-list`);
-        if (result.status !== 200) {
-          throw result.data?.message || "Status code was not 200.";
-        }
+        const result = await axiosWrapper("get", `${baseUrl}/api/file-list`);
 
         setFiles(result.data.reverse());
-      } catch (e) {
-        return showErrorAlert(`Failed to fetch file list! ${e}`);
-      }
+      } catch (e) { }
     })();
   }, []);
 

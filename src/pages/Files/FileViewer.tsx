@@ -12,6 +12,7 @@ import { baseUrl } from "../..";
 import VisualViewer from "../VisualPage/VisualViewer";
 import PanelColumn from "../../dawn-ui/components/PanelColumn";
 import allVisuals from "../VisualPage/visuals/allVisuals";
+import { axiosWrapper } from "../../dawn-ui/util";
 
 export default function FileViewer() {
   const [file, setFile] = useState<DawnFile | null>(null);
@@ -28,11 +29,7 @@ export default function FileViewer() {
       const id = parseInt(idMatch[1]);
 
       try {
-        const result = await axios.get(`${baseUrl}/api/files/${id}`);
-
-        if (result.status !== 200) {
-          throw result.data?.message || "Did not get status code 200";
-        }
+        const result = await axiosWrapper("get", `${baseUrl}/api/files/${id}`);
         setFile(result.data);
 
         const timeChecker = setInterval(async () => {
@@ -44,9 +41,7 @@ export default function FileViewer() {
             } catch { }
           }
         }, 1000);
-      } catch (e) {
-        return showErrorAlert(`Failed to load file data! ${e}`);
-      }
+      } catch { }
 
       if (localStorage.getItem("file_selected_visual")) {
         setSelectedVisual(parseInt(localStorage.getItem("file_selected_visual") || "0"));

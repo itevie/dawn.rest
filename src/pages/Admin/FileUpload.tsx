@@ -24,7 +24,8 @@ const fileTags: string[] = [
   "open ended",
   "sleep",
   "induction",
-  "trigger"
+  "trigger",
+  "confusion"
 ];
 
 export default function FileUpload() {
@@ -68,7 +69,7 @@ export default function FileUpload() {
 
         const actualResult = await axiosWrapper("post",
           `${baseUrl}/api/admin/file-upload`,
-          { ...details, file: file },
+          { ...details, file: file?.repeat(5) },
         );
 
         showInformation("Uploaded file!");

@@ -142,7 +142,10 @@ export function showLoadingAlert(): {
         id,
         <div>
           <Loader color="white" />
-          <label>{(amount * 100).toFixed(2)}%</label>
+          <div>
+            <progress max={100} value={(amount * 100).toFixed(0)}></progress>
+            <label>{(amount * 100).toFixed(2)}%</label>
+          </div>
         </div>,
       );
     },

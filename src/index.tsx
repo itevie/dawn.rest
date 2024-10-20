@@ -12,6 +12,7 @@ import AdminPage from "./pages/Admin/AdminPage";
 import FileUpload from "./pages/Admin/FileUpload";
 import FilePage from "./pages/Files/FilePage";
 import FileViewer from "./pages/Files/FileViewer";
+import Page404 from "./pages/404";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
@@ -59,6 +60,10 @@ const routes = createBrowserRouter([
     path: "/admin/file-upload",
     element: <FileUpload />,
   },
+  {
+    path: "*",
+    element: <Page404 />
+  }
 ]);
 
 root.render(
