@@ -175,3 +175,25 @@ export function showInputModel(title: string): Promise<string | null> {
     })
   });
 }
+
+export function showConfirmModel(title: string, yesCb: () => void): void {
+  addModel({
+    title: "Confirm",
+    body: <label>{title}</label>,
+    buttons: [
+      {
+        id: "no",
+        text: "No",
+        click: c => c(),
+      },
+      {
+        id: "yes",
+        text: "Yes",
+        click: (c) => {
+          c();
+          yesCb();
+        }
+      }
+    ]
+  });
+}

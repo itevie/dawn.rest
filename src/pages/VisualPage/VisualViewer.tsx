@@ -10,7 +10,7 @@ import VisualInput from "./VisualInput";
 import Button from "../../dawn-ui/components/Button";
 import PanelRow from "../../dawn-ui/components/PanelRow";
 import { randomRange } from "./visuals/util";
-import { showInformation } from "../../dawn-ui/components/AlertManager";
+import { showConfirmModel, showInformation } from "../../dawn-ui/components/AlertManager";
 
 const textFlashes = {
   deep: [
@@ -267,6 +267,14 @@ export default function VisualViewer(props: { setId?: number, inFrame?: boolean 
     }, 10);
   }
 
+  function loadDefaults() {
+    const defaults: { [key: string]: any } = {};
+    for (const [k, v] of Object.entries((visual as Visual).getOptions())) {
+      defaults[k] = v.default;
+    }
+    setCurrentOptions(defaults);
+  }
+
   function setFlashTextOption(key: string, value: any) {
     setFlashTextOptions((old) => {
       const newValues: any = { ...old };
@@ -325,7 +333,7 @@ export default function VisualViewer(props: { setId?: number, inFrame?: boolean 
                       {Object.keys(visual?.getPresets() ?? {}).length > 0 && (
                         <>
                           <td>
-                            <b>Presets:</b>
+                            <b>Presets</b>
                           </td>
                           <td>
                             {Object.entries(visual?.getPresets() ?? {}).map((
@@ -341,6 +349,14 @@ export default function VisualViewer(props: { setId?: number, inFrame?: boolean 
                           </td>
                         </>
                       )}
+                    </tr>
+                    <tr>
+                      <td>
+                        <b>Reset</b>
+                      </td>
+                      <td>
+                        <Button onClick={() => showConfirmModel("Are you sure you want to reset all options?", loadDefaults)}>reset</Button>
+                      </td>
                     </tr>
                   </tbody>
                 </table>

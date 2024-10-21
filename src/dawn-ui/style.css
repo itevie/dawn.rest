@@ -235,7 +235,7 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  overflow: none;
+  overflow: hidden;
   background-color: #00000044;
   z-index: 10;
 }
