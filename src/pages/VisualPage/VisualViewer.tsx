@@ -11,6 +11,7 @@ import Button from "../../dawn-ui/components/Button";
 import PanelRow from "../../dawn-ui/components/PanelRow";
 import { randomRange } from "./visuals/util";
 import { showConfirmModel, showInformation } from "../../dawn-ui/components/AlertManager";
+import PanelColumn from "../../dawn-ui/components/PanelColumn";
 
 const textFlashes = {
   deep: [
@@ -273,6 +274,11 @@ export default function VisualViewer(props: { setId?: number, inFrame?: boolean 
       defaults[k] = v.default;
     }
     setCurrentOptions(defaults);
+
+    setIsPlaying(true);
+    setTimeout(() => {
+      setIsPlaying(false);
+    }, 10);
   }
 
   function setFlashTextOption(key: string, value: any) {
