@@ -6,13 +6,13 @@ import Panel from "../../dawn-ui/components/Panel";
 import PanelRow from "../../dawn-ui/components/PanelRow";
 import { DawnFile } from "./FilePage";
 import { Text } from "../../dawn-ui";
-import { showErrorAlert } from "../../dawn-ui/components/AlertManager";
 import axios from "axios";
 import { baseUrl } from "../..";
 import VisualViewer from "../VisualPage/VisualViewer";
 import PanelColumn from "../../dawn-ui/components/PanelColumn";
 import allVisuals from "../VisualPage/visuals/allVisuals";
 import { axiosWrapper } from "../../dawn-ui/util";
+import Row from "../../dawn-ui/components/Row";
 
 export default function FileViewer() {
   const [file, setFile] = useState<DawnFile | null>(null);
@@ -47,15 +47,11 @@ export default function FileViewer() {
         setSelectedVisual(parseInt(localStorage.getItem("file_selected_visual") || "0"));
       }
     })();
-  }, []);
+  }, [viewAdded]);
 
   function visualSetSelected(index: number) {
     setSelectedVisual(index);
     localStorage.setItem("file_selected_visual", index.toString());
-  }
-
-  async function addView(e: React.SyntheticEvent<HTMLAudioElement, Event>) {
-    console.log(e.currentTarget);
   }
 
   return (
@@ -118,11 +114,13 @@ export default function FileViewer() {
             </Panel>
           </PanelRow>
           <Panel width="full" title="Visual">
-            <Text>Play a visual while you listen.</Text>
-            <select defaultValue={selectedVisual || -1} onChange={e => visualSetSelected((e.currentTarget[e.currentTarget.selectedIndex] as any).value)}>
-              <option value={-1}>None</option>
-              {allVisuals.map((x, i) => <option key={i} value={i}>{new x().name}</option>)}
-            </select>
+            <Row>
+              <Text>Play a visual while you listen: </Text>
+              <select style={{ width: "200px" }} defaultValue={selectedVisual || -1} onChange={e => visualSetSelected((e.currentTarget[e.currentTarget.selectedIndex] as any).value)}>
+                <option value={-1}>None</option>
+                {allVisuals.map((x, i) => <option key={i} value={i}>{new x().name}</option>)}
+              </select>
+            </Row>
             {
               (selectedVisual && selectedVisual > -1) &&
               <VisualViewer setId={selectedVisual} inFrame={true} />

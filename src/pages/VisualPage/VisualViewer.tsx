@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import Visual, { VisualOption, VisualOptions } from "./visuals/Visualisation";
+import Visual, { VisualOption } from "./visuals/Visualisation";
 import allVisuals from "./visuals/allVisuals";
 import Page from "../../dawn-ui/components/Page";
 import RestNavbar from "../../components/RestNavbar";
@@ -72,12 +72,12 @@ export default function VisualViewer(props: { setId?: number, inFrame?: boolean 
 
   useEffect(() => {
     const visualId = window.location.pathname.match(/[0-9]+/);
-    if (!visualId || parseInt(visualId[0]) >= allVisuals.length && !props.inFrame) {
+    if ((!visualId || parseInt(visualId[0]) >= allVisuals.length) && !props.inFrame) {
       window.location.href = "/hypno/visuals";
       return;
     }
 
-    const id = props.setId ?? parseInt(visualId[0]);
+    const id = props.setId ?? parseInt((visualId as string[])[0]);
     setId(id);
 
     const cvisual = allVisuals[id];
@@ -167,7 +167,6 @@ export default function VisualViewer(props: { setId?: number, inFrame?: boolean 
 
         // Check if it is enabled
         if (flashTextOptions.enabled) {
-          const cw = flashTextOptions.customWords.split(",");
           const validWords = ([] as string[]).concat(
             flashTextOptions.usePreset
               ? textFlashes[flashTextOptions.preset ?? "deep"]
@@ -491,12 +490,14 @@ export default function VisualViewer(props: { setId?: number, inFrame?: boolean 
                 <Text>
                   Share the following link to show others this visual.
                 </Text>
-                <input readOnly value={url}></input>
-                <Button
-                  onClick={() => window.navigator.clipboard.writeText(url)}
-                >
-                  Copy
-                </Button>
+                <div style={{ display: "flex" }}>
+                  <input readOnly value={url}></input>
+                  <Button
+                    onClick={() => window.navigator.clipboard.writeText(url)}
+                  >
+                    Copy
+                  </Button>
+                </div>
               </Panel>
             </PanelRow>}
           </Content>

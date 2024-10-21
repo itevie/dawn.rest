@@ -1,6 +1,6 @@
-import { useMemo } from "react";
-import { NumberVisualOption, VisualOption } from "./visuals/Visualisation";
+import { VisualOption } from "./visuals/Visualisation";
 import ArrayInput from "../../dawn-ui/components/ArrayInput";
+import Row from "../../dawn-ui/components/Row";
 
 function getProps(option: VisualOption): { [key: string]: any } {
   if (option.type === "number") {
@@ -47,14 +47,14 @@ export default function VisualInput(
     <>
       {{
         "number": (
-          <>
+          <Row>
             <input
               {...props}
               value={current[name] ?? option.default}
               onChange={(i) => set(option, name, i)}
             />
-            <label>{current[name] ?? option.default}</label>
-          </>
+            <label style={{ width: "40px" }}>{current[name] ?? option.default}</label>
+          </Row>
         ),
         "color": (
           <input

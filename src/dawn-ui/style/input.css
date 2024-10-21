@@ -1,0 +1,72 @@
+input,
+select,
+textarea {
+  display: block;
+
+  width: 100%;
+
+  background-color: var(--dawn-control-background);
+  color: white;
+
+  border-style: solid;
+  border-color: var(--dawn-control-border);
+
+  transition: var(--dawn-hover-transition);
+
+  outline: none;
+}
+
+input[type="checkbox"] {
+  width: fit-content;
+
+  accent-color: var(--dawn-accent);
+
+  border-style: solid;
+  border-color: var(--dawn-control-border);
+  background-color: black;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+
+  height: 10px;
+
+  border-style: none;
+  border-radius: 10px;
+
+  background-color: var(--dawn-control-hover-background);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: var(--dawn-accent);
+  cursor: pointer;
+  border-radius: 100px;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: var(--dawn-accent);
+  cursor: pointer;
+  border-radius: 100px;
+}
+
+textarea {
+  transition: none;
+}
+
+input:hover,
+input:focus,
+select:hover,
+textarea:hover {
+  background-color: var(--dawn-control-hover-background);
+}
+
+select {
+  padding: 5px;
+}

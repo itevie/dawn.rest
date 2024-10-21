@@ -1,11 +1,9 @@
 import {
-  cloneElement,
-  HTMLAttributes,
-  ReactNode,
   useEffect,
   useState,
 } from "react";
 import Button from "./Button";
+import Row from "./Row";
 
 export default function ArrayInput(props: {
   input: React.DetailedHTMLProps<
@@ -30,7 +28,7 @@ export default function ArrayInput(props: {
       }
 
       const inp = [];
-      for (let i = 0; i != props.currentValues.length; i++) {
+      for (let i = 0; i !== props.currentValues.length; i++) {
         inp.push(Math.random());
       }
       setInputs(inp);
@@ -91,14 +89,16 @@ export default function ArrayInput(props: {
     <div>
       {inputs.map((x) => (
         <div key={x}>
-          <input
-            {...props.input}
-            {...(props.input.type === "checkbox"
-              ? { checked: values[inputs.findIndex((y) => y === x)] }
-              : { value: values[inputs.findIndex((y) => y === x)] })}
-            onChange={(i) => inputUpdated(i, x)}
-          />
-          <Button onClick={() => removeInput(x)}>X</Button>
+          <Row>
+            <input
+              {...props.input}
+              {...(props.input.type === "checkbox"
+                ? { checked: values[inputs.findIndex((y) => y === x)] }
+                : { value: values[inputs.findIndex((y) => y === x)] })}
+              onChange={(i) => inputUpdated(i, x)}
+            />
+            <Button onClick={() => removeInput(x)}>X</Button>
+          </Row>
           <br />
         </div>
       ))}
