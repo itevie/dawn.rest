@@ -118,11 +118,11 @@ export default function FileViewer() {
               <Text>Play a visual while you listen: </Text>
               <select style={{ width: "200px" }} defaultValue={selectedVisual || -1} onChange={e => visualSetSelected((e.currentTarget[e.currentTarget.selectedIndex] as any).value)}>
                 <option value={-1}>None</option>
-                {allVisuals.map((x, i) => <option key={i} value={i}>{new x().name}</option>)}
+                {allVisuals.map((x, i) => <option selected={selectedVisual === i} key={i} value={i}>{new x().name}</option>)}
               </select>
             </Row>
             {
-              (selectedVisual && selectedVisual > -1) &&
+              (selectedVisual !== null && selectedVisual > -1) &&
               <VisualViewer setId={selectedVisual} inFrame={true} />
             }
           </Panel>

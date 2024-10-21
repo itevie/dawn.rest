@@ -163,7 +163,12 @@ export default function VisualViewer(props: { setId?: number, inFrame?: boolean 
       // Timeout to allow the text to be seen
       let textFlasherTimer: ReturnType<typeof setInterval>;
       setTimeout(() => {
-        visualInstance.draw(context, { ...defaults, ...currentOptions });
+        try {
+          visualInstance.draw(context, { ...defaults, ...currentOptions });
+        } catch (e) {
+          console.log(e);
+          canvas.click();
+        }
 
         // Check if it is enabled
         if (flashTextOptions.enabled) {
