@@ -274,6 +274,7 @@ export default function VisualViewer(props: { setId?: number, inFrame?: boolean 
       defaults[k] = v.default;
     }
     setCurrentOptions(defaults);
+    localStorage.removeItem(`current_visual_settings_${id}`);
 
     setIsPlaying(true);
     setTimeout(() => {

@@ -1,4 +1,5 @@
 import Dashes from "./Dashes";
+import Eye from "./Eye";
 import Fireworks from "./Fireworks";
 import Gif from "./Gif";
 import Hearts from "./Hearts";
@@ -11,5 +12,6 @@ const allVisuals = [
   Dashes,
   Fireworks,
   Gif,
+  Eye,
 ] as unknown as typeof Visual[];
 export default allVisuals;
