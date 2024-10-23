@@ -11,3 +11,4 @@ base64 = "0.21"
 uuid = { version = "1.11.0", features = ["v4"] }
 lazy_static = "1.5.0"
 regex = "1.11.0"
+reqwest = "0.12.8"

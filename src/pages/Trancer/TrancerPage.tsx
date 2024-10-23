@@ -8,7 +8,7 @@ import PanelRow from "../../dawn-ui/components/PanelRow";
 import Panel from "../../dawn-ui/components/Panel";
 import axios from "axios";
 import { Chart as ChartJS, registerables } from "chart.js";
-import { Bar, Chart, Line } from "react-chartjs-2";
+import { Bar, Line } from "react-chartjs-2";
 import { showErrorAlert } from "../../dawn-ui/components/AlertManager";
 ChartJS.register(...registerables);
 
@@ -42,7 +42,7 @@ interface TrancerData {
 }
 type TrancerQueryType = keyof TrancerData;
 
-let baseDataURL = "/trancer-proxy?url=/data";
+let baseDataURL = "/trancer/data";
 if (window.location.host.includes("localhost")) {
   baseDataURL = "https://discord.dawn.rest/data";
 }
