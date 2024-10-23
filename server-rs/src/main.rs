@@ -124,5 +124,6 @@ async fn rocket() -> _ {
         .mount("/", routes::files::routes())
         .mount("/", routes::admin::routes())
         .mount("/", routes::analytics::routes())
+        .mount("/", routes::redirects::routes())
         .mount("/", routes![fuck_options, index])
 }

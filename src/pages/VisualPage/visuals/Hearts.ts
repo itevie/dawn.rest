@@ -58,6 +58,21 @@ export default class Hearts extends Visual {
     };
   }
 
+  public getPresets(): { [key: string]: any; } {
+    return {
+      rainbow: {
+        colors: [
+          "#FF0018",
+          "#FFA52C",
+          "#FFFF41",
+          "#008018",
+          "#0000F9",
+          "#86007D",
+        ],
+      },
+    }
+  }
+
   private addHeart(ctx: CanvasRenderingContext2D, options: HeartOptions): void {
     const { x, y } = getCanvasCenter(ctx);
     if (this.currentColorIndex === options.colors.length) {
