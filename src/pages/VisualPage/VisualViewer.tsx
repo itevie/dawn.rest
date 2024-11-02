@@ -11,7 +11,6 @@ import Button from "../../dawn-ui/components/Button";
 import PanelRow from "../../dawn-ui/components/PanelRow";
 import { randomRange } from "./visuals/util";
 import { showConfirmModel, showInformation } from "../../dawn-ui/components/AlertManager";
-import PanelColumn from "../../dawn-ui/components/PanelColumn";
 
 const textFlashes = {
   deep: [

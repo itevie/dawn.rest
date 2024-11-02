@@ -1,4 +1,4 @@
-use rocket::{http::Status, response::Redirect};
+use rocket::{fs::NamedFile, http::Status, response::{status, Redirect}};
 
 static REDIRECTS: [(&'static str, &'static str); 3] = [
     ("discord", "https://discord.gg/xrjcHcAsj2"),
@@ -26,6 +26,17 @@ pub fn redirect_to_short(path: &str) -> Result<Redirect, Status> {
     Err(Status::NotFound)
 }
 
+#[get("/cdn/<path>")]
+pub async fn get_cdn_file(path: &str) -> status::Custom<Option<NamedFile>> {
+  let path = std::env::current_dir().unwrap().join("./cdn").join(path);
+
+  if !path.exists() {
+    return status::Custom(Status::NotFound, None);
+  }
+
+  status::Custom(Status::Ok, Some(NamedFile::open(path).await.unwrap()))
+}
+
 pub fn routes() -> Vec<rocket::Route> {
-    routes![redirect_to, redirect_to_short]
+    routes![redirect_to, redirect_to_short, get_cdn_file]
 }

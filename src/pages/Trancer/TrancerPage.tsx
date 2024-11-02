@@ -10,6 +10,7 @@ import axios from "axios";
 import { Chart as ChartJS, registerables } from "chart.js";
 import { Bar, Line } from "react-chartjs-2";
 import { showErrorAlert } from "../../dawn-ui/components/AlertManager";
+import Row from "../../dawn-ui/components/Row";
 ChartJS.register(...registerables);
 
 interface TrancerData {
@@ -131,7 +132,7 @@ export default function TrancerPage() {
     <Page>
       <RestNavbar
         title={
-          <Text type="heading">
+          <Text type="title">
             {{
               "about": "About Trancer",
               "leaderboards": "Leaderboards",
@@ -159,16 +160,22 @@ export default function TrancerPage() {
             </>
           ),
 
+          "user-data": (
+            <>
+              
+            </>
+          ),
+
           "leaderboards": (
             <>
-              <Text>
-                Search:{" "}
+              <Row>
+                <Text>Search:{" "}</Text>
                 <input
                   onChange={(e) =>
                     setLeaderboardSearch(e.target.value.toLowerCase())}
                 >
                 </input>
-              </Text>
+              </Row>
               <PanelRow>
                 {/* Balance Leaderboard */}
                 <Panel width="fit" title="Economy Leaderboard">
