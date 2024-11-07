@@ -5,8 +5,8 @@ interface BaseVisualOption {
 
 export interface NumberVisualOption extends BaseVisualOption {
   type: "number";
-  rangeMin: number;
-  rangeMax: number;
+  min: number;
+  max: number;
   default: number;
 }
 

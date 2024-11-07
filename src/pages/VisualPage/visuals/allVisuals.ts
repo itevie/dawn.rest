@@ -3,8 +3,10 @@ import Eye from "./Eye";
 import Fireworks from "./Fireworks";
 import Gif from "./Gif";
 import Hearts from "./Hearts";
+import Pendulum from "./Pendulum";
 import Shapes from "./Shapes";
 import Spiral from "./Spiral";
+import LogorithmicSpiral from "./LogorithmicSpiral";
 import Visual from "./Visualisation";
 
 const allVisuals = [
@@ -14,6 +16,8 @@ const allVisuals = [
   Fireworks,
   Gif,
   Eye,
-  Shapes
-] as unknown as typeof Visual[];
+  Shapes,
+  Pendulum,
+  LogorithmicSpiral,
+] as unknown as (typeof Visual)[];
 export default allVisuals;

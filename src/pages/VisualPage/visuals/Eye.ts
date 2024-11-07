@@ -20,8 +20,9 @@ interface EyeOptions {
 }
 
 export default class Eye extends Visual {
-  public name: string = "Eye"
-  public description: string = "It's just an eye, it's not very hypnotic, or is it? It watches you though.";
+  public name: string = "Eye";
+  public description: string =
+    "It's just an eye, it's not very hypnotic, or is it? It watches you though.";
 
   private drawInterval: ReturnType<typeof setInterval> | undefined = undefined;
   private blinkInterval: ReturnType<typeof setInterval> | undefined = undefined;
@@ -30,95 +31,95 @@ export default class Eye extends Visual {
     return {
       eyeWidth: {
         type: "number",
-        rangeMin: 100,
-        rangeMax: 1000,
+        min: 100,
+        max: 1000,
         default: 500,
-        human: "Eye Width"
+        human: "Eye Width",
       },
       eyeHeight: {
         type: "number",
-        rangeMin: 25,
-        rangeMax: 1000,
+        min: 25,
+        max: 1000,
         default: 150,
-        human: "Eye Height"
+        human: "Eye Height",
       },
       xParallax: {
         type: "number",
-        rangeMin: 10,
-        rangeMax: 200,
+        min: 10,
+        max: 200,
         default: 30,
-        human: "X Parallax Dampen"
+        human: "X Parallax Dampen",
       },
       yParallax: {
         type: "number",
-        rangeMin: 10,
-        rangeMax: 200,
+        min: 10,
+        max: 200,
         default: 100,
-        human: "Y Parallax Dampen"
+        human: "Y Parallax Dampen",
       },
       irisSize: {
         type: "number",
-        rangeMin: 30,
-        rangeMax: 200,
+        min: 30,
+        max: 200,
         default: 70,
         human: "Iris Size",
       },
       pupilSize: {
         type: "number",
-        rangeMin: 10,
-        rangeMax: 100,
+        min: 10,
+        max: 100,
         default: 30,
         human: "Pupil Size",
       },
       blink: {
         type: "boolean",
         default: true,
-        human: "Blink"
+        human: "Blink",
       },
       blinkEvery: {
         type: "number",
-        rangeMin: 100,
-        rangeMax: 5000,
+        min: 100,
+        max: 5000,
         default: 1000,
-        human: "Blink Speed (ms)"
+        human: "Blink Speed (ms)",
       },
       blinkChance: {
         type: "number",
-        rangeMin: 1,
-        rangeMax: 100,
+        min: 1,
+        max: 100,
         default: 60,
-        human: "Blink Chance (%)"
+        human: "Blink Chance (%)",
       },
       fillIris: {
         type: "boolean",
         default: false,
-        human: "Fill Iris"
+        human: "Fill Iris",
       },
       fillPupil: {
         type: "boolean",
         default: true,
-        human: "Fill Pupil"
+        human: "Fill Pupil",
       },
       backgroundColor: {
         type: "color",
         default: "#000000",
-        human: "Background Color"
+        human: "Background Color",
       },
       eyeOutlineColor: {
         type: "color",
         default: "#FFFFFF",
-        human: "Outline Color"
+        human: "Outline Color",
       },
       eyeIrisColor: {
         type: "color",
         default: "#FFFFFF",
-        human: "Iris Color"
+        human: "Iris Color",
       },
       eyePupilColor: {
         type: "color",
         default: "#FF0000",
-        human: "Pupil Color"
-      }
+        human: "Pupil Color",
+      },
     };
   }
 
@@ -127,7 +128,7 @@ export default class Eye extends Visual {
 
     let offset: Coordinate = { x: 0, y: 0 };
 
-    window.addEventListener("mousemove", e => {
+    window.addEventListener("mousemove", (e) => {
       const center = getCanvasCenter(ctx);
       offset = {
         x: -(center.x - e.pageX),
@@ -164,9 +165,7 @@ export default class Eye extends Visual {
       }, options.blinkEvery);
 
     this.drawInterval = setInterval(() => {
-
-      if (isBlinking)
-        blinkTimer++;
+      if (isBlinking) blinkTimer++;
 
       if (isBlinking && blinkTimer > blinkLength) {
         isBlinking = false;
@@ -209,12 +208,22 @@ export default class Eye extends Visual {
       // Eye outline
       ctx.beginPath();
       ctx.moveTo(center.x - options.eyeWidth / 2, center.y);
-      ctx.quadraticCurveTo(center.x, center.y + options.eyeHeight, center.x + options.eyeWidth / 2, center.y);
+      ctx.quadraticCurveTo(
+        center.x,
+        center.y + options.eyeHeight,
+        center.x + options.eyeWidth / 2,
+        center.y
+      );
       ctx.stroke();
 
       ctx.beginPath();
       ctx.moveTo(center.x - options.eyeWidth / 2, center.y - yOffset);
-      ctx.quadraticCurveTo(center.x, center.y - options.eyeHeight, center.x + options.eyeWidth / 2, center.y - yOffset);
+      ctx.quadraticCurveTo(
+        center.x,
+        center.y - options.eyeHeight,
+        center.x + options.eyeWidth / 2,
+        center.y - yOffset
+      );
       ctx.stroke();
 
       // Iris
@@ -222,7 +231,13 @@ export default class Eye extends Visual {
       ctx.fillStyle = options.eyeIrisColor;
       ctx.lineWidth = 7;
       ctx.beginPath();
-      ctx.arc(center.x + offset.x / options.xParallax, center.y + offset.y / options.yParallax, options.irisSize, 0, Math.PI * 2);
+      ctx.arc(
+        center.x + offset.x / options.xParallax,
+        center.y + offset.y / options.yParallax,
+        options.irisSize,
+        0,
+        Math.PI * 2
+      );
       if (options.fillIris) ctx.fill();
       ctx.stroke();
 
@@ -231,7 +246,13 @@ export default class Eye extends Visual {
       ctx.strokeStyle = options.eyePupilColor;
       ctx.lineWidth = 3;
       ctx.beginPath();
-      ctx.arc(center.x + offset.x / (options.xParallax * 0.5), center.y + offset.y / (options.yParallax * 0.5), options.pupilSize, 0, Math.PI * 2);
+      ctx.arc(
+        center.x + offset.x / (options.xParallax * 0.5),
+        center.y + offset.y / (options.yParallax * 0.5),
+        options.pupilSize,
+        0,
+        Math.PI * 2
+      );
       if (options.fillPupil) ctx.fill();
       ctx.stroke();
     }, 1000 / 60);

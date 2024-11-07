@@ -24,6 +24,7 @@ interface TrancerData {
     bumps: number;
     messages_sent: number;
     vc_time: number;
+    xp: number;
   }[];
   command_usage?: {
     command_name: string;
@@ -207,6 +208,7 @@ export default function TrancerPage() {
                   ["messages_sent", "Messages", "Messages"],
                   ["vc_time", "VC Time", "Minutes"],
                   ["bumps", "Bumps", "Bumps"],
+                  ["xp", "XP", "XP"],
                 ] as [keyof TrancerData["user_data"], string, string][]).map(
                   (part) => (
                     <Panel width="fit" title={`${part[1]} Leaderboard`}>

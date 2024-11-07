@@ -25,16 +25,16 @@ export default class Spiral extends Visual {
       spinSpeed: {
         type: "number",
         human: "Spin Speed",
-        rangeMin: 0.01,
-        rangeMax: 0.6,
+        min: 0.01,
+        max: 0.6,
         default: 0.2,
       },
       segments: {
         type: "number",
         human: "Segments",
         default: 0,
-        rangeMin: -32,
-        rangeMax: 32,
+        min: -32,
+        max: 32,
       },
       reverse: {
         type: "boolean",
@@ -84,7 +84,7 @@ export default class Spiral extends Visual {
 
   public override draw(
     ctx: CanvasRenderingContext2D,
-    options: SpiralOptions,
+    options: SpiralOptions
   ): void {
     ctx.canvas.style.backgroundColor = options.backgroundColor;
 
@@ -102,7 +102,7 @@ export default class Spiral extends Visual {
 
   public drawFrame(
     ctx: CanvasRenderingContext2D,
-    options: SpiralOptions,
+    options: SpiralOptions
   ): void {
     const { x: centerX, y: centerY } = getCanvasCenter(ctx);
     let [previousX, previousY] = [centerX, centerY];

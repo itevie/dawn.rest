@@ -36,8 +36,8 @@ export default class Hearts extends Visual {
       spawnSpeed: {
         type: "number",
         human: "Rate (ms)",
-        rangeMin: 100,
-        rangeMax: 2000,
+        min: 100,
+        max: 2000,
         default: 250,
       },
       backgroundColor: {
@@ -58,7 +58,7 @@ export default class Hearts extends Visual {
     };
   }
 
-  public getPresets(): { [key: string]: any; } {
+  public getPresets(): { [key: string]: any } {
     return {
       rainbow: {
         colors: [
@@ -70,7 +70,7 @@ export default class Hearts extends Visual {
           "#86007D",
         ],
       },
-    }
+    };
   }
 
   private addHeart(ctx: CanvasRenderingContext2D, options: HeartOptions): void {
@@ -106,7 +106,7 @@ export default class Hearts extends Visual {
           heart.location.y,
           heart.size,
           heart.size,
-          hexToRGB(heart.color, heart.opacity),
+          hexToRGB(heart.color, heart.opacity)
         );
 
         if (options.reverse) {
@@ -145,7 +145,7 @@ function drawHeart(
   fromy: number,
   lw: number,
   hlen: number,
-  color: string,
+  color: string
 ) {
   let x = fromx;
   let y = fromy;
@@ -157,14 +157,7 @@ function drawHeart(
   let topCurveHeight = height * 0.3;
   ctx.moveTo(x, y + topCurveHeight);
   // top left curve
-  ctx.bezierCurveTo(
-    x,
-    y,
-    x - width / 2,
-    y,
-    x - width / 2,
-    y + topCurveHeight,
-  );
+  ctx.bezierCurveTo(x, y, x - width / 2, y, x - width / 2, y + topCurveHeight);
 
   // bottom left curve
   ctx.bezierCurveTo(
@@ -173,7 +166,7 @@ function drawHeart(
     x,
     y + (height + topCurveHeight) / 2,
     x,
-    y + height,
+    y + height
   );
 
   // bottom right curve
@@ -183,18 +176,11 @@ function drawHeart(
     x + width / 2,
     y + (height + topCurveHeight) / 2,
     x + width / 2,
-    y + topCurveHeight,
+    y + topCurveHeight
   );
 
   // top right curve
-  ctx.bezierCurveTo(
-    x + width / 2,
-    y,
-    x,
-    y,
-    x,
-    y + topCurveHeight,
-  );
+  ctx.bezierCurveTo(x + width / 2, y, x, y, x, y + topCurveHeight);
 
   ctx.closePath();
   ctx.fillStyle = color;

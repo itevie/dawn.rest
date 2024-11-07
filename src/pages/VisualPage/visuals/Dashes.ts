@@ -36,22 +36,22 @@ export default class Dashes extends Visual {
         type: "number",
         human: "Spawn Rate (ms)",
         default: 100,
-        rangeMin: 10,
-        rangeMax: 1000,
+        min: 10,
+        max: 1000,
       },
       maxLifespan: {
         type: "number",
         human: "Max Length",
         default: 100,
-        rangeMin: 20,
-        rangeMax: 100,
+        min: 20,
+        max: 100,
       },
       size: {
         type: "number",
         human: "Size",
         default: 10,
-        rangeMin: 5,
-        rangeMax: 100,
+        min: 5,
+        max: 100,
       },
       diagonals: {
         type: "boolean",
@@ -130,7 +130,7 @@ export default class Dashes extends Visual {
 
   public override draw(
     ctx: CanvasRenderingContext2D,
-    options: DashOptions,
+    options: DashOptions
   ): void {
     ctx.canvas.style.backgroundColor = options.backgroundColor;
 
@@ -150,12 +150,12 @@ export default class Dashes extends Visual {
         }
 
         for (const i in dash.previousPoints) {
-          ctx.fillStyle = hexToRGB(dash.color, 0 + (parseInt(i) / 50));
+          ctx.fillStyle = hexToRGB(dash.color, 0 + parseInt(i) / 50);
           ctx.fillRect(
             dash.previousPoints[i].x,
             dash.previousPoints[i].y,
             dash.size,
-            dash.size,
+            dash.size
           );
         }
 

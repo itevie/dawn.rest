@@ -51,58 +51,58 @@ export default class Fireworks extends Visual {
       spawnSpeed: {
         type: "number",
         human: "Spawn Speed (ms)",
-        rangeMin: 50,
-        rangeMax: 1000,
+        min: 50,
+        max: 1000,
         default: 200,
       },
       spawnChance: {
         type: "number",
         human: "Spawn Chance",
-        rangeMin: 10,
-        rangeMax: 100,
+        min: 10,
+        max: 100,
         default: 80,
       },
       xDeviation: {
         type: "number",
         human: "Spawn Deviation",
-        rangeMin: 0,
-        rangeMax: 500,
+        min: 0,
+        max: 500,
         default: 100,
       },
       spread: {
         type: "number",
         human: "Spread",
-        rangeMin: 5,
+        min: 5,
         default: 30,
-        rangeMax: 100,
+        max: 100,
       },
       maxBurst: {
         type: "number",
         human: "Max Burst",
-        rangeMin: 1,
-        rangeMax: 10,
+        min: 1,
+        max: 10,
         default: 5,
       },
       maxFragments: {
         type: "number",
         human: "Max Fragments",
         default: 15,
-        rangeMin: 5,
-        rangeMax: 200,
+        min: 5,
+        max: 200,
       },
       maxFragmentLife: {
         type: "number",
         human: "Fragment Life",
         default: 70,
-        rangeMin: 10,
-        rangeMax: 200,
+        min: 10,
+        max: 200,
       },
       maxFragmentSpeed: {
         type: "number",
         human: "Fragment Speed",
         default: 5,
-        rangeMin: 1,
-        rangeMax: 15,
+        min: 1,
+        max: 15,
       },
       backgroundColor: {
         type: "color",
@@ -155,7 +155,8 @@ export default class Fireworks extends Visual {
   private addFirework(ctx: CanvasRenderingContext2D, options: Options) {
     this.fireworks.push({
       position: {
-        x: (ctx.canvas.width / 2) +
+        x:
+          ctx.canvas.width / 2 +
           randomRange(-options.xDeviation, options.xDeviation),
         y: ctx.canvas.height + 50,
       },
@@ -199,8 +200,8 @@ export default class Fireworks extends Visual {
                 speed: randomRange(1, options.maxFragmentSpeed),
                 color: (Math.random() > 0.5
                   ? tinycolor(firework.color).lighten(randomRange(10, 50))
-                  : tinycolor(firework.color).darken(randomRange(10, 50)))
-                  .toHexString(),
+                  : tinycolor(firework.color).darken(randomRange(10, 50))
+                ).toHexString(),
               });
             }
           }
@@ -211,20 +212,20 @@ export default class Fireworks extends Visual {
 
             // Check if the fradgment is almost dying (fade it out)
             if (fragment.life > fragment.maxLife) {
-              const opacity = (fragment.life - fragment.maxLife) /
-                (this.opacityChange * 100);
+              const opacity =
+                (fragment.life - fragment.maxLife) / (this.opacityChange * 100);
               context.fillStyle = hexToRGB(fragment.color, 1 - opacity);
             }
 
             context.fillRect(fragment.position.x, fragment.position.y, 5, 5);
 
-            const rad = fragment.angle * Math.PI / 180;
+            const rad = (fragment.angle * Math.PI) / 180;
             fragment.position.x += Math.cos(rad) * fragment.speed;
             fragment.position.y += Math.sin(rad) * fragment.speed;
             fragment.life++;
 
             // Check if to kill it
-            if (fragment.life > fragment.maxLife + (this.opacityChange * 100)) {
+            if (fragment.life > fragment.maxLife + this.opacityChange * 100) {
               firework.fragments[firework.fragments.indexOf(fragment)] = null;
             }
           }

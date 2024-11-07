@@ -13,7 +13,7 @@ interface ShapeOptions {
   spawnSpeed: number;
   colors: string[];
   backgroundColor: string;
-};
+}
 
 export default class Shapes extends Visual {
   public name: string = "Shapes";
@@ -31,8 +31,8 @@ export default class Shapes extends Visual {
       spawnSpeed: {
         type: "number",
         human: "Rate (ms)",
-        rangeMin: 100,
-        rangeMax: 2000,
+        min: 100,
+        max: 2000,
         default: 250,
       },
       backgroundColor: {
@@ -59,8 +59,8 @@ export default class Shapes extends Visual {
       location: { x: center.x, y: center.y },
       size: options.reverse ? 1000 : 10,
       opacity: options.reverse ? 0 : 1,
-      color: "#FF0000"
-    })
+      color: "#FF0000",
+    });
   }
 
   public draw(ctx: CanvasRenderingContext2D, options: ShapeOptions): void {
@@ -110,7 +110,7 @@ export default class Shapes extends Visual {
         }
       }
 
-      this.shapes = this.shapes.filter(x => x);
+      this.shapes = this.shapes.filter((x) => x);
     }, 1000 / 60);
   }
 }

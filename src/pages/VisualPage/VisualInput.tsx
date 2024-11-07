@@ -6,9 +6,9 @@ function getProps(option: VisualOption): { [key: string]: any } {
   if (option.type === "number") {
     return {
       type: "range",
-      min: option.rangeMin,
-      max: option.rangeMax,
-      step: option.rangeMin || 1,
+      min: option.min,
+      max: option.max,
+      step: option.min || 1,
     };
   } else if (option.type === "boolean") {
     return {
