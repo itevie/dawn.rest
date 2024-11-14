@@ -25,7 +25,7 @@ const fileTags: string[] = [
   "sleep",
   "induction",
   "trigger",
-  "confusion"
+  "confusion",
 ];
 
 export default function FileUpload() {
@@ -50,38 +50,40 @@ export default function FileUpload() {
 
     try {
       if (editId) {
-        await axiosWrapper("patch", `${baseUrl}/api/admin/edit-file/${editId}`, details);
+        await axiosWrapper(
+          "patch",
+          `${baseUrl}/api/admin/edit-file/${editId}`,
+          details
+        );
         return showInformation("Edited!");
       }
-    } catch { }
+    } catch {}
 
     const audioFile = new Audio(file || "");
 
-    audioFile.onloadedmetadata = async e => {
+    audioFile.onloadedmetadata = async (e) => {
       details.duration = parseInt(audioFile.duration.toString() || "0");
 
       try {
+        await axiosWrapper("post", `${baseUrl}/api/admin/file-upload`, details);
 
-        await axiosWrapper("post",
+        const actualResult = await axiosWrapper(
+          "post",
           `${baseUrl}/api/admin/file-upload`,
-          details,
-        );
-
-        const actualResult = await axiosWrapper("post",
-          `${baseUrl}/api/admin/file-upload`,
-          { ...details, file: file?.repeat(5) },
+          { ...details }
         );
 
         showInformation("Uploaded file!");
-      } catch { }
-    }
+      } catch {}
+    };
   }
 
   async function editFile() {
     const id = await showInputModel("Enter file ID");
 
     try {
-      const data = (await axiosWrapper("get", `${baseUrl}/api/files/${id}`)).data as DawnFile;
+      const data = (await axiosWrapper("get", `${baseUrl}/api/files/${id}`))
+        .data as DawnFile;
       setEditId(parseInt(id as string));
       if (nameRef.current && descriptionRef.current && scriptRef.current) {
         nameRef.current.value = data.title;
@@ -92,7 +94,7 @@ export default function FileUpload() {
           sums(Math.random());
         }, 100);
       }
-    } catch { };
+    } catch {}
   }
 
   return (
@@ -106,9 +108,7 @@ export default function FileUpload() {
               <tbody>
                 <tr>
                   <td>
-                    <Text>
-                      Name
-                    </Text>
+                    <Text>Name</Text>
                   </td>
                   <td>
                     <input ref={nameRef} />
@@ -116,9 +116,7 @@ export default function FileUpload() {
                 </tr>
                 <tr>
                   <td>
-                    <Text>
-                      Description
-                    </Text>
+                    <Text>Description</Text>
                   </td>
                   <td>
                     <input ref={descriptionRef} />
@@ -126,9 +124,7 @@ export default function FileUpload() {
                 </tr>
                 <tr>
                   <td>
-                    <Text>
-                      Script URL
-                    </Text>
+                    <Text>Script URL</Text>
                   </td>
                   <td>
                     <input ref={scriptRef} />
@@ -136,9 +132,7 @@ export default function FileUpload() {
                 </tr>
                 <tr>
                   <td>
-                    <Text>
-                      Tags
-                    </Text>
+                    <Text>Tags</Text>
                   </td>
                   <td>
                     <MultiSelect
@@ -158,9 +152,7 @@ export default function FileUpload() {
                       filter="audio/mpeg"
                       onChange={(d) => setFile(d)}
                     >
-                      <Button>
-                        Upload
-                      </Button>
+                      <Button>Upload</Button>
                     </UploadFile>
                   </td>
                 </tr>
