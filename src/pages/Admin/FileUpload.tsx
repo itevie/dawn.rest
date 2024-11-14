@@ -73,7 +73,10 @@ export default function FileUpload() {
           { ...details }
         );
 
-        showInformation("Uploaded file!");
+        showInformation(
+          "Uploaded file. Please copy the audio file to " +
+            actualResult.data.file_path
+        );
       } catch {}
     };
   }

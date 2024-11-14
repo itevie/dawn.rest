@@ -35,21 +35,21 @@ pub async fn upload_file(
         );
     }
 
+    let file_name = format!(
+        "{}.mp3",
+        file_options.title.replace(" ", "-").to_lowercase()
+    );
+
+    let result = sqlx::query_as::<_, DawnFile>("INSERT INTO files (title, description, script, tags, file_path, audio_length) VALUES (?1, ?2, ?3, ?4, ?5, ?6) RETURNING *;")
+    .bind(file_options.0.title)
+    .bind(file_options.0.description)
+    .bind(file_options.0.script)
+    .bind(file_options.0.tags.join(","))
+    .bind(file_name.clone())
+    .bind(file_options.0.duration)
+    .fetch_one(db.inner()).await.unwrap();
+
     if let Some(ref file_data) = file_options.0.file {
-        let file_name = format!(
-            "{}.mp3",
-            file_options.title.replace(" ", "-").to_lowercase()
-        );
-
-        let result = sqlx::query_as::<_, DawnFile>("INSERT INTO files (title, description, script, tags, file_path, audio_length) VALUES (?1, ?2, ?3, ?4, ?5, ?6) RETURNING *;")
-        .bind(file_options.0.title)
-        .bind(file_options.0.description)
-        .bind(file_options.0.script)
-        .bind(file_options.0.tags.join(","))
-        .bind(file_name.clone())
-        .bind(file_options.0.duration)
-        .fetch_one(db.inner()).await.unwrap();
-
         write_file_from_data_url(
             &file_data,
             std::env::current_dir()
@@ -57,14 +57,9 @@ pub async fn upload_file(
                 .join(format!("./files/{}", file_name)),
         )
         .unwrap();
-
-        return status::Custom(Status::Ok, FileUploadResponses::Json(Json(result)));
     }
 
-    status::Custom(
-        Status::Ok,
-        FileUploadResponses::String(String::from("OK to upload file")),
-    )
+    return status::Custom(Status::Ok, FileUploadResponses::Json(Json(result)));
 }
 
 #[derive(Debug, PartialEq, Eq, Deserialize)]

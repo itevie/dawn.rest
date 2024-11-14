@@ -11,6 +11,5 @@ pub struct DawnFile {
     pub audio_length: u32,
     pub uploaded_at: String,
     pub views: u32,
-    #[serde(skip_serializing)]
     pub file_path: String,
 }
