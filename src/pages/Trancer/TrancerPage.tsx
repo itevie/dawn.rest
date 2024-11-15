@@ -10,6 +10,7 @@ import Words from "../../dawn-ui/components/Words";
 import Container from "../../dawn-ui/components/Container";
 import DawnPage from "../../components/DawnPage";
 import Column from "../../dawn-ui/components/Column";
+import { ArrayElement } from "../../dawn-ui/util";
 ChartJS.register(...registerables);
 
 interface TrancerData {
@@ -40,6 +41,18 @@ interface TrancerData {
     time: string;
     amount: number;
   }[];
+  quotes?: Quote[];
+}
+
+interface Quote {
+  id: number;
+  server_id: number;
+  message_id: number;
+  channel_id: number;
+  author_id: number;
+  created_at: number;
+  last_guessed: number;
+  content: string;
 }
 type TrancerQueryType = keyof TrancerData;
 
@@ -64,6 +77,7 @@ export default function TrancerPage() {
   const [leaderboardSearch, setLeaderboardSearch] = useState<string | null>(
     null
   );
+  const [randomQuote, setRandomQuote] = useState<Quote | null>(null);
 
   useEffect(() => {
     const hashtag = window.location.hash;
@@ -86,9 +100,8 @@ export default function TrancerPage() {
     setPage(page);
 
     // Load usernames anyway
-    if (page !== "about" && !data.usernames) {
-      await fetchData("usernames");
-    }
+    await fetchData("usernames");
+    await fetchData("quotes");
 
     switch (page) {
       case "leaderboards":
@@ -113,6 +126,8 @@ export default function TrancerPage() {
         },
       });
       let json = responseData.data.data;
+      if (type === "quotes")
+        setRandomQuote(json[Math.floor(Math.random() * json.length)]);
 
       setData((old) => {
         return { ...old, [type]: json };
@@ -156,7 +171,13 @@ export default function TrancerPage() {
     >
       {{
         about: (
-          <Container title="About">
+          <Container title="About" style={{ position: "relative" }}>
+            {randomQuote && (
+              <p className="quote-text">
+                "{randomQuote.content}" -{" "}
+                {data.usernames?.[randomQuote.author_id]}
+              </p>
+            )}
             <p>
               Trancer is a hypnosis-orientated Discord bot with a plenty of
               features.

@@ -7,3 +7,24 @@
   font-size: 7em;
   opacity: 0.5;
 }
+
+.quote-text {
+  position: absolute;
+  bottom: -10px;
+  right: -30px;
+  max-width: 200px;
+  transform: rotate(-30deg);
+  text-align: center;
+  color: var(--dawn-accent);
+  animation: quote linear infinite 0.3s alternate;
+}
+
+@keyframes quote {
+  0% {
+    transform: scale(1) rotate(-30deg);
+  }
+
+  100% {
+    transform: scale(1.2) rotate(-30deg);
+  }
+}
