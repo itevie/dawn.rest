@@ -13,7 +13,7 @@ interface PendulumOptions {
 
 export default class Pendulum extends Visual {
   public name: string = "Pendulum";
-  public description: string = "Swinging back and fourth";
+  public description: string = "Swinging back and forth";
 
   public getPresets(): { [key: string]: any } {
     return {};

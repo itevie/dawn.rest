@@ -59,17 +59,19 @@ function App() {
             <label>See my hypnosis-related Discord bot: Trancer.</label>
           </Container>
         </Link>
-        <Container
-          small
-          hover
-          title="YouTube"
-          style={{
-            backgroundImage: "url(https://dawn.rest/images/youtube.svg)",
-          }}
-        >
-          <label>This is my YouTube channel where I post my files too.</label>
-        </Container>
         <Link noHighlight href="https://youtube.com/@trancebydawn">
+          <Container
+            small
+            hover
+            title="YouTube"
+            style={{
+              backgroundImage: "url(https://dawn.rest/images/youtube.svg)",
+            }}
+          >
+            <label>This is my YouTube channel where I post my files too.</label>
+          </Container>
+        </Link>
+        <Link noHighlight href="https://github.com/itevie/">
           <Container
             small
             hover

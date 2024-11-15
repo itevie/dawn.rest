@@ -1,6 +1,6 @@
 import { hexToRGB, randomRange } from "./util";
 import Visual, { Coordinate, VisualOptions } from "./Visualisation";
-import tinycolor, { random } from "tinycolor2";
+import tinycolor from "tinycolor2";
 
 interface FireworkFragment {
   position: Coordinate;

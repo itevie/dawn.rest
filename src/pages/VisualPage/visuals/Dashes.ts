@@ -1,4 +1,4 @@
-import { hexToRGB, randomBoolean, randomCoordinate, randomRange } from "./util";
+import { hexToRGB, randomCoordinate, randomRange } from "./util";
 import Visual, { Coordinate, VisualOptions } from "./Visualisation";
 
 interface Dash {

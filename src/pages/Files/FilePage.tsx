@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react";
-import RestNavbar from "../../components/RestNavbar";
-import Page from "../../dawn-ui/components/Page";
 import Link from "../../dawn-ui/components/Link";
 import { baseUrl } from "../..";
 import Container from "../../dawn-ui/components/Container";
 import { axiosWrapper } from "../../dawn-ui/util";
-import Row from "../../dawn-ui/components/Row";
 import Words from "../../dawn-ui/components/Words";
 import DawnPage from "../../components/DawnPage";
 import Column from "../../dawn-ui/components/Column";

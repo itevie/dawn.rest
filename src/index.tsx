@@ -15,6 +15,7 @@ import Page404 from "./pages/404";
 import "./dawn-ui/index";
 import "./style.css";
 import Showcase from "./dawn-ui/Showcase";
+import ContextMenuManager from "./dawn-ui/components/ContextMenuManager";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -77,6 +78,7 @@ const routes = createBrowserRouter([
 root.render(
   <>
     <AlertManager />
+    <ContextMenuManager />
     <RouterProvider router={routes} />
   </>
 );

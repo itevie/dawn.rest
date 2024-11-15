@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import Link from "../../dawn-ui/components/Link";
 import axios from "axios";
@@ -8,6 +9,7 @@ import Row from "../../dawn-ui/components/Row";
 import Words from "../../dawn-ui/components/Words";
 import Container from "../../dawn-ui/components/Container";
 import DawnPage from "../../components/DawnPage";
+import Column from "../../dawn-ui/components/Column";
 ChartJS.register(...registerables);
 
 interface TrancerData {
@@ -128,6 +130,7 @@ export default function TrancerPage() {
 
   return (
     <DawnPage
+      full={page !== "about"}
       pageTitle={
         {
           about: "About Trancer",
@@ -152,13 +155,37 @@ export default function TrancerPage() {
       }
     >
       {{
-        about: <></>,
+        about: (
+          <Container title="About">
+            <p>
+              Trancer is a hypnosis-orientated Discord bot with a plenty of
+              features.
+            </p>
+            <p>
+              It has features such as imposition (phantom touch), spirals,
+              economy, XP, quotes, leaderboards and more!
+            </p>
+            <p>
+              Want our bot in your server? Join{" "}
+              <Link href="https://discord.gg/invite/zZw7ZCRy">our server</Link>{" "}
+              and ask about it.
+            </p>
+            <Words type="container-title">Note</Words>
+            The other categories of this page require authentication.
+            <br />
+            Get a token from the Trancy Twilight Discord server by running{" "}
+            <code>.site</code>
+          </Container>
+        ),
 
         "user-data": <></>,
 
         leaderboards: (
-          <>
-            <Row>
+          <Column>
+            <Row
+              util={["justify-center", "align-center"]}
+              style={{ width: "300px" }}
+            >
               <Words>Search: </Words>
               <input
                 onChange={(e) =>
@@ -166,9 +193,12 @@ export default function TrancerPage() {
                 }
               ></input>
             </Row>
-            <Row>
+            <Row util={["flex-wrap"]}>
               {/* Balance Leaderboard */}
-              <Container small title="Economy Leaderboard">
+              <Container
+                style={{ width: "fit-content" }}
+                title="Economy Leaderboard"
+              >
                 {!data.economy ? (
                   <Words>Loading...</Words>
                 ) : (
@@ -176,7 +206,8 @@ export default function TrancerPage() {
                     <tbody>
                       {data.economy
                         .sort((a, b) => b.balance - a.balance)
-                        .map((x) => (
+                        .slice(0, 50)
+                        .map((x, i) => (
                           <tr
                             key={x.user_id}
                             className={`${
@@ -187,8 +218,9 @@ export default function TrancerPage() {
                               "dawn-highlight"
                             }`}
                           >
+                            <td>{i}</td>
                             <td>{getUsername(x.user_id)}</td>
-                            <td>{x.balance} 🌀</td>
+                            <td style={{ textAlign: "end" }}>{x.balance} 🌀</td>
                           </tr>
                         ))}
                     </tbody>
@@ -198,13 +230,16 @@ export default function TrancerPage() {
               {/* Peak prgoramming right here: */}
               {(
                 [
-                  ["messages_sent", "Messages", "Messages"],
-                  ["vc_time", "VC Time", "Minutes"],
-                  ["bumps", "Bumps", "Bumps"],
-                  ["xp", "XP", "XP"],
+                  ["messages_sent", "Messages", " 💬"],
+                  ["vc_time", "VC Time", "m"],
+                  ["bumps", "Bumps", " Bumps"],
+                  ["xp", "XP", " XP"],
                 ] as [keyof TrancerData["user_data"], string, string][]
               ).map((part) => (
-                <Container small title={`${part[1]} Leaderboard`}>
+                <Container
+                  style={{ width: "fit-content", height: "fit-content" }}
+                  title={`${part[1]} Leaderboard`}
+                >
                   {!data.user_data ? (
                     <Words>Loading...</Words>
                   ) : (
@@ -213,7 +248,8 @@ export default function TrancerPage() {
                         {data.user_data
                           .filter((x) => x[part[0]] !== 0)
                           .sort((a, b) => b[part[0]] - a[part[0]])
-                          .map((x) => (
+                          .slice(0, 50)
+                          .map((x, i) => (
                             <tr
                               key={x.user_id}
                               className={`${
@@ -224,9 +260,11 @@ export default function TrancerPage() {
                                 "dawn-highlight"
                               }`}
                             >
+                              <td>{i}</td>
                               <td>{getUsername(x.user_id)}</td>
-                              <td>
-                                {x[part[0]]} {part[2]}
+                              <td style={{ textAlign: "end" }}>
+                                {x[part[0]]}
+                                {part[2]}
                               </td>
                             </tr>
                           ))}
@@ -236,13 +274,13 @@ export default function TrancerPage() {
                 </Container>
               ))}
             </Row>
-          </>
+          </Column>
         ),
 
         bot: (
           <>
             <Row>
-              <Container small title="Command Usage">
+              <Container title="Command Usage">
                 {!data.command_usage ? (
                   "Loading..."
                 ) : (
