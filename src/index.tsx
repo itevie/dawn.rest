@@ -14,6 +14,7 @@ import FileViewer from "./pages/Files/FileViewer";
 import Page404 from "./pages/404";
 import "./dawn-ui/index";
 import "./style.css";
+import Showcase from "./dawn-ui/Showcase";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -62,6 +63,10 @@ const routes = createBrowserRouter([
   {
     path: "/admin/file-upload",
     element: <FileUpload />,
+  },
+  {
+    path: "/admin/showcase",
+    element: <Showcase />,
   },
   {
     path: "*",
