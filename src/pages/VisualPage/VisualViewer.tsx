@@ -3,14 +3,17 @@ import Visual, { VisualOption } from "./visuals/Visualisation";
 import allVisuals from "./visuals/allVisuals";
 import Page from "../../dawn-ui/components/Page";
 import RestNavbar from "../../components/RestNavbar";
-import Content from "../../dawn-ui/components/Content";
-import Panel from "../../dawn-ui/components/Panel";
-import { Text } from "../../dawn-ui";
+import Words from "../../dawn-ui/components/Words";
 import VisualInput from "./VisualInput";
 import Button from "../../dawn-ui/components/Button";
-import PanelRow from "../../dawn-ui/components/PanelRow";
 import { randomRange } from "./visuals/util";
-import { showConfirmModel, showInformation } from "../../dawn-ui/components/AlertManager";
+import {
+  showConfirmModel,
+  showInfoAlert,
+} from "../../dawn-ui/components/AlertManager";
+import Row from "../../dawn-ui/components/Row";
+import Container from "../../dawn-ui/components/Container";
+import Column from "../../dawn-ui/components/Column";
 
 const textFlashes = {
   deep: [
@@ -49,13 +52,16 @@ const defaultFlashTextOptions: FlashTextOptions = {
   customWords: "",
   enabled: true,
   opacity: 0.5,
-  color: "#FFFFFF"
+  color: "#FFFFFF",
 };
 
-export default function VisualViewer(props: { setId?: number, inFrame?: boolean }) {
+export default function VisualViewer(props: {
+  setId?: number;
+  inFrame?: boolean;
+}) {
   const [visual, setVisual] = useState<Visual | undefined>(undefined);
   const [currentOptions, setCurrentOptions] = useState<{ [key: string]: any }>(
-    {},
+    {}
   );
 
   const [id, setId] = useState<number>(-1);
@@ -72,7 +78,10 @@ export default function VisualViewer(props: { setId?: number, inFrame?: boolean 
 
   useEffect(() => {
     const visualId = window.location.pathname.match(/[0-9]+/);
-    if ((!visualId || parseInt(visualId[0]) >= allVisuals.length) && !props.inFrame) {
+    if (
+      (!visualId || parseInt(visualId[0]) >= allVisuals.length) &&
+      !props.inFrame
+    ) {
       window.location.href = "/hypno/visuals";
       return;
     }
@@ -91,7 +100,7 @@ export default function VisualViewer(props: { setId?: number, inFrame?: boolean 
         try {
           const json = JSON.parse(atob(result[0].replace(/options=/, "")));
           setCurrentOptions(json);
-        } catch { }
+        } catch {}
       }
     }
 
@@ -100,8 +109,7 @@ export default function VisualViewer(props: { setId?: number, inFrame?: boolean 
     if (lsFlash) {
       let json = JSON.parse(lsFlash);
       setFlashTextOptions(json);
-      if (json.color && colorRef.current)
-        colorRef.current.value = json.color;
+      if (json.color && colorRef.current) colorRef.current.value = json.color;
     }
 
     const lsSettings = localStorage.getItem(`current_visual_settings_${id}`);
@@ -120,8 +128,8 @@ export default function VisualViewer(props: { setId?: number, inFrame?: boolean 
 
       if (!(window as any).chrome && !localStorage.getItem("browser_warn")) {
         localStorage.setItem("browser_warn", "true");
-        await showInformation(
-          `You are not using a chromium-based web browser. You may see stutters.`,
+        await showInfoAlert(
+          `You are not using a chromium-based web browser. You may see stutters.`
         );
       }
 
@@ -132,7 +140,7 @@ export default function VisualViewer(props: { setId?: number, inFrame?: boolean 
       window.onresize = () => {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-      }
+      };
 
       // Get default options
       const defaults: { [key: string]: any } = {};
@@ -156,7 +164,7 @@ export default function VisualViewer(props: { setId?: number, inFrame?: boolean 
       context.fillText(
         "Click anywhere to stop",
         canvas.width / 2,
-        canvas.height / 2,
+        canvas.height / 2
       );
       canvas.style.backgroundColor = "#000000";
 
@@ -172,15 +180,17 @@ export default function VisualViewer(props: { setId?: number, inFrame?: boolean 
 
         // Check if it is enabled
         if (flashTextOptions.enabled) {
-          const validWords = ([] as string[]).concat(
-            flashTextOptions.usePreset
-              ? textFlashes[flashTextOptions.preset ?? "deep"]
-              : []
-          ).concat(
-            flashTextOptions.useCustomWords
-              ? flashTextOptions.customWords.split(",").map(x => x.trim())
-              : []
-          );
+          const validWords = ([] as string[])
+            .concat(
+              flashTextOptions.usePreset
+                ? textFlashes[flashTextOptions.preset ?? "deep"]
+                : []
+            )
+            .concat(
+              flashTextOptions.useCustomWords
+                ? flashTextOptions.customWords.split(",").map((x) => x.trim())
+                : []
+            );
 
           // TODO: This may need reworking - idk
           let last = 0;
@@ -189,10 +199,12 @@ export default function VisualViewer(props: { setId?: number, inFrame?: boolean 
             // && only show if not already shown
             // && 700 grace period betweem
             if (
-              Math.random() > 0.8 && flashText === "" &&
+              Math.random() > 0.8 &&
+              flashText === "" &&
               700 - (Date.now() - last) < 0
             ) {
-              const word = validWords[Math.floor(Math.random() * validWords.length)];
+              const word =
+                validWords[Math.floor(Math.random() * validWords.length)];
               setFlashText(word.trim());
               last = Date.now();
 
@@ -219,7 +231,7 @@ export default function VisualViewer(props: { setId?: number, inFrame?: boolean 
   function setOption(
     option: VisualOption,
     key: string,
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: React.ChangeEvent<HTMLInputElement>
   ) {
     const temp = { ...currentOptions };
 
@@ -249,8 +261,9 @@ export default function VisualViewer(props: { setId?: number, inFrame?: boolean 
 
   function setShare(what: object) {
     setUrl(
-      `${window.location.protocol}//${window.location.host}${window.location.pathname}?options=${btoa(JSON.stringify(what))
-      }`,
+      `${window.location.protocol}//${window.location.host}${
+        window.location.pathname
+      }?options=${btoa(JSON.stringify(what))}`
     );
   }
 
@@ -290,245 +303,264 @@ export default function VisualViewer(props: { setId?: number, inFrame?: boolean 
     });
   }
 
-  return (
-    isPlaying
-      ? (
-        <>
-          <canvas style={{ overflow: "hidden", position: "absolute", top: "0", left: "0" }} ref={player} />
-          <label
-            style={{ opacity: flashTextOptions.opacity, color: flashTextOptions.color }}
-            className="dawn-visual-text"
-          >
-            {flashText}
-          </label>
-        </>
-      )
-      : (
-        <Page>
-          {!props.inFrame && <RestNavbar
-            title={
-              <Text type="title">
-                Configure: {visual?.name || "???"}
-              </Text>
-            }
-          />}
-          <Content>
-            <PanelRow fullWidth>
-              <Panel title="Visual's Settings">
-                <Text>{visual?.description}</Text>
-                <table>
-                  <tbody>
-                    {Object.entries(visual?.getOptions() ?? {}).map((
-                      [k, v],
-                    ) => (
-                      <tr key={k}>
+  return isPlaying ? (
+    <>
+      <canvas
+        style={{
+          overflow: "hidden",
+          position: "absolute",
+          top: "0",
+          left: "0",
+        }}
+        ref={player}
+      />
+      <label
+        style={{
+          opacity: flashTextOptions.opacity,
+          color: flashTextOptions.color,
+        }}
+        className="dawn-visual-text"
+      >
+        {flashText}
+      </label>
+    </>
+  ) : (
+    <>
+      {!props.inFrame && (
+        <RestNavbar pageTitle={`Configure: ${visual?.name || "???"}`} />
+      )}
+      <Page full={props.inFrame}>
+        <Column util={["align-center"]}>
+          <Row>
+            <Container title="Visual's Settings">
+              <Words>{visual?.description}</Words>
+              <table>
+                <tbody>
+                  {Object.entries(visual?.getOptions() ?? {}).map(([k, v]) => (
+                    <tr key={k}>
+                      <td>
+                        <b>{v.human}</b>
+                      </td>
+                      <td>
+                        <VisualInput
+                          name={k}
+                          option={v}
+                          current={currentOptions}
+                          set={setOption}
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                  <tr>
+                    {Object.keys(visual?.getPresets() ?? {}).length > 0 && (
+                      <>
                         <td>
-                          <b>{v.human}</b>
+                          <b>Presets</b>
                         </td>
                         <td>
-                          <VisualInput
-                            name={k}
-                            option={v}
-                            current={currentOptions}
-                            set={setOption}
-                          />
-                        </td>
-                      </tr>
-                    ))}
-                    <tr>
-                      {Object.keys(visual?.getPresets() ?? {}).length > 0 && (
-                        <>
-                          <td>
-                            <b>Presets</b>
-                          </td>
-                          <td>
-                            {Object.entries(visual?.getPresets() ?? {}).map((
-                              [k, v],
-                            ) => (
-                              <Button
-                                key={k}
-                                onClick={() => loadPreset(v)}
-                              >
+                          {Object.entries(visual?.getPresets() ?? {}).map(
+                            ([k, v]) => (
+                              <Button key={k} onClick={() => loadPreset(v)}>
                                 {k}
                               </Button>
-                            ))}
-                          </td>
-                        </>
-                      )}
-                    </tr>
-                    <tr>
-                      <td>
-                        <b>Reset</b>
-                      </td>
-                      <td>
-                        <Button onClick={() => showConfirmModel("Are you sure you want to reset all options?", loadDefaults)}>reset</Button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <Button onClick={play} big>Play</Button>
-              </Panel>
-              <Panel title="Text Flashing">
-                <Text>Flash different words on the screen randomly.</Text>
-                <table>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <b>Enabled</b>
-                      </td>
-                      <td>
-                        <input
-                          onChange={(i) =>
-                            setFlashTextOption(
-                              "enabled",
-                              i.currentTarget.checked,
-                            )}
-                          checked={flashTextOptions.enabled}
-                          type="checkbox"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <b>Use Preset</b>
-                      </td>
-                      <td>
-                        <input
-                          onChange={(i) =>
-                            setFlashTextOption(
-                              "usePreset",
-                              i.currentTarget.checked,
-                            )}
-                          checked={flashTextOptions.usePreset}
-                          type="checkbox"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <b>Preset</b>
-                      </td>
-                      <td>
-                        <select
-                          onChange={(i) =>
-                            setFlashTextOption(
-                              "preset",
-                              (i.currentTarget[
+                            )
+                          )}
+                        </td>
+                      </>
+                    )}
+                  </tr>
+                  <tr>
+                    <td>
+                      <b>Reset</b>
+                    </td>
+                    <td>
+                      <Button
+                        onClick={() =>
+                          showConfirmModel(
+                            "Are you sure you want to reset all options?",
+                            loadDefaults
+                          )
+                        }
+                      >
+                        reset
+                      </Button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <Button onClick={play} big>
+                Play
+              </Button>
+            </Container>
+            <Container title="Text Flashing">
+              <Words>Flash different words on the screen randomly.</Words>
+              <table>
+                <tbody>
+                  <tr>
+                    <td>
+                      <b>Enabled</b>
+                    </td>
+                    <td>
+                      <input
+                        onChange={(i) =>
+                          setFlashTextOption("enabled", i.currentTarget.checked)
+                        }
+                        checked={flashTextOptions.enabled}
+                        type="checkbox"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <b>Use Preset</b>
+                    </td>
+                    <td>
+                      <input
+                        onChange={(i) =>
+                          setFlashTextOption(
+                            "usePreset",
+                            i.currentTarget.checked
+                          )
+                        }
+                        checked={flashTextOptions.usePreset}
+                        type="checkbox"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <b>Preset</b>
+                    </td>
+                    <td>
+                      <select
+                        onChange={(i) =>
+                          setFlashTextOption(
+                            "preset",
+                            (
+                              i.currentTarget[
                                 i.currentTarget.selectedIndex
-                              ] as any).value,
-                            )}
-                          defaultValue={flashTextOptions.preset ?? "deep"}
-                        >
-                          {Object.keys(textFlashes).map((x) => (
-                            <option value={x} key={x}>{x}</option>
-                          ))}
-                        </select>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <b>Use Custom Words</b>
-                      </td>
-                      <td>
-                        <input
-                          onChange={(i) =>
-                            setFlashTextOption(
-                              "useCustomWords",
-                              i.currentTarget.checked,
-                            )}
-                          checked={flashTextOptions.useCustomWords}
-                          type="checkbox"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <b>Custom Words</b>
-                      </td>
-                      <td>
-                        <textarea
-                          onChange={(i) =>
-                            setFlashTextOption(
-                              "customWords",
-                              i.currentTarget.value,
-                            )}
-                          value={flashTextOptions.customWords}
-                          placeholder="Words / Phrases split by commas"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <b>Opacity</b>
-                      </td>
-                      <td>
-                        <input
-                          type="range"
-                          step={0.05}
-                          min={0.05}
-                          max={1}
-                          value={flashTextOptions.opacity}
-                          onChange={(i) =>
-                            setFlashTextOption(
-                              "opacity",
-                              parseFloat(i.currentTarget.value),
-                            )}
-                        />
-                        <label>
-                          {(flashTextOptions.opacity * 100).toFixed(0)}%
-                        </label>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <b>Color</b>
-                      </td>
-                      <td>
-                        <input
-                          type="color"
-                          value={flashTextOptions.color}
-                          onChange={(i) =>
-                            setFlashTextOption(
-                              "color",
-                              i.currentTarget.value,
-                            )}
-                        />
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <b>Words that will be shown:</b>
-                <br />
-                {
-                  ([] as string[]).concat(
-                    flashTextOptions.usePreset
-                      ? textFlashes[flashTextOptions.preset ?? "deep"]
-                      : []
-                  ).concat(
-                    flashTextOptions.useCustomWords
-                      ? flashTextOptions.customWords.split(",").map(x => x.trim())
-                      : []
-                  ).join(", ")
-                }
-              </Panel>
-            </PanelRow>
-            {!props.inFrame && <PanelRow>
-              <Panel width="400px" title="Share">
-                <Text>
-                  Share the following link to show others this visual.
-                </Text>
-                <div style={{ display: "flex" }}>
-                  <input readOnly value={url}></input>
-                  <Button
-                    onClick={() => window.navigator.clipboard.writeText(url)}
-                  >
-                    Copy
-                  </Button>
-                </div>
-              </Panel>
-            </PanelRow>}
-          </Content>
-        </Page>
-      )
+                              ] as any
+                            ).value
+                          )
+                        }
+                        defaultValue={flashTextOptions.preset ?? "deep"}
+                      >
+                        {Object.keys(textFlashes).map((x) => (
+                          <option value={x} key={x}>
+                            {x}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <b>Use Custom Words</b>
+                    </td>
+                    <td>
+                      <input
+                        onChange={(i) =>
+                          setFlashTextOption(
+                            "useCustomWords",
+                            i.currentTarget.checked
+                          )
+                        }
+                        checked={flashTextOptions.useCustomWords}
+                        type="checkbox"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <b>Custom Words</b>
+                    </td>
+                    <td>
+                      <textarea
+                        onChange={(i) =>
+                          setFlashTextOption(
+                            "customWords",
+                            i.currentTarget.value
+                          )
+                        }
+                        value={flashTextOptions.customWords}
+                        placeholder="Words / Phrases split by commas"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <b>Opacity</b>
+                    </td>
+                    <td>
+                      <input
+                        type="range"
+                        step={0.05}
+                        min={0.05}
+                        max={1}
+                        value={flashTextOptions.opacity}
+                        onChange={(i) =>
+                          setFlashTextOption(
+                            "opacity",
+                            parseFloat(i.currentTarget.value)
+                          )
+                        }
+                      />
+                      <label>
+                        {(flashTextOptions.opacity * 100).toFixed(0)}%
+                      </label>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <b>Color</b>
+                    </td>
+                    <td>
+                      <input
+                        type="color"
+                        value={flashTextOptions.color}
+                        onChange={(i) =>
+                          setFlashTextOption("color", i.currentTarget.value)
+                        }
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <b>Words that will be shown:</b>
+              <br />
+              {([] as string[])
+                .concat(
+                  flashTextOptions.usePreset
+                    ? textFlashes[flashTextOptions.preset ?? "deep"]
+                    : []
+                )
+                .concat(
+                  flashTextOptions.useCustomWords
+                    ? flashTextOptions.customWords
+                        .split(",")
+                        .map((x) => x.trim())
+                    : []
+                )
+                .join(", ")}
+            </Container>
+          </Row>
+          {!props.inFrame && (
+            <Container small title="Share">
+              <Words>
+                Share the following link to show others this visual.
+              </Words>
+              <div style={{ display: "flex" }}>
+                <input readOnly value={url}></input>
+                <Button
+                  onClick={() => window.navigator.clipboard.writeText(url)}
+                >
+                  Copy
+                </Button>
+              </div>
+            </Container>
+          )}
+        </Column>
+      </Page>
+    </>
   );
 }

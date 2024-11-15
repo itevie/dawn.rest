@@ -1,25 +1,19 @@
-import RestNavbar from "../../components/RestNavbar";
-import { Text } from "../../dawn-ui";
-import Banner from "../../dawn-ui/components/Banner";
-import Content from "../../dawn-ui/components/Content";
+import Words from "../../dawn-ui/components/Words";
 import Link from "../../dawn-ui/components/Link";
-import Page from "../../dawn-ui/components/Page";
-import Panel from "../../dawn-ui/components/Panel";
-import PanelRow from "../../dawn-ui/components/PanelRow";
+import Row from "../../dawn-ui/components/Row";
+import Container from "../../dawn-ui/components/Container";
+import DawnPage from "../../components/DawnPage";
 
 export default function AdminPage() {
   return (
-    <Page>
-      <RestNavbar />
-      <Content>
-        <PanelRow>
-          <Link href="/admin/file-upload">
-            <Panel title="Upload File">
-              <Text>Upload a new file</Text>
-            </Panel>
-          </Link>
-        </PanelRow>
-      </Content>
-    </Page>
+    <DawnPage full>
+      <Row util={["justify-center"]}>
+        <Link noHighlight href="/admin/file-upload">
+          <Container small title="Upload File">
+            <Words>Upload a new file</Words>
+          </Container>
+        </Link>
+      </Row>
+    </DawnPage>
   );
 }

@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./pages/Home";
-import "./dawn-ui/style.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HypnosisPage from "./pages/HypnosisPage";
 import VisualPage from "./pages/VisualPage/VisualPage";
@@ -13,15 +12,19 @@ import FileUpload from "./pages/Admin/FileUpload";
 import FilePage from "./pages/Files/FilePage";
 import FileViewer from "./pages/Files/FileViewer";
 import Page404 from "./pages/404";
+import "./dawn-ui/index";
+import "./style.css";
 
 const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement,
+  document.getElementById("root") as HTMLElement
 );
 
 const baseUrlLS = localStorage.getItem("base_url");
 export const baseUrl = baseUrlLS
   ? baseUrlLS
-  : (window.location.hostname === "localhost" ? "https://dawn.rest" : "");
+  : window.location.hostname === "localhost"
+  ? "https://dawn.rest"
+  : "";
 
 const routes = createBrowserRouter([
   {
@@ -62,13 +65,13 @@ const routes = createBrowserRouter([
   },
   {
     path: "*",
-    element: <Page404 />
-  }
+    element: <Page404 />,
+  },
 ]);
 
 root.render(
   <>
     <AlertManager />
     <RouterProvider router={routes} />
-  </>,
+  </>
 );

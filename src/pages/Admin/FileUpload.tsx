@@ -1,23 +1,18 @@
 import { useRef, useState } from "react";
-import RestNavbar from "../../components/RestNavbar";
-import { Text } from "../../dawn-ui";
-import Content from "../../dawn-ui/components/Content";
 import MultiSelect from "../../dawn-ui/components/MultiSelect";
-import Page from "../../dawn-ui/components/Page";
-import Panel from "../../dawn-ui/components/Panel";
-import PanelRow from "../../dawn-ui/components/PanelRow";
 import Button from "../../dawn-ui/components/Button";
 import UploadFile from "../../dawn-ui/components/FileUpload";
-import axios from "axios";
 import {
-  showErrorAlert,
-  showInformation,
-  showInputModel,
-  showLoadingAlert,
+  showInfoAlert,
+  showInputAlert,
 } from "../../dawn-ui/components/AlertManager";
 import { baseUrl } from "../..";
 import { axiosWrapper } from "../../dawn-ui/util";
 import { DawnFile } from "../Files/FilePage";
+import Row from "../../dawn-ui/components/Row";
+import Container from "../../dawn-ui/components/Container";
+import Words from "../../dawn-ui/components/Words";
+import DawnPage from "../../components/DawnPage";
 
 const fileTags: string[] = [
   "fractionation",
@@ -55,7 +50,7 @@ export default function FileUpload() {
           `${baseUrl}/api/admin/edit-file/${editId}`,
           details
         );
-        return showInformation("Edited!");
+        return showInfoAlert("Edited!");
       }
     } catch {}
 
@@ -73,7 +68,7 @@ export default function FileUpload() {
           { ...details }
         );
 
-        showInformation(
+        showInfoAlert(
           "Uploaded file. Please copy the audio file to " +
             actualResult.data.file_path
         );
@@ -82,7 +77,7 @@ export default function FileUpload() {
   }
 
   async function editFile() {
-    const id = await showInputModel("Enter file ID");
+    const id = await showInputAlert("Enter file ID");
 
     try {
       const data = (await axiosWrapper("get", `${baseUrl}/api/files/${id}`))
@@ -101,80 +96,74 @@ export default function FileUpload() {
   }
 
   return (
-    <Page>
-      <RestNavbar />
-      <Content>
-        <PanelRow>
-          <Panel width="full" title="Upload a new file">
-            <Button onClick={editFile}>Edit Instead</Button>
-            <table>
-              <tbody>
-                <tr>
-                  <td>
-                    <Text>Name</Text>
-                  </td>
-                  <td>
-                    <input ref={nameRef} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <Text>Description</Text>
-                  </td>
-                  <td>
-                    <input ref={descriptionRef} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <Text>Script URL</Text>
-                  </td>
-                  <td>
-                    <input ref={scriptRef} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <Text>Tags</Text>
-                  </td>
-                  <td>
-                    <MultiSelect
-                      updateSelectedKey={ums}
-                      onChange={(elements) => setTags(elements)}
-                      selected={tags}
-                      elements={fileTags}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <Text>Upload File</Text>
-                  </td>
-                  <td>
-                    <UploadFile
-                      filter="audio/mpeg"
-                      onChange={(d) => setFile(d)}
-                    >
-                      <Button>Upload</Button>
-                    </UploadFile>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <Text>Admin Key</Text>
-                  </td>
-                  <td>
-                    <input ref={adminKeyRef} />
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <Button big onClick={upload}>
-              Upload
-            </Button>
-          </Panel>
-        </PanelRow>
-      </Content>
-    </Page>
+    <DawnPage>
+      <Row>
+        <Container title="Upload a new file">
+          <Button onClick={editFile}>Edit Instead</Button>
+          <table>
+            <tbody>
+              <tr>
+                <td>
+                  <Words>Name</Words>
+                </td>
+                <td>
+                  <input ref={nameRef} />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <Words>Description</Words>
+                </td>
+                <td>
+                  <input ref={descriptionRef} />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <Words>Script URL</Words>
+                </td>
+                <td>
+                  <input ref={scriptRef} />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <Words>Tags</Words>
+                </td>
+                <td>
+                  <MultiSelect
+                    updateSelectedKey={ums}
+                    onChange={(elements) => setTags(elements)}
+                    selected={tags}
+                    elements={fileTags}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <Words>Upload File</Words>
+                </td>
+                <td>
+                  <UploadFile filter="audio/mpeg" onChange={(d) => setFile(d)}>
+                    <Button>Upload</Button>
+                  </UploadFile>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <Words>Admin Key</Words>
+                </td>
+                <td>
+                  <input ref={adminKeyRef} />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <Button big onClick={upload}>
+            Upload
+          </Button>
+        </Container>
+      </Row>
+    </DawnPage>
   );
 }

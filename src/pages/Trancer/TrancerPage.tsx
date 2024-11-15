@@ -1,16 +1,13 @@
 import { useEffect, useState } from "react";
-import RestNavbar from "../../components/RestNavbar";
-import { Text } from "../../dawn-ui";
-import Content from "../../dawn-ui/components/Content";
 import Link from "../../dawn-ui/components/Link";
-import Page from "../../dawn-ui/components/Page";
-import PanelRow from "../../dawn-ui/components/PanelRow";
-import Panel from "../../dawn-ui/components/Panel";
 import axios from "axios";
 import { Chart as ChartJS, registerables } from "chart.js";
 import { Bar, Line } from "react-chartjs-2";
 import { showErrorAlert } from "../../dawn-ui/components/AlertManager";
 import Row from "../../dawn-ui/components/Row";
+import Words from "../../dawn-ui/components/Words";
+import Container from "../../dawn-ui/components/Container";
+import DawnPage from "../../components/DawnPage";
 ChartJS.register(...registerables);
 
 interface TrancerData {
@@ -50,20 +47,20 @@ if (window.location.host.includes("localhost")) {
 }
 
 const timeFilters = {
-  "minute": /[0-9]+\/[0-9]+\/[0-9]+ [0-9]+:[0-9]+/,
-  "hour": /[0-9]+\/[0-9]+\/[0-9]+ [0-9]+/,
-  "day": /[0-9]+\/[0-9]+\/[0-9]+/,
-  "month": /[0-9]+\/[0-9]+/,
+  minute: /[0-9]+\/[0-9]+\/[0-9]+ [0-9]+:[0-9]+/,
+  hour: /[0-9]+\/[0-9]+\/[0-9]+ [0-9]+/,
+  day: /[0-9]+\/[0-9]+\/[0-9]+/,
+  month: /[0-9]+\/[0-9]+/,
 };
 
 export default function TrancerPage() {
   const [page, setPage] = useState<string>("about");
   const [data, setData] = useState<TrancerData>({});
-  const [timeFilter, setTimeFilter] = useState<
-    { [key: string]: keyof typeof timeFilters }
-  >({ messages: "month", memberCount: "day" });
+  const [timeFilter, setTimeFilter] = useState<{
+    [key: string]: keyof typeof timeFilters;
+  }>({ messages: "month", memberCount: "day" });
   const [leaderboardSearch, setLeaderboardSearch] = useState<string | null>(
-    null,
+    null
   );
 
   useEffect(() => {
@@ -74,7 +71,7 @@ export default function TrancerPage() {
       if (auth) {
         window.localStorage.setItem(
           "trancer_auth",
-          auth[0].replace("auth=", ""),
+          auth[0].replace("auth=", "")
         );
       }
     }
@@ -120,7 +117,7 @@ export default function TrancerPage() {
       });
     } catch (e) {
       showErrorAlert(
-        `Failed to load ${type}: Are you missing the auth code? Run .site in Trancy Twilight.`,
+        `Failed to load ${type}: Are you missing the auth code? Run .site in Trancy Twilight.`
       );
     }
   }
@@ -130,147 +127,150 @@ export default function TrancerPage() {
   }
 
   return (
-    <Page>
-      <RestNavbar
-        title={
-          <Text type="title">
-            {{
-              "about": "About Trancer",
-              "leaderboards": "Leaderboards",
-              "bot": "Bot Details",
-              "server": "Trancy Twilight Details (GMT)",
-            }[page]}
-          </Text>
-        }
-      >
-        {["About", "Leaderboards", "User Data", "Server", "Bot"]
-          .map((x) => (
+    <DawnPage
+      pageTitle={
+        {
+          about: "About Trancer",
+          leaderboards: "Leaderboards",
+          bot: "Bot Details",
+          server: "Trancy Twilight Details (GMT)",
+        }[page]
+      }
+      navbar={
+        <>
+          {["About", "Leaderboards", "User Data", "Server", "Bot"].map((x) => (
             <Link
               key={x}
               onClick={() => gotoPage(x.toLowerCase().replace(/ /g, "-"))}
               href={`#${x.toLowerCase().replace(/ /g, "-")}`}
+              forceReload
             >
               {x}
             </Link>
           ))}
-      </RestNavbar>
-      <Content>
-        {{
-          "about": (
-            <>
-            </>
-          ),
+        </>
+      }
+    >
+      {{
+        about: <></>,
 
-          "user-data": (
-            <>
-              
-            </>
-          ),
+        "user-data": <></>,
 
-          "leaderboards": (
-            <>
-              <Row>
-                <Text>Search:{" "}</Text>
-                <input
-                  onChange={(e) =>
-                    setLeaderboardSearch(e.target.value.toLowerCase())}
-                >
-                </input>
-              </Row>
-              <PanelRow>
-                {/* Balance Leaderboard */}
-                <Panel width="fit" title="Economy Leaderboard">
-                  {!data.economy ? <Text>Loading...</Text> : (
-                    <table>
-                      <tbody>
-                        {data.economy.sort((a, b) => b.balance - a.balance).map(
-                          (x) => (
-                            <tr
-                              key={x.user_id}
-                              className={`${
-                                leaderboardSearch &&
-                                getUsername(x.user_id).toLowerCase().includes(
-                                  leaderboardSearch,
-                                ) && "dawn-highlight"
-                              }`}
-                            >
-                              <td>{getUsername(x.user_id)}</td>
-                              <td>{x.balance} 🌀</td>
-                            </tr>
-                          ),
-                        )}
-                      </tbody>
-                    </table>
-                  )}
-                </Panel>
-                {/* Peak prgoramming right here: */}
-                {([
+        leaderboards: (
+          <>
+            <Row>
+              <Words>Search: </Words>
+              <input
+                onChange={(e) =>
+                  setLeaderboardSearch(e.target.value.toLowerCase())
+                }
+              ></input>
+            </Row>
+            <Row>
+              {/* Balance Leaderboard */}
+              <Container small title="Economy Leaderboard">
+                {!data.economy ? (
+                  <Words>Loading...</Words>
+                ) : (
+                  <table>
+                    <tbody>
+                      {data.economy
+                        .sort((a, b) => b.balance - a.balance)
+                        .map((x) => (
+                          <tr
+                            key={x.user_id}
+                            className={`${
+                              leaderboardSearch &&
+                              getUsername(x.user_id)
+                                .toLowerCase()
+                                .includes(leaderboardSearch) &&
+                              "dawn-highlight"
+                            }`}
+                          >
+                            <td>{getUsername(x.user_id)}</td>
+                            <td>{x.balance} 🌀</td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                )}
+              </Container>
+              {/* Peak prgoramming right here: */}
+              {(
+                [
                   ["messages_sent", "Messages", "Messages"],
                   ["vc_time", "VC Time", "Minutes"],
                   ["bumps", "Bumps", "Bumps"],
                   ["xp", "XP", "XP"],
-                ] as [keyof TrancerData["user_data"], string, string][]).map(
-                  (part) => (
-                    <Panel width="fit" title={`${part[1]} Leaderboard`}>
-                      {!data.user_data ? <Text>Loading...</Text> : (
-                        <table>
-                          <tbody>
-                            {data.user_data.filter((x) => x[part[0]] !== 0)
-                              .sort((a, b) => b[part[0]] - a[part[0]]).map((
-                                x,
-                              ) => (
-                                <tr
-                                  key={x.user_id}
-                                  className={`${
-                                    leaderboardSearch &&
-                                    getUsername(x.user_id).toLowerCase()
-                                      .includes(leaderboardSearch) &&
-                                    "dawn-highlight"
-                                  }`}
-                                >
-                                  <td>{getUsername(x.user_id)}</td>
-                                  <td>{x[part[0]]} {part[2]}</td>
-                                </tr>
-                              ))}
-                          </tbody>
-                        </table>
-                      )}
-                    </Panel>
-                  ),
-                )}
-              </PanelRow>
-            </>
-          ),
-
-          "bot": (
-            <>
-              <PanelRow>
-                <Panel width="fit" title="Command Usage">
-                  {!data.command_usage ? "Loading..." : (
+                ] as [keyof TrancerData["user_data"], string, string][]
+              ).map((part) => (
+                <Container small title={`${part[1]} Leaderboard`}>
+                  {!data.user_data ? (
+                    <Words>Loading...</Words>
+                  ) : (
                     <table>
                       <tbody>
-                        {data.command_usage.sort((a, b) => b.used - a.used).map(
-                          (x) => (
-                            <tr key={x.command_name}>
-                              <td>{x.command_name}</td>
-                              <td>{x.used} times</td>
+                        {data.user_data
+                          .filter((x) => x[part[0]] !== 0)
+                          .sort((a, b) => b[part[0]] - a[part[0]])
+                          .map((x) => (
+                            <tr
+                              key={x.user_id}
+                              className={`${
+                                leaderboardSearch &&
+                                getUsername(x.user_id)
+                                  .toLowerCase()
+                                  .includes(leaderboardSearch) &&
+                                "dawn-highlight"
+                              }`}
+                            >
+                              <td>{getUsername(x.user_id)}</td>
+                              <td>
+                                {x[part[0]]} {part[2]}
+                              </td>
                             </tr>
-                          ),
-                        )}
+                          ))}
                       </tbody>
                     </table>
                   )}
-                </Panel>
-              </PanelRow>
-            </>
-          ),
+                </Container>
+              ))}
+            </Row>
+          </>
+        ),
 
-          "server": (
-            <>
-              <PanelRow>
-                {
-                  // data - filter name - key - human name
-                  ([
+        bot: (
+          <>
+            <Row>
+              <Container small title="Command Usage">
+                {!data.command_usage ? (
+                  "Loading..."
+                ) : (
+                  <table>
+                    <tbody>
+                      {data.command_usage
+                        .sort((a, b) => b.used - a.used)
+                        .map((x) => (
+                          <tr key={x.command_name}>
+                            <td>{x.command_name}</td>
+                            <td>{x.used} times</td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                )}
+              </Container>
+            </Row>
+          </>
+        ),
+
+        server: (
+          <>
+            <Row>
+              {
+                // data - filter name - key - human name
+                (
+                  [
                     {
                       source: data.member_count,
                       filter: "memberCount",
@@ -283,87 +283,92 @@ export default function TrancerPage() {
                       human: "Messages Overtime",
                       noAdd: false,
                     },
-                  ] as const)
-                    .map((graphData) => (
-                      <Panel
-                        key={graphData.filter}
-                        width="40%"
-                        style={{ minHeight: "400px" }}
-                        title={`${graphData.human}`}
+                  ] as const
+                ).map((graphData) => (
+                  <Container
+                    key={graphData.filter}
+                    style={{ width: "40%", minHeight: "400px" }}
+                    title={`${graphData.human}`}
+                  >
+                    <Words>
+                      Filter:
+                      <select
+                        defaultValue={timeFilter[graphData.filter]}
+                        onChange={(e) =>
+                          setTimeFilter({
+                            ...timeFilter,
+                            [graphData.filter]: (
+                              e.target[e.target.selectedIndex] as any
+                            ).value,
+                          })
+                        }
                       >
-                        <Text>
-                          Filter:
-                          <select
-                            defaultValue={timeFilter[graphData.filter]}
-                            onChange={(e) =>
-                              setTimeFilter({
-                                ...timeFilter,
-                                [graphData.filter]:
-                                  (e.target[e.target.selectedIndex] as any)
-                                    .value,
-                              })}
-                          >
-                            <option value="minute">Minute</option>
-                            <option value="hour">Hour</option>
-                            <option value="day">Day</option>
-                            <option value="month">Month</option>
-                          </select>
-                        </Text>
-                        {!graphData.source ? "Loading..." : (
-                          <>
-                            <Line
-                              data={{
-                                labels: convertTimes(
+                        <option value="minute">Minute</option>
+                        <option value="hour">Hour</option>
+                        <option value="day">Day</option>
+                        <option value="month">Month</option>
+                      </select>
+                    </Words>
+                    {!graphData.source ? (
+                      "Loading..."
+                    ) : (
+                      <>
+                        <Line
+                          data={{
+                            labels: convertTimes(
+                              graphData.source,
+                              timeFilters[timeFilter[graphData.filter]],
+                              "amount",
+                              graphData.noAdd
+                            ).map((y) => y.time),
+                            datasets: [
+                              {
+                                label: graphData.human,
+                                data: convertTimes(
                                   graphData.source,
                                   timeFilters[timeFilter[graphData.filter]],
                                   "amount",
-                                  graphData.noAdd,
-                                ).map((y) => y.time),
-                                datasets: [{
-                                  label: graphData.human,
-                                  data: convertTimes(
-                                    graphData.source,
-                                    timeFilters[timeFilter[graphData.filter]],
-                                    "amount",
-                                    graphData.noAdd,
-                                  ).map((y) => y.amount),
-                                }],
-                              }}
-                            />
-                          </>
-                        )}
-                      </Panel>
-                    ))
-                }
-                <Panel
-                  width="40%"
-                  style={{ minHeight: "400px" }}
-                  title="Messages At Times"
-                >
-                  <Bar
-                    data={{
-                      labels:
-                        "00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,16,17,18,19,20,21,22,23"
-                          .split(","),
-                      datasets: [{
+                                  graphData.noAdd
+                                ).map((y) => y.amount),
+                              },
+                            ],
+                          }}
+                        />
+                      </>
+                    )}
+                  </Container>
+                ))
+              }
+              <Container
+                style={{ minHeight: "400px", width: "40%" }}
+                title="Messages At Times"
+              >
+                <Bar
+                  data={{
+                    labels:
+                      "00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,16,17,18,19,20,21,22,23".split(
+                        ","
+                      ),
+                    datasets: [
+                      {
                         label: "Messages At Times",
                         data: convertTimes(
                           data.messages,
                           /( [0-9]?[0-9])/,
-                          "amount",
+                          "amount"
                         )
                           .sort((a, b) => parseInt(b.time) - parseInt(a.time))
                           .map((x) => x.amount),
-                      }],
-                    }}
-                  />
-                </Panel>
-              </PanelRow>
-            </>
-          ),
-        }[page] || <Text>Unknown page.</Text>}
-      </Content>
-    </Page>
+                      },
+                    ],
+                  }}
+                />
+              </Container>
+            </Row>
+          </>
+        ),
+      }[page] || <Words>Unknown page.</Words>}
+    </DawnPage>
   );
 }
 
@@ -371,7 +376,7 @@ function convertTimes(
   data: TrancerData["messages"],
   regex: RegExp,
   key: "amount",
-  noIncrease: boolean = false,
+  noIncrease: boolean = false
 ) {
   if (!data) return [];
 
@@ -389,8 +394,6 @@ function convertTimes(
     times[time[0]] += d[key];
   }
 
-  console.log(times);
-
   let final = [];
   for (const i in times) {
     final.push({
@@ -400,9 +403,4 @@ function convertTimes(
   }
 
   return final;
-}
-
-function log(...what: any[]) {
-  console.log(what);
-  return false;
 }

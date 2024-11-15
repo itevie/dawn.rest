@@ -1,0 +1,9 @@
+.dawn-visual-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  font-size: 7em;
+  opacity: 0.5;
+}

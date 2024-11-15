@@ -1,29 +1,24 @@
-import RestNavbar from "../../components/RestNavbar";
-import { Text } from "../../dawn-ui";
-import Content from "../../dawn-ui/components/Content";
+import Words from "../../dawn-ui/components/Words";
 import Link from "../../dawn-ui/components/Link";
-import Page from "../../dawn-ui/components/Page";
-import Panel from "../../dawn-ui/components/Panel";
-import PanelRow from "../../dawn-ui/components/PanelRow";
 import allVisuals from "./visuals/allVisuals";
+import Row from "../../dawn-ui/components/Row";
+import Container from "../../dawn-ui/components/Container";
+import DawnPage from "../../components/DawnPage";
 
 export default function VisualPage() {
   return (
-    <Page>
-      <RestNavbar />
-      <Content>
-        <PanelRow>
-          {allVisuals.map((v, i) => (
-            <>
-              <Link href={`/hypno/visuals/${i}`}>
-                <Panel title={`${new v().name}`}>
-                  <Text>{new v().description}</Text>
-                </Panel>
-              </Link>
-            </>
-          ))}
-        </PanelRow>
-      </Content>
-    </Page>
+    <DawnPage full>
+      <Row util={["flex-wrap", "justify-center"]}>
+        {allVisuals.map((v, i) => (
+          <>
+            <Link noHighlight href={`/hypno/visuals/${i}`}>
+              <Container hover small title={`${new v().name}`}>
+                <Words>{new v().description}</Words>
+              </Container>
+            </Link>
+          </>
+        ))}
+      </Row>
+    </DawnPage>
   );
 }
