@@ -28,3 +28,21 @@
     transform: scale(1.2) rotate(-30deg);
   }
 }
+
+@media screen and (max-width: 700px) {
+  .quote-text {
+    bottom: -100px;
+    right: 50%;
+    transform: translate(50%);
+  }
+
+  @keyframes quote {
+    0% {
+      transform: scale(1) translate(50%);
+    }
+
+    100% {
+      transform: scale(1.2) translate(50%);
+    }
+  }
+}
