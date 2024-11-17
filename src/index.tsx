@@ -5,7 +5,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HypnosisPage from "./pages/HypnosisPage";
 import VisualPage from "./pages/VisualPage/VisualPage";
 import VisualViewer from "./pages/VisualPage/VisualViewer";
-import TrancerPage from "./pages/Trancer/TrancerPage";
 import AlertManager from "./dawn-ui/components/AlertManager";
 import AdminPage from "./pages/Admin/AdminPage";
 import FileUpload from "./pages/Admin/FileUpload";
@@ -16,6 +15,12 @@ import "./dawn-ui/index";
 import "./style.css";
 import Showcase from "./dawn-ui/Showcase";
 import ContextMenuManager from "./dawn-ui/components/ContextMenuManager";
+import TrancerPage from "./pages/Single/TrancerPage";
+import OtherProjectsPage from "./pages/Single/OtherProjects";
+import HttpRequestMaker from "./pages/Single/HttpRequestMaker";
+import { loadTheme } from "./dawn-ui/index";
+
+loadTheme();
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -66,8 +71,16 @@ const routes = createBrowserRouter([
     element: <FileUpload />,
   },
   {
-    path: "/admin/showcase",
+    path: "/projects/dawn-ui",
     element: <Showcase />,
+  },
+  {
+    path: "/projects",
+    element: <OtherProjectsPage />,
+  },
+  {
+    path: "/projects/http",
+    element: <HttpRequestMaker />,
   },
   {
     path: "*",

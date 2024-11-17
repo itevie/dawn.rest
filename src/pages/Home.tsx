@@ -71,6 +71,18 @@ function App() {
             <label>This is my YouTube channel where I post my files too.</label>
           </Container>
         </Link>
+        <Link noHighlight href="/projects">
+          <Container
+            small
+            hover
+            title="Other Projects"
+            style={{
+              backgroundImage: "url(https://dawn.rest/images/github.svg)",
+            }}
+          >
+            <label>A collection of smaller projects I have made.</label>
+          </Container>
+        </Link>
         <Link noHighlight href="https://github.com/itevie/">
           <Container
             small
