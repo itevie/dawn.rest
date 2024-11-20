@@ -19,6 +19,8 @@ import TrancerPage from "./pages/Single/TrancerPage";
 import OtherProjectsPage from "./pages/Single/OtherProjects";
 import HttpRequestMaker from "./pages/Single/HttpRequestMaker";
 import { loadTheme } from "./dawn-ui/index";
+import Authorize from "./pages/Auth/Authorize";
+import Login from "./pages/Auth/Login";
 
 loadTheme();
 
@@ -81,6 +83,14 @@ const routes = createBrowserRouter([
   {
     path: "/projects/http",
     element: <HttpRequestMaker />,
+  },
+  {
+    path: "/auth/oauth",
+    element: <Authorize />,
+  },
+  {
+    path: "/auth/login",
+    element: <Login />,
   },
   {
     path: "*",

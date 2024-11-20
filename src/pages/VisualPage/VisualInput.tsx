@@ -65,6 +65,7 @@ export default function VisualInput({
           color: (
             <input
               {...props}
+              key={Math.random()}
               value={current[name] ?? option.default}
               onChange={(i) => set(option, name, i)}
             />
@@ -72,6 +73,7 @@ export default function VisualInput({
           boolean: (
             <input
               {...props}
+              key={Math.random()}
               checked={current[name] ?? option.default}
               onChange={(i) => set(option, name, i)}
             />

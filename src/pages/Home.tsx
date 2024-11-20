@@ -95,6 +95,18 @@ function App() {
             <label>See all my code projects I make here.</label>
           </Container>
         </Link>
+        <Link noHighlight href="https://kairo.dawn.rest">
+          <Container
+            small
+            hover
+            title="Kairo"
+            style={{
+              backgroundImage: "url(/images/check.svg)",
+            }}
+          >
+            <label>A customisable to-do app for all your tasks.</label>
+          </Container>
+        </Link>
       </Row>
     </DawnPage>
   );

@@ -287,7 +287,7 @@ export default function TrancerPage() {
         }[page]
       }
       navbar={
-        <>
+        <Row util={["align-center"]}>
           {["About", "Leaderboards", "User Data", "Server", "Bot"].map((x) => (
             <Link
               key={x}
@@ -298,7 +298,7 @@ export default function TrancerPage() {
               {x}
             </Link>
           ))}
-        </>
+        </Row>
       }
     >
       {{
