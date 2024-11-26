@@ -22,6 +22,13 @@ export default function OtherProjectsPage() {
             <label>See the dawn-ui (my UI framework) debug page.</label>
           </Container>
         </Link>
+        <Link noHighlight href="/projects/type-the-roman">
+          <Container small hover title="Type The Romanisation">
+            <label>
+              You are given a syllable in a language and you must romanize it.
+            </label>
+          </Container>
+        </Link>
       </Row>
     </DawnPage>
   );

@@ -21,6 +21,7 @@ import HttpRequestMaker from "./pages/Single/HttpRequestMaker";
 import { loadTheme } from "./dawn-ui/index";
 import Authorize from "./pages/Auth/Authorize";
 import Login from "./pages/Auth/Login";
+import TypeTheRoman from "./pages/Single/TypeTheRoman";
 
 loadTheme();
 
@@ -83,6 +84,10 @@ const routes = createBrowserRouter([
   {
     path: "/projects/http",
     element: <HttpRequestMaker />,
+  },
+  {
+    path: "/projects/type-the-roman",
+    element: <TypeTheRoman />,
   },
   {
     path: "/auth/oauth",
