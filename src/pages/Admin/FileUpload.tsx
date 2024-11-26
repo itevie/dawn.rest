@@ -14,7 +14,7 @@ import Container from "../../dawn-ui/components/Container";
 import Words from "../../dawn-ui/components/Words";
 import DawnPage from "../../components/DawnPage";
 
-const fileTags: string[] = [
+export const fileTags: string[] = [
   "fractionation",
   "open ended",
   "sleep",

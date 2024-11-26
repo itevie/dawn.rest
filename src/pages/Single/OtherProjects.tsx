@@ -12,6 +12,13 @@ export default function OtherProjectsPage() {
         page.
       </Banner>
       <Row util={["flex-wrap", "justify-center"]}>
+        <Link noHighlight href="/projects/type-the-roman">
+          <Container small hover title="Type The Romanisation">
+            <label>
+              You are given a syllable in a language and you must romanize it.
+            </label>
+          </Container>
+        </Link>
         <Link noHighlight href="/projects/http">
           <Container small hover title="HTTP Client">
             <label>Create HTTP requests here with the request builder.</label>
@@ -20,13 +27,6 @@ export default function OtherProjectsPage() {
         <Link noHighlight href="/projects/dawn-ui">
           <Container small hover title="dawn-ui">
             <label>See the dawn-ui (my UI framework) debug page.</label>
-          </Container>
-        </Link>
-        <Link noHighlight href="/projects/type-the-roman">
-          <Container small hover title="Type The Romanisation">
-            <label>
-              You are given a syllable in a language and you must romanize it.
-            </label>
           </Container>
         </Link>
       </Row>

@@ -117,7 +117,10 @@ export default function TypeThewanted() {
 
   function generate() {
     let result: Part = { lang: "", wanted: "" };
-    let parts = games[game].filter((x) => x.lang.length === 1);
+
+    let parts = games[game];
+    if (length > 1) games[game].filter((x) => x.lang.length === 1);
+
     for (let i = 0; i !== length; i++) {
       let part = parts[Math.floor(Math.random() * parts.length)];
       result.lang += part.lang;
