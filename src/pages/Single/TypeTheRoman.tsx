@@ -74,7 +74,7 @@ const games: { [key: string]: Part[] } = {
     { lang: "φ", wanted: "f" },
     { lang: "χ", wanted: "x" },
     { lang: "ψ", wanted: "c" },
-    { lang: "ω", wanted: "o" },
+    { lang: "ω", wanted: "v" },
   ],
 };
 

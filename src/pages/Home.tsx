@@ -32,7 +32,7 @@ function App() {
             </label>
           </Container>
         </Link>
-        <Link noHighlight href="https://discord.gg/invite/zZw7ZCRy">
+        <Link noHighlight href="https://discord.gg/xrjcHcAsj2">
           <Container
             small
             hover

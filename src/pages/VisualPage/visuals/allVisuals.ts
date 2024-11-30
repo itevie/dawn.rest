@@ -8,6 +8,7 @@ import Shapes from "./Shapes";
 import Spiral from "./Spiral";
 import LogorithmicSpiral from "./LogorithmicSpiral";
 import Visual from "./Visualisation";
+import CircleSpiral from "./CircleSpiral";
 
 const allVisuals = [
   Hearts,
@@ -19,5 +20,6 @@ const allVisuals = [
   Shapes,
   Pendulum,
   LogorithmicSpiral,
+  CircleSpiral,
 ] as unknown as (typeof Visual)[];
 export default allVisuals;
