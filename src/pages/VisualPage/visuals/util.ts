@@ -29,3 +29,29 @@ export function hexToRGB(hex: string, alpha: number) {
 export function randomRange(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+export function coordinateMoveBy(
+  coordinate: Coordinate,
+  angle: number,
+  speed: number
+) {
+  const rad = (angle * Math.PI) / 180;
+  coordinate.x += Math.cos(rad) * speed;
+  coordinate.y += Math.sin(rad) * speed;
+}
+
+export function calculateDistance(c1: Coordinate, c2: Coordinate): number {
+  let a = c1.x - c2.x;
+  let b = c1.y - c2.y;
+
+  return Math.sqrt(a * a + b * b);
+}
+
+export function isOffScreen(
+  c: Coordinate,
+  ctx: CanvasRenderingContext2D
+): boolean {
+  return (
+    c.x < 0 || c.y < 0 || c.y > ctx.canvas.height || c.x > ctx.canvas.width
+  );
+}

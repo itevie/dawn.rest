@@ -41,7 +41,7 @@ export type VisualOption =
 export type VisualOptions = { [key: string]: VisualOption };
 export type Coordinate = { x: number; y: number };
 
-export default class Visual {
+export default class Visual<D = VisualOptions> {
   public name: string = "name";
   public description: string = "description";
 
@@ -49,7 +49,7 @@ export default class Visual {
 
   protected interval: ReturnType<typeof setInterval> | undefined = undefined;
 
-  public getOptions(): VisualOptions {
+  public getOptions(): D {
     throw new Error(`This visualiser does not implement getOptions`);
   }
 

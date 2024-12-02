@@ -9,6 +9,7 @@ import Spiral from "./Spiral";
 import LogorithmicSpiral from "./LogorithmicSpiral";
 import Visual from "./Visualisation";
 import CircleSpiral from "./CircleSpiral";
+import Constellations from "./Constellations";
 
 const allVisuals = [
   Hearts,
@@ -21,5 +22,6 @@ const allVisuals = [
   Pendulum,
   LogorithmicSpiral,
   CircleSpiral,
+  Constellations,
 ] as unknown as (typeof Visual)[];
 export default allVisuals;
