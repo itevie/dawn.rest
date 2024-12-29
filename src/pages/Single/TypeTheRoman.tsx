@@ -218,7 +218,7 @@ export default function TypeThewanted() {
               </Button>
             </Row>
             <Row util={["align-center"]}>
-              <code>Average {(average.average / 1000).toFixed(2)}ms</code>
+              <code>Average {(average.average / 1000).toFixed(2)}s</code>
               <Button className="dawn-round" onClick={changeGame}>
                 Change Game
               </Button>

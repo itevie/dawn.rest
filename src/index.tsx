@@ -22,6 +22,7 @@ import { loadTheme } from "./dawn-ui/index";
 import Authorize from "./pages/Auth/Authorize";
 import Login from "./pages/Auth/Login";
 import TypeTheRoman from "./pages/Single/TypeTheRoman";
+import GiveChangeGame from "./pages/Single/GiveChange";
 
 loadTheme();
 
@@ -88,6 +89,10 @@ const routes = createBrowserRouter([
   {
     path: "/projects/type-the-roman",
     element: <TypeTheRoman />,
+  },
+  {
+    path: "/projects/give-change",
+    element: <GiveChangeGame />,
   },
   {
     path: "/auth/oauth",

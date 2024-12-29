@@ -19,6 +19,14 @@ export default function OtherProjectsPage() {
             </label>
           </Container>
         </Link>
+        <Link noHighlight href="/projects/give-change">
+          <Container small hover title="Give Change">
+            <label>
+              You are given a price, and how much a person has gave, and you
+              must give the change in the lowest amount of coins.
+            </label>
+          </Container>
+        </Link>
         <Link noHighlight href="/projects/http">
           <Container small hover title="HTTP Client">
             <label>Create HTTP requests here with the request builder.</label>
