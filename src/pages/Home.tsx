@@ -47,7 +47,7 @@ function App() {
             </label>
           </Container>
         </Link>
-        <Link noHighlight href="/trancer">
+        <Link noHighlight href="https://trancer.dawn.rest">
           <Container
             small
             hover

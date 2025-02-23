@@ -100,7 +100,7 @@ export default function GiveChangeGame() {
       reset();
       setWins((old) => [...old, 0]);
       showInfoAlert(
-        `You could of used a smaller amount of couns: ${lowestCoins
+        `You could of used a smaller amount of coins: ${lowestCoins
           .map(
             (x) =>
               definedCoins[currency].find(
@@ -177,7 +177,7 @@ export default function GiveChangeGame() {
               {(current.price / 100).toFixed(2)}, Gave: {symbols[currency]}
               {(current.gave / 100).toFixed(2)}
               <br />
-              Change: {symbols[currency]}
+              Remainder: {symbols[currency]}
               {(coins.reduce((p, c) => p + c, 0) / 100).toFixed(2)}
             </Words>
             <Column>
