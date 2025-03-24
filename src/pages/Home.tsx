@@ -71,18 +71,6 @@ function App() {
             <label>A customisable to-do app for all your tasks.</label>
           </Container>
         </Link>
-        <Link noHighlight href="https://youtube.com/@trancebydawn">
-          <Container
-            small
-            hover
-            title="YouTube"
-            style={{
-              backgroundImage: "url(https://dawn.rest/images/youtube.svg)",
-            }}
-          >
-            <label>This is my YouTube channel where I post my files too.</label>
-          </Container>
-        </Link>
         <Link noHighlight href="/projects">
           <Container
             small
@@ -93,18 +81,6 @@ function App() {
             }}
           >
             <label>A collection of smaller projects I have made.</label>
-          </Container>
-        </Link>
-        <Link noHighlight href="https://github.com/itevie/">
-          <Container
-            small
-            hover
-            title="GitHub"
-            style={{
-              backgroundImage: "url(https://dawn.rest/images/github.svg)",
-            }}
-          >
-            <label>See all my code projects I make here.</label>
           </Container>
         </Link>
       </Row>
