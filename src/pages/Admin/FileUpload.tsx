@@ -48,7 +48,7 @@ export default function FileUpload() {
         await axiosWrapper(
           "patch",
           `${baseUrl}/api/admin/edit-file/${editId}`,
-          details
+          details,
         );
         return showInfoAlert("Edited!");
       }
@@ -60,17 +60,15 @@ export default function FileUpload() {
       details.duration = parseInt(audioFile.duration.toString() || "0");
 
       try {
-        await axiosWrapper("post", `${baseUrl}/api/admin/file-upload`, details);
-
         const actualResult = await axiosWrapper(
           "post",
           `${baseUrl}/api/admin/file-upload`,
-          { ...details }
+          { ...details },
         );
 
         showInfoAlert(
           "Uploaded file. Please copy the audio file to " +
-            actualResult.data.file_path
+            actualResult.data.file_path,
         );
       } catch {}
     };
