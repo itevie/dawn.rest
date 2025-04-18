@@ -1,0 +1,38 @@
+#root {
+    /* ----- Base Colors ----- */
+    --dawn-neutral-base-color: 200;
+    --dawn-danger-base-color: 0;
+    --dawn-success-base-color: 90;
+    --dawn-accent-base-color: 263;
+
+    /* ----- Root Colors ----- */
+    --dawn-root-base: hsla(var(--dawn-neutral-base-color), 5%, 10%, 1);
+    --dawn-root-color: #fff;
+
+    /* ----- Danger Colors ----- */
+    --dawn-danger-base: hsla(var(--dawn-danger-base-color), 75%, 30%, 1);
+    --dawn-danger-base-text: white;
+    --dawn-danger-base-hover: hsla(var(--dawn-danger-base-color), 90%, 40%);
+    --dawn-danger-text: hsla(var(--dawn-danger-base-color), 100%, 50%, 1);
+}
+
+.dawn-danger-bg {
+    background-color: var(--dawn-danger-base);
+    color: var(--dawn-danger-base-text);
+}
+
+.dawn-danger-bg:hover {
+    background-color: var(--dawn-danger-base-hover);
+}
+
+.dawn-danger-fg {
+    background-color: var(--dawn-danger-text);
+}
+
+button {
+    padding: 5px 10px;
+
+    border-style: none;
+
+    cursor: pointer;
+}

@@ -23,19 +23,21 @@ import Authorize from "./pages/Auth/Authorize";
 import Login from "./pages/Auth/Login";
 import TypeTheRoman from "./pages/Single/TypeTheRoman";
 import GiveChangeGame from "./pages/Single/GiveChange";
+import DawnUiDebug from "./pages/Debug/DawnUiDebug";
+import WordGenerator from "./pages/Single/WordGenerator";
 
 loadTheme();
 
 const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
+  document.getElementById("root") as HTMLElement,
 );
 
 const baseUrlLS = localStorage.getItem("base_url");
 export const baseUrl = baseUrlLS
   ? baseUrlLS
   : window.location.hostname === "localhost"
-  ? "https://dawn.rest"
-  : "";
+    ? "https://dawn.rest"
+    : "";
 
 const routes = createBrowserRouter([
   {
@@ -79,6 +81,10 @@ const routes = createBrowserRouter([
     element: <Showcase />,
   },
   {
+    path: "/projects/dawn-ui-debug",
+    element: <DawnUiDebug />,
+  },
+  {
     path: "/projects",
     element: <OtherProjectsPage />,
   },
@@ -93,6 +99,10 @@ const routes = createBrowserRouter([
   {
     path: "/projects/give-change",
     element: <GiveChangeGame />,
+  },
+  {
+    path: "/projects/word-generator",
+    element: <WordGenerator />,
   },
   {
     path: "/auth/oauth",
@@ -113,5 +123,5 @@ root.render(
     <AlertManager />
     <ContextMenuManager />
     <RouterProvider router={routes} />
-  </>
+  </>,
 );

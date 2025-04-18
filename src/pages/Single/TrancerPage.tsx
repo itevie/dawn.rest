@@ -14,7 +14,7 @@ import {
   showLoadingAlert,
 } from "../../dawn-ui/components/AlertManager";
 import Row from "../../dawn-ui/components/Row";
-import Words from "../../dawn-ui/components/Words";
+import Words, { TextType } from "../../dawn-ui/components/Words";
 import Container from "../../dawn-ui/components/Container";
 import DawnPage from "../../components/DawnPage";
 import Column from "../../dawn-ui/components/Column";
@@ -92,12 +92,12 @@ export default function TrancerPage() {
     [key: string]: keyof typeof timeFilters;
   }>({ messages: "month", memberCount: "day" });
   const [leaderboardSearch, setLeaderboardSearch] = useState<string | null>(
-    null
+    null,
   );
   const [randomQuote, setRandomQuote] = useState<Quote | null>(null);
   const [selectedUserData, setSelectedUserData] = useState<string[]>([]);
   const [mtChartData, setMtChartData] = useState<ChartConfiguration | null>(
-    null
+    null,
   );
 
   useEffect(() => {
@@ -108,7 +108,7 @@ export default function TrancerPage() {
       if (auth) {
         window.localStorage.setItem(
           "trancer_auth",
-          auth[0].replace("auth=", "")
+          auth[0].replace("auth=", ""),
         );
       }
     }
@@ -155,7 +155,7 @@ export default function TrancerPage() {
       });
     } catch (e) {
       showErrorAlert(
-        `Failed to load ${type}: Are you missing the auth code? Run .site in Trancy Twilight.`
+        `Failed to load ${type}: Are you missing the auth code? Run .site in Trancy Twilight.`,
       );
     }
   }
@@ -250,7 +250,7 @@ export default function TrancerPage() {
           headers: {
             Authorization: window.localStorage.getItem("trancer_auth"),
           },
-        }
+        },
       );
       let json = responseData.data.data as Transaction[];
 
@@ -266,7 +266,7 @@ export default function TrancerPage() {
       });
     } catch (e) {
       showErrorAlert(
-        `Failed to load money transactions for ${id}: Are you missing the auth code? Run .site in Trancy Twilight.`
+        `Failed to load money transactions for ${id}: Are you missing the auth code? Run .site in Trancy Twilight.`,
       );
     }
   }
@@ -323,7 +323,7 @@ export default function TrancerPage() {
               <Link href="https://discord.gg/invite/zZw7ZCRy">our server</Link>{" "}
               and ask about it.
             </p>
-            <Words type="container-title">Note</Words>
+            <Words type={TextType.ContainerTitle}>Note</Words>
             The other categories of this page require authentication.
             <br />
             Get a token from the Trancy Twilight Discord server by running{" "}
@@ -339,11 +339,11 @@ export default function TrancerPage() {
                 setSelectedUserData(e);
                 for (const i of e) {
                   let id = Object.values(data.usernames ?? {}).findIndex(
-                    (x) => x === i
+                    (x) => x === i,
                   );
                   await loadMoneyTransaction(
                     Object.keys(data.usernames ?? {})[id || "0"] || "0",
-                    e
+                    e,
                   );
                 }
                 reloadMT(data.moneyTransactions, e);
@@ -547,7 +547,7 @@ export default function TrancerPage() {
                               graphData.source,
                               timeFilters[timeFilter[graphData.filter]],
                               "amount",
-                              graphData.noAdd
+                              graphData.noAdd,
                             ).map((y) => y.time),
                             datasets: [
                               {
@@ -556,7 +556,7 @@ export default function TrancerPage() {
                                   graphData.source,
                                   timeFilters[timeFilter[graphData.filter]],
                                   "amount",
-                                  graphData.noAdd
+                                  graphData.noAdd,
                                 ).map((y) => y.amount),
                               },
                             ],
@@ -575,7 +575,7 @@ export default function TrancerPage() {
                   data={{
                     labels:
                       "00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,16,17,18,19,20,21,22,23".split(
-                        ","
+                        ",",
                       ),
                     datasets: [
                       {
@@ -583,7 +583,7 @@ export default function TrancerPage() {
                         data: convertTimes(
                           data.messages,
                           /( [0-9]?[0-9])/,
-                          "amount"
+                          "amount",
                         )
                           .sort((a, b) => parseInt(b.time) - parseInt(a.time))
                           .map((x) => x.amount),
@@ -604,7 +604,7 @@ function convertTimes(
   data: any,
   regex: RegExp,
   key: "amount" | "balance",
-  noIncrease: boolean = false
+  noIncrease: boolean = false,
 ) {
   if (!data) return [];
 

@@ -37,6 +37,11 @@ export default function OtherProjectsPage() {
             <label>See the dawn-ui (my UI framework) debug page.</label>
           </Container>
         </Link>
+        <Link noHighlight href="/projects/word-generator">
+          <Container small hover title="Word Generator">
+            <label>Generate words based on some rules.</label>
+          </Container>
+        </Link>
       </Row>
     </DawnPage>
   );

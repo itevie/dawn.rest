@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import DawnPage from "../../components/DawnPage";
 import Column from "../../dawn-ui/components/Column";
 import FullPage from "../../dawn-ui/components/FullPage";
-import Words from "../../dawn-ui/components/Words";
+import Words, { TextType } from "../../dawn-ui/components/Words";
 import Row from "../../dawn-ui/components/Row";
 import Button from "../../dawn-ui/components/Button";
 import { addAlert } from "../../dawn-ui/components/AlertManager";
@@ -82,7 +82,7 @@ const defaultGame = "Greek To Roman";
 
 export default function TypeThewanted() {
   const [current, setCurrent] = useState<Part>(
-    games[defaultGame][Math.floor(Math.random() * games[defaultGame].length)]
+    games[defaultGame][Math.floor(Math.random() * games[defaultGame].length)],
   );
   const [start, setStart] = useState<number>(0);
   const [game, setGame] = useState<keyof typeof games>(defaultGame);
@@ -197,7 +197,7 @@ export default function TypeThewanted() {
       <DawnPage full>
         <div className="dawn-page-center">
           <Column>
-            <Words style={{ textAlign: "center" }} type="page-title">
+            <Words style={{ textAlign: "center" }} type={TextType.PageTitle}>
               {current.lang}
             </Words>
             <Row style={{ gap: "5px" }}>

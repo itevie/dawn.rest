@@ -3,7 +3,7 @@ import Link from "../../dawn-ui/components/Link";
 import { baseUrl } from "../..";
 import Container from "../../dawn-ui/components/Container";
 import { axiosWrapper } from "../../dawn-ui/util";
-import Words from "../../dawn-ui/components/Words";
+import Words, { TextType } from "../../dawn-ui/components/Words";
 import DawnPage from "../../components/DawnPage";
 import Column from "../../dawn-ui/components/Column";
 import MultiSelect from "../../dawn-ui/components/MultiSelect";
@@ -76,7 +76,7 @@ export default function FilePage() {
             .filter(
               (f) =>
                 tagFilter.length === 0 ||
-                tagFilter.every((x) => f.tags.includes(x))
+                tagFilter.every((x) => f.tags.includes(x)),
             )
             .filter((f) =>
               !search
@@ -84,7 +84,7 @@ export default function FilePage() {
                 : f.id.toString() === search ||
                   f.title.toLowerCase().includes(search) ||
                   f.description.toLowerCase().includes(search) ||
-                  f.tags.includes(search)
+                  f.tags.includes(search),
             )
             .map((f) => (
               <Link
@@ -96,7 +96,9 @@ export default function FilePage() {
               >
                 <Container hover>
                   <Column>
-                    <Words type="heading">{`${f.id} - ${f.title}`}</Words>
+                    <Words
+                      type={TextType.Heading}
+                    >{`${f.id} - ${f.title}`}</Words>
                     <Words>{f.description}</Words>
                     <small>
                       {Math.floor(f.audio_length / 60).toFixed(0)}m{" "}

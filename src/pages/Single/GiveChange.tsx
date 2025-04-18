@@ -4,7 +4,7 @@ import Button from "../../dawn-ui/components/Button";
 import Column from "../../dawn-ui/components/Column";
 import FullPage from "../../dawn-ui/components/FullPage";
 import Row from "../../dawn-ui/components/Row";
-import Words from "../../dawn-ui/components/Words";
+import Words, { TextType } from "../../dawn-ui/components/Words";
 import { randomRange, randomRangeDecimal } from "../../dawn-ui/util";
 import {
   addAlert,
@@ -104,10 +104,10 @@ export default function GiveChangeGame() {
           .map(
             (x) =>
               definedCoins[currency].find(
-                (y: [number, number]) => y[0] === x
-              )[1]
+                (y: [number, number]) => y[0] === x,
+              )[1],
           )
-          .join(", ")}`
+          .join(", ")}`,
       );
     }
 
@@ -172,7 +172,7 @@ export default function GiveChangeGame() {
       <DawnPage full>
         <div className="dawn-page-center">
           <Column>
-            <Words style={{ textAlign: "center" }} type="page-title">
+            <Words style={{ textAlign: "center" }} type={TextType.PageTitle}>
               Price: {symbols[currency]}
               {(current.price / 100).toFixed(2)}, Gave: {symbols[currency]}
               {(current.gave / 100).toFixed(2)}
@@ -222,7 +222,7 @@ export default function GiveChangeGame() {
                   >
                     {
                       definedCoins[currency].find(
-                        (y: [number, number]) => y[0] === x
+                        (y: [number, number]) => y[0] === x,
                       )[1]
                     }
                   </code>
