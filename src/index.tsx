@@ -25,6 +25,7 @@ import TypeTheRoman from "./pages/Single/TypeTheRoman";
 import GiveChangeGame from "./pages/Single/GiveChange";
 import DawnUiDebug from "./pages/Debug/DawnUiDebug";
 import WordGenerator from "./pages/Single/WordGenerator";
+import BackgroundParticles from "./dawn-ui/components/BackgroundParticles";
 
 loadTheme();
 
@@ -122,6 +123,7 @@ root.render(
   <>
     <AlertManager />
     <ContextMenuManager />
+    <BackgroundParticles />
     <RouterProvider router={routes} />
   </>,
 );

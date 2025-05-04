@@ -24,7 +24,14 @@ export default function DawnPage({
       <div style={{ marginTop: "20px" }}>
         <Page full={full}>{children}</Page>
       </div>
-      <Row util={["justify-center", "align-center"]}>
+      <Row
+        util={[
+          "justify-center",
+          "align-center",
+          "no-wrap",
+          "ignore-responsive-center",
+        ]}
+      >
         {[
           [
             "https://dawn.rest/images/youtube.svg",
