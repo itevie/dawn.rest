@@ -25,35 +25,8 @@ function App() {
           >
             <label>
               Discover the wonders of hypnosis. See my hypno files,
-              visualisations, and more.
+              visualisations, Trancer, and the Discord.
             </label>
-          </Container>
-        </Link>
-        <Link noHighlight href="https://discord.gg/xrjcHcAsj2">
-          <Container
-            small
-            hover
-            title="Discord"
-            style={{
-              backgroundImage: "url(https://dawn.rest/images/discord.svg)",
-            }}
-          >
-            <label>
-              Join my Discord server where we talk about hypnosis, have fun
-              events, and have a generally nice community.
-            </label>
-          </Container>
-        </Link>
-        <Link noHighlight href="https://trancer.dawn.rest">
-          <Container
-            small
-            hover
-            title="Trancer"
-            style={{
-              backgroundImage: "url(https://dawn.rest/images/discord.svg)",
-            }}
-          >
-            <label>See my hypnosis-related Discord bot: Trancer.</label>
           </Container>
         </Link>
         <Link noHighlight href="https://kairo.dawn.rest">
