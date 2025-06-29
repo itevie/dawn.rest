@@ -10,6 +10,7 @@ import LogorithmicSpiral from "./LogorithmicSpiral";
 import Visual from "./Visualisation";
 import CircleSpiral from "./CircleSpiral";
 import Constellations from "./Constellations";
+import Twilight from "./Twilight";
 
 const allVisuals = [
   Hearts,
@@ -23,5 +24,6 @@ const allVisuals = [
   LogorithmicSpiral,
   CircleSpiral,
   Constellations,
+  Twilight,
 ] as unknown as (typeof Visual)[];
 export default allVisuals;

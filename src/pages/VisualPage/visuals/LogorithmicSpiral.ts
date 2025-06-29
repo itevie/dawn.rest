@@ -94,7 +94,10 @@ export default class LogorithmicSpiral extends Visual {
     };
   }
 
-  drawSpiral(ctx: CanvasRenderingContext2D, options: SpiralOptions): void {
+  public static drawSpiral(
+    ctx: CanvasRenderingContext2D,
+    options: SpiralOptions,
+  ): void {
     ctx.save();
     ctx.beginPath();
 
@@ -118,7 +121,7 @@ export default class LogorithmicSpiral extends Visual {
 
   public draw(
     ctx: CanvasRenderingContext2D,
-    options: SpiralVisualOptions
+    options: SpiralVisualOptions,
   ): void {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
@@ -128,7 +131,7 @@ export default class LogorithmicSpiral extends Visual {
     this.interval = setInterval(() => {
       if (options.clearOnFrame)
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-      this.drawSpiral(ctx, {
+      LogorithmicSpiral.drawSpiral(ctx, {
         scale: options.scale,
         tightness: options.tightness,
         position: getCanvasCenter(ctx),
