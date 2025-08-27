@@ -10,25 +10,11 @@ function App() {
     <DawnPage full>
       <Banner title="Welcome to dawn.rest">
         <Words>
-          Hello, I am Dawn! This is my website where I'll put all my projects.
+          Hello, I am Dawn / Isabella! This is my website where I'll put all my
+          projects.
         </Words>
       </Banner>
       <Row util={["justify-center", "flex-wrap"]}>
-        <Link noHighlight href="/hypno">
-          <Container
-            small
-            hover
-            title="Hypnosis"
-            style={{
-              backgroundImage: "url(https://dawn.rest/images/spiral.svg)",
-            }}
-          >
-            <label>
-              Discover the wonders of hypnosis. See my hypno files,
-              visualisations, Trancer, and the Discord.
-            </label>
-          </Container>
-        </Link>
         <Link noHighlight href="https://kairo.dawn.rest">
           <Container
             small
