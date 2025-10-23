@@ -33,15 +33,15 @@ export default function DawnPage({
         ]}
       >
         {[
-          [
-            "https://dawn.rest/images/youtube.svg",
-            "https://dawn.rest/r/youtube",
-          ],
+          // [
+          //   "https://dawn.rest/images/youtube.svg",
+          //   "https://dawn.rest/r/youtube",
+          // ],
           ["https://dawn.rest/images/github.svg", "https://github.com/itevie"],
-          [
-            "https://dawn.rest/images/discord.svg",
-            "https://discord.gg/xrjcHcAsj2",
-          ],
+          // [
+          //   "https://dawn.rest/images/discord.svg",
+          //   "https://discord.gg/xrjcHcAsj2",
+          // ],
           [
             "https://dawn.rest/images/osu.svg",
             "https://osu.ppy.sh/users/14561519",
