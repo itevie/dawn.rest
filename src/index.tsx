@@ -46,25 +46,10 @@ const routes = createBrowserRouter([
     element: <App />,
   },
   {
-    path: "/hypno",
-    element: <HypnosisPage />,
-  },
-  {
     path: "/hypno/visuals",
     element: <VisualPage />,
   },
-  {
-    path: "/hypno/visuals/:id",
-    element: <VisualViewer />,
-  },
-  {
-    path: "/hypno/files",
-    element: <FilePage />,
-  },
-  {
-    path: "/hypno/files/:id",
-    element: <FileViewer />,
-  },
+
   {
     path: "/trancer",
     element: <TrancerPage />,
@@ -72,10 +57,6 @@ const routes = createBrowserRouter([
   {
     path: "/admin",
     element: <AdminPage />,
-  },
-  {
-    path: "/admin/file-upload",
-    element: <FileUpload />,
   },
   {
     path: "/projects/dawn-ui",
