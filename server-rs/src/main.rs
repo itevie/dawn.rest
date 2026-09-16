@@ -10,7 +10,6 @@ use rocket::response::content;
 use rocket::serde::json::Json;
 use rocket::tokio::fs;
 use rocket::{Request, Response, State};
-use routes::meta_data::check_crawler;
 use sqlx::{Executor, Pool, Sqlite, SqlitePool};
 use uuid::Uuid;
 
@@ -32,9 +31,9 @@ pub enum ReturnOptions {
 
 #[get("/<path..>")]
 async fn index(path: PathBuf, db: &State<Pool<Sqlite>>, ua: UserAgent) -> Option<ReturnOptions> {
-    if let Some(meta) = check_crawler(ua.0, path.display().to_string(), db).await {
-        return Some(ReturnOptions::HTML(content::RawHtml(meta)));
-    }
+    // if let Some(meta) = check_crawler(ua.0, path.display().to_string(), db).await {
+    //     return Some(ReturnOptions::HTML(content::RawHtml(meta)));
+    // }
 
     let path = std::env::current_dir()
         .unwrap()
@@ -121,9 +120,6 @@ async fn rocket() -> _ {
         .manage(pool)
         .manage(uuid)
         .attach(CORS)
-        .mount("/", routes::files::routes())
-        .mount("/", routes::admin::routes())
-        .mount("/", routes::analytics::routes())
         .mount("/", routes::redirects::routes())
         .mount("/trancer", routes::trancer_proxy::routes())
         .mount("/", routes![fuck_options, index])
